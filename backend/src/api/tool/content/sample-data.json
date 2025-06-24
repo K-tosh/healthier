@@ -1,0 +1,39 @@
+{
+  "tools": [
+    {
+      "title": "BMI Calculator",
+      "description": "Calculate your Body Mass Index (BMI) to check if your weight is healthy",
+      "slug": "bmi-calculator",
+      "category": "BMI Calculator",
+      "order": 1
+    },
+    {
+      "title": "Ovulation Calculator",
+      "description": "Track your fertility window and plan for pregnancy",
+      "slug": "ovulation-calculator",
+      "category": "Ovulation Calculator",
+      "order": 2
+    },
+    {
+      "title": "Cold And Flu Map",
+      "description": "Check cold and flu activity in your area",
+      "slug": "cold-and-flu-map",
+      "category": "Cold And Flu Map",
+      "order": 3
+    },
+    {
+      "title": "Pill Identifier",
+      "description": "Identify your medications by shape, color, or imprint",
+      "slug": "pill-identifier",
+      "category": "Pill Identifier",
+      "order": 4
+    },
+    {
+      "title": "Drug Interaction Checker",
+      "description": "Check for drug interactions between medications",
+      "slug": "drug-interaction",
+      "category": "Drug Interaction",
+      "order": 5
+    }
+  ]
+} 

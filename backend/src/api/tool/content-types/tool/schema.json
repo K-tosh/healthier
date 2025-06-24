@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tools",
+  "info": {
+    "singularName": "tool",
+    "pluralName": "tools",
+    "displayName": "Tool",
+    "description": "Health tools, calculators and trackers"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "BMI Calculator",
+        "Ovulation Calculator",
+        "Cold And Flu Map",
+        "Pill Identifier",
+        "Drug Interaction",
+        "Calorie Counter",
+        "Pregnancy Timeline"
+      ],
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+} 

@@ -1,0 +1,80 @@
+{
+  "articles": [
+    {
+      "title": "6 Health Symptoms You Shouldn't Ignore",
+      "description": "Some symptoms may seem minor, but they could signal something more serious. Learn 6 signs you should never ignore -- and what they might mean.",
+      "slug": "6-health-symptoms-you-shouldnt-ignore",
+      "isTopStory": true,
+      "topStoryOrder": 1,
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "content": "Many people ignore subtle health symptoms, thinking they'll go away on their own. However, certain signs shouldn't be overlooked..."
+        }
+      ]
+    },
+    {
+      "title": "What Dehydration-Related Migraines Really Feel Like",
+      "description": "Discover the connection between dehydration and migraines, plus tips for prevention and relief.",
+      "slug": "dehydration-related-migraines",
+      "isTopStory": true,
+      "topStoryOrder": 2,
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "content": "Dehydration can trigger or worsen migraines. Learn to recognize the signs and how to prevent them..."
+        }
+      ]
+    },
+    {
+      "title": "Your Annual Checkup Could Catch More Than You Think",
+      "description": "Regular health screenings can detect problems early. Here's what your doctor is really looking for.",
+      "slug": "annual-checkup-importance",
+      "isTopStory": true,
+      "topStoryOrder": 3,
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "content": "Annual checkups are more than just a quick physical. They're an opportunity to catch health issues early..."
+        }
+      ]
+    },
+    {
+      "title": "Why Staying Connected Is Key to Mental Wellness",
+      "description": "Social connections play a vital role in maintaining good mental health. Learn how to build and maintain relationships.",
+      "slug": "staying-connected-mental-wellness",
+      "isTopStory": true,
+      "topStoryOrder": 4,
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "content": "Research shows that strong social connections can boost mental health and overall well-being..."
+        }
+      ]
+    },
+    {
+      "title": "Understanding Anxiety and Depression",
+      "description": "A comprehensive guide to recognizing symptoms and finding help for anxiety and depression.",
+      "slug": "understanding-anxiety-depression",
+      "livingHealthyCategory": "mental-health",
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "content": "Mental health conditions like anxiety and depression are common and treatable..."
+        }
+      ]
+    },
+    {
+      "title": "The Science of Weight Loss",
+      "description": "Evidence-based strategies for sustainable weight management and healthy living.",
+      "slug": "science-of-weight-loss",
+      "livingHealthyCategory": "diet-and-weight-management",
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "content": "Successful weight loss involves more than just diet and exercise..."
+        }
+      ]
+    }
+  ]
+} 
