@@ -1,281 +1,478 @@
-"use client";
-import { useState, useEffect } from "react";
-import { fetchAPI } from "./utils/fetch-api";
-import { getStrapiMedia } from "./utils/api-helpers";
-import Link from "next/link";
-import Image from "next/image";
-import { FaSearch, FaUserCircle, FaChevronDown, FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+'use client';
 
-// Types for Strapi data
-interface TopStory {
-  id: number;
-  attributes: {
-    title: string;
-    excerpt: string;
-    image: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      } | null;
+import { fetchAPI } from './utils/fetch-api';
+import { getStrapiMedia } from './utils/api-helpers';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { Button } from "./components/ui/button";
+
+// Types for Strapi homepage data
+interface HomepageData {
+  data: {
+    id: number;
+    attributes: {
+      seo: string;
+      seo_descreption: string;
+      heroTitle: string;
+      heroSubtitle: string;
+      wellnessTitle: string;
+      featuredConditionsTitle: string;
+      promoText: any[];
+      promoLInk: string;
+      articles: {
+        data: Array<{
+          id: number;
+          attributes: {
+            title: string;
+            description: string;
+            slug: string;
+            excerpt?: string;
+            cover?: {
+              data: {
+                attributes: {
+                  url: string;
+                };
+              } | null;
+            };
+            isTopStory: boolean | null;
+            topStoryOrder: number | null;
+          };
+        }>;
+      };
+      authors: {
+        data: Array<{
+          id: number;
+          attributes: {
+            name: string;
+            email: string;
+          };
+        }>;
+      };
+      heroImage: {
+        data: Array<{
+          id: number;
+          attributes: {
+            url: string;
+          };
+        }>;
+      };
+      wellness_articles: {
+        data: Array<any>;
+      };
+      conditions: {
+        data: Array<{
+          id: number;
+          attributes: {
+            name: string;
+            slug: string;
+            overview: any[];
+            causes: any[];
+            symptoms: any[];
+            diagnosis: any[];
+            treatment: any[];
+            prevention: string;
+            references: any[];
+          };
+        }>;
+      };
+      promoImage: {
+        data: Array<{
+          id: number;
+          attributes: {
+            url: string;
+          };
+        }>;
+      };
+      heroDoctorAvatars: {
+        data: Array<{
+          id: number;
+          attributes: {
+            url: string;
+            alternativeText?: string;
+          };
+        }>;
+      };
+      heroHospitalLogos: {
+        data: Array<{
+          id: number;
+          attributes: {
+            url: string;
+            alternativeText?: string;
+          };
+        }>;
+      };
+      heroButton1Text: string;
+      heroButton1Link: string;
+      heroButton2Text: string;
+      heroButton2Link: string;
     };
-    slug: string;
   };
 }
 
-interface LivingHealthyItem {
-  id: number;
-  attributes: {
-    title: string;
-    image: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      } | null;
+async function getHomepageData() {
+  try {
+    const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+    const path = `/homepage`;
+    const urlParamsObject = {
+      populate: {
+        articles: {
+          populate: {
+            cover: { fields: ['url'] },
+            category: { fields: ['name', 'slug'] },
+          },
+        },
+        authors: {
+          populate: '*',
+        },
+        heroImage: {
+          populate: '*',
+        },
+        conditions: {
+          populate: '*',
+        },
+        promoImage: {
+          populate: '*',
+        },
+        heroDoctorAvatars: {
+          populate: '*',
+        },
+        heroHospitalLogos: {
+          populate: '*',
+        },
+      },
     };
-    slug: string;
-  };
+    const options = { headers: { Authorization: `Bearer ${token}` } };
+    const response = await fetchAPI(path, urlParamsObject, options);
+    return response;
+  } catch (error) {
+    console.error('Error fetching homepage data:', error);
+    return null;
+  }
 }
 
-interface Contributor {
-  id: number;
-  attributes: {
-    name: string;
-    title: string;
-    specialty: string;
-    avatar: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      } | null;
-    };
-    article: {
-      title: string;
-      slug: string;
-    };
-  };
+// Helper function to safely get media URL
+function getImageUrl(item: any): string {
+  if (!item?.data?.attributes?.url) {
+    return "/placeholder-image.jpg";
+  }
+  const url = getStrapiMedia(item.data.attributes.url);
+  return url || "/placeholder-image.jpg";
 }
 
-interface Tool {
-  id: number;
-  attributes: {
-    title: string;
-    icon: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      } | null;
-    };
-    slug: string;
-  };
+// Helper function to render rich text content
+function renderRichText(content: any[]): string {
+  if (!content || !Array.isArray(content)) return '';
+  
+  return content.map(item => {
+    if (item.type === 'text') {
+      return item.text || '';
+    }
+    if (item.type === 'heading' && item.children) {
+      return item.children.map((child: any) => child.text || '').join('');
+    }
+    if (item.type === 'list' && item.children) {
+      return item.children.map((child: any) => 
+        child.children?.map((grandChild: any) => grandChild.text || '').join('') || ''
+      ).join(', ');
+    }
+    return '';
+  }).join(' ');
 }
 
 export default function HomePage() {
-  // State management for data - initialize with empty arrays
-  const [topStories, setTopStories] = useState<TopStory[]>([]);
-  const [livingHealthy, setLivingHealthy] = useState<LivingHealthyItem[]>([]);
-  const [contributors, setContributors] = useState<Contributor[]>([]);
-  const [tools, setTools] = useState<Tool[]>([]);
-  const [showMegaMenu, setShowMegaMenu] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [homepageData, setHomepageData] = useState<HomepageData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Helper function to safely get media URL
-  const getImageUrl = (item: any): string => {
-    if (!item?.data?.attributes?.url) {
-      return "/placeholder-image.jpg"; // Provide a default placeholder image
-    }
-    const url = getStrapiMedia(item.data.attributes.url);
-    return url || "/placeholder-image.jpg";
-  };
-
-  // Fetch data from Strapi
   useEffect(() => {
     async function fetchData() {
       try {
-        const [topStoriesRes, livingHealthyRes, contributorsRes, toolsRes] = await Promise.all([
-          fetchAPI("/articles", { 
-            populate: "*",
-            sort: "topStoryOrder:asc",
-            filters: { isTopStory: { $eq: true } },
-            pagination: { limit: 4 }
-          }),
-          fetchAPI("/living-healthies", { 
-            populate: "*",
-            limit: 5
-          }),
-          fetchAPI("/contributors", { 
-            populate: "*",
-            limit: 4
-          }),
-          fetchAPI("/tools", { 
-            populate: "*"
-          })
-        ]);
-
-        setTopStories(topStoriesRes.data || []);
-        setLivingHealthy(livingHealthyRes.data || []);
-        setContributors(contributorsRes.data || []);
-        setTools(toolsRes.data || []);
+        const data = await getHomepageData();
+        setHomepageData(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        // Set empty arrays on error
-        setTopStories([]);
-        setLivingHealthy([]);
-        setContributors([]);
-        setTools([]);
+        console.error('Error fetching homepage data:', error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     }
-
     fetchData();
   }, []);
 
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading homepage...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!homepageData?.data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Error Loading Homepage</h1>
+          <p className="text-gray-600">Unable to load homepage content. Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const attributes = homepageData.data.attributes;
+  
+  // Safely extract data with fallbacks
+  const heroTitle = attributes.heroTitle || '';
+  const heroSubtitle = attributes.heroSubtitle || '';
+  const wellnessTitle = attributes.wellnessTitle || '';
+  const featuredConditionsTitle = attributes.featuredConditionsTitle || '';
+  const promoText = attributes.promoText || [];
+  const promoLInk = attributes.promoLInk || '#';
+  const articles = attributes.articles?.data || [];
+  const authors = attributes.authors?.data || [];
+  const heroImage = attributes.heroImage?.data || [];
+  const wellness_articles = attributes.wellness_articles?.data || [];
+  const conditions = attributes.conditions?.data || [];
+  const promoImage = attributes.promoImage?.data || [];
+  const heroDoctorAvatars = attributes.heroDoctorAvatars?.data || [];
+  const heroHospitalLogos = attributes.heroHospitalLogos?.data || [];
+  const heroButton1Text = attributes.heroButton1Text || 'Check your symptom';
+  const heroButton1Link = attributes.heroButton1Link || '/symptoms';
+  const heroButton2Text = attributes.heroButton2Text || 'Pata Doc';
+  const heroButton2Link = attributes.heroButton2Link || '/pata-doc';
+  
+  // Filter top stories and sort by topStoryOrder
+  const topStories = articles
+    .filter((article: any) => article.attributes.isTopStory)
+    .sort((a: any, b: any) => {
+      const orderA = a.attributes.topStoryOrder || 999;
+      const orderB = b.attributes.topStoryOrder || 999;
+      return orderA - orderB;
+    })
+    .slice(0, 4); // Limit to 4 stories
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Only homepage sections here. Remove Navbar and Footer. */}
-      {/* Top Stories */}
-      <section className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-blue-900 font-extrabold uppercase text-lg tracking-wide mb-2">Today's Top Stories</h2>
-        <div className="border-b border-gray-200 mb-6"></div>
-        {topStories[0] && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-8">
-            <Link href={`/article/${topStories[0].attributes.slug}`} aria-label={topStories[0].attributes.title} className="block group">
-              <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
-                <Image
-                  src={getImageUrl(topStories[0].attributes.image)}
-                  alt={topStories[0].attributes.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
-                />
-              </div>
+    <main className="bg-white min-h-screen">
+      {/* HERO SECTION - Professional, blurred background */}
+      <section className="relative w-full min-h-[60vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={getStrapiMedia(heroImage?.[0]?.attributes?.url) || '/medical-hero.jpg'}
+            alt="Hero background"
+            fill
+            className="object-cover w-full h-full"
+            priority
+          />
+          {/* Overlay with blur and dark tint */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+        </div>
+        {/* Hero Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-24 w-full">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
+            {heroTitle || 'The best community for Healthier Living'}
+          </h1>
+          <p className="text-lg md:text-2xl text-gray-200 mb-8 max-w-2xl drop-shadow">
+            {heroSubtitle ||
+              "We're building a community to help each other live healthier, happier lives. Join us to access trusted health information, tools, and support."}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <Link href={heroButton1Link}>
+              <Button size="lg" className="font-bold px-8 py-3">
+                {heroButton1Text}
+              </Button>
             </Link>
-            <Link href={`/article/${topStories[0].attributes.slug}`} aria-label={topStories[0].attributes.title} className="block group">
-              <h3 className="text-3xl font-extrabold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors">{topStories[0].attributes.title}</h3>
-              <p className="text-lg text-gray-700 mb-2">{topStories[0].attributes.excerpt}</p>
+            <Link href={heroButton2Link}>
+              <Button variant="secondary" size="lg" className="font-bold px-8 py-3">
+                {heroButton2Text}
+              </Button>
             </Link>
           </div>
-        )}
-        <div className="border-b border-gray-200 mb-6"></div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {topStories.slice(1, 4).map((story) => (
-            <Link key={story.id} href={`/article/${story.attributes.slug}`} aria-label={story.attributes.title} className="flex bg-white rounded-lg shadow-sm hover:shadow-md transition group overflow-hidden">
-              <div className="relative w-28 h-28 flex-shrink-0">
+          {/* Avatars (Doctors) */}
+          {heroDoctorAvatars.length > 0 && (
+            <div className="flex items-center justify-center gap-2 mb-4">
+              {heroDoctorAvatars.map((avatar: any) => (
                 <Image
-                  src={getImageUrl(story.attributes.image)}
+                  key={avatar.id}
+                  src={getStrapiMedia(avatar.attributes.url) || '/avatar-placeholder.png'}
+                  alt={avatar.attributes.alternativeText || 'Doctor'}
+                  width={48}
+                  height={48}
+                  className="rounded-full border-2 border-white shadow-md object-cover"
+                />
+              ))}
+            </div>
+          )}
+          {/* Trusted Hospitals */}
+          {heroHospitalLogos.length > 0 && (
+            <div className="flex items-center justify-center gap-6 mt-2 flex-wrap">
+              {heroHospitalLogos.map((logo: any) => (
+                <Image
+                  key={logo.id}
+                  src={getStrapiMedia(logo.attributes.url) || '/hospital-logo-placeholder.png'}
+                  alt={logo.attributes.alternativeText || 'Trusted Hospital'}
+                  width={64}
+                  height={32}
+                  className="object-contain grayscale hover:grayscale-0 transition"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* NAVIGATION SECTIONS */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { title: 'Diseases & Conditions', href: '/conditions', icon: '🦠' },
+            { title: 'Drugs & Medications', href: '/drugs', icon: '💊' },
+            { title: 'Symptoms & Diagnosis', href: '/symptoms', icon: '🩺' },
+            { title: 'Wellness & Lifestyle', href: '/wellness', icon: '🏃‍♂️' },
+            { title: 'Tools & Calculators', href: '/tools', icon: '🧮' },
+          ].map((item) => (
+            <Link key={item.title} href={item.href} className="flex flex-col items-center bg-gray-50 rounded-lg p-4 hover:bg-blue-50 transition">
+              <span className="text-3xl mb-2">{item.icon}</span>
+              <span className="font-semibold text-blue-900 text-center">{item.title}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* TOP STORIES */}
+      <section className="max-w-7xl mx-auto px-4 py-10">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-blue-900 font-extrabold uppercase text-2xl tracking-wide">Today's Top Stories</h2>
+          <Link href="/articles" className="text-blue-700 font-semibold hover:underline">View All</Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {topStories.map((story) => (
+            <Link key={story.id} href={`/en/articles/${story.attributes.slug}`} className="group bg-white rounded-xl shadow hover:shadow-lg transition-transform hover:-translate-y-1 overflow-hidden flex flex-col">
+              <div className="relative h-48 w-full">
+                <Image
+                  src={getStrapiMedia(story.attributes.cover?.data?.attributes?.url) ?? '/placeholder-image.jpg'}
                   alt={story.attributes.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
                 />
               </div>
-              <div className="p-4 flex flex-col justify-center">
-                <h3 className="font-extrabold text-md text-gray-900 group-hover:text-blue-700 transition-colors mb-1">{story.attributes.title}</h3>
-                <p className="text-gray-700 text-sm">{story.attributes.excerpt}</p>
+              <div className="p-4 flex-1 flex flex-col">
+                <h3 className="font-extrabold text-lg text-gray-900 group-hover:text-blue-700 transition-colors mb-2">
+                  {story.attributes.title}
+                </h3>
+                <p className="text-gray-700 text-sm flex-1">
+                  {story.attributes.excerpt || story.attributes.description}
+                </p>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Living Healthy */}
-      <section className="bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-blue-900 font-extrabold uppercase text-lg tracking-wide">Living Healthy</h2>
-            <Link href="/living-healthy" className="text-blue-700 font-semibold hover:underline">
-              View All
+      {/* TOOLS & CALCULATORS - commented out until Strapi model is ready */}
+      {/*
+      <section className="max-w-7xl mx-auto px-4 py-10">
+        <h2 className="text-blue-900 font-extrabold uppercase text-2xl tracking-wide mb-6">Tools & Calculators</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {(attributes.tools || []).map((tool) => (
+            <Link key={tool.id} href={`/tools/${tool.slug}`} className="group bg-white rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col items-center text-center">
+              <span className="text-4xl mb-4">{tool.icon || '🧮'}</span>
+              <h3 className="font-bold text-lg text-blue-900 mb-2">{tool.title}</h3>
+              <p className="text-gray-700 text-sm">{tool.description}</p>
             </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
-            {livingHealthy.map((item) => (
-              <Link key={item.id} href={`/living-healthy/${item.attributes.slug}`} className="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
-                <div className="relative h-40 w-full">
-                  <Image
-                    src={getImageUrl(item.attributes.image)}
-                    alt={item.attributes.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    onError={(e) => { e.currentTarget.src = '/placeholder-image.jpg'; }}
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-extrabold text-md text-gray-900 group-hover:text-blue-700 transition-colors mb-1">{item.attributes.title}</h3>
-                  <p className="text-gray-700 text-sm">{(item.attributes as any).description ? (item.attributes as any).description : ''}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+          ))}
         </div>
       </section>
+      */}
 
-      {/* Patient and Expert Contributors */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-blue-900 font-extrabold uppercase text-lg tracking-wide">Patient and Expert Contributors</h2>
-          <Link href="/contributors" className="text-blue-700 font-semibold hover:underline">
-            View All
-          </Link>
-        </div>
-        <div className="grid md:grid-cols-4 gap-6">
-          {contributors.map((contributor) => (
-            <div key={contributor.id} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center">
-              <div className="relative h-32 w-32 mb-4">
-                <Image
-                  src={getImageUrl(contributor.attributes.avatar)}
-                  alt={contributor.attributes.name}
-                  fill
-                  className="object-cover rounded-full"
-                />
-              </div>
-              <div className="text-center">
-                <h3 className="font-extrabold text-gray-900">{contributor.attributes.name}</h3>
-                <p className="text-blue-700 text-sm font-semibold">{contributor.attributes.title}</p>
-                <p className="text-gray-500 text-sm mt-2">{contributor.attributes.specialty}</p>
-                <Link 
-                  href={`/article/${contributor.attributes.article.slug}`}
-                  className="text-blue-700 hover:underline text-sm mt-2 block font-semibold"
+      {/* Featured Conditions Section */}
+      {conditions.length > 0 && (
+        <section className="bg-gray-50 py-12">
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-blue-900 font-extrabold uppercase text-2xl tracking-wide mb-6">{featuredConditionsTitle}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {conditions.map((condition: any) => (
+                <Link
+                  key={condition.id}
+                  href={`/conditions/${condition.attributes.slug}`}
+                  className="group bg-white rounded-xl shadow hover:shadow-lg transition-transform hover:-translate-y-1 overflow-hidden flex flex-col"
                 >
-                  {contributor.attributes.article.title}
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={getImageUrl(condition.attributes.cover)}
+                      alt={condition.attributes.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col">
+                    <h3 className="font-extrabold text-lg text-gray-900 group-hover:text-blue-700 transition-colors mb-2">
+                      {condition.attributes.name}
+                    </h3>
+                    <p className="text-gray-700 text-sm flex-1">
+                      {renderRichText(condition.attributes.overview)}
+                    </p>
+                  </div>
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Promo Section */}
+      {promoText.length > 0 && (
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-8 text-white">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <h3 className="text-2xl font-bold mb-4">{renderRichText(promoText)}</h3>
+                  <Link 
+                    href={promoLInk}
+                    className="inline-block bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-green-50 transition-colors"
+                  >
+                    Get Started
+                  </Link>
+                </div>
+                {promoImage.length > 0 && (
+                  <div className="relative h-64 rounded-xl overflow-hidden">
+                    <Image
+                      src={getImageUrl(promoImage[0])}
+                      alt="Promo"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Tools, Trackers & Calculators */}
-      <section className="bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-blue-900 font-extrabold uppercase text-lg tracking-wide mb-6">Tools, Trackers & Calculators</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
-            {tools.map((tool) => (
-              <Link 
-                key={tool.id}
-                href={`/tools/${tool.attributes.slug}`}
-                className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center group"
-              >
-                <div className="relative h-16 w-16 mb-3">
-                  <Image
-                    src={getImageUrl(tool.attributes.icon)}
-                    alt={tool.attributes.title}
-                    fill
-                    className="object-contain group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <p className="text-center text-md font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">{tool.attributes.title}</p>
-                <p className="text-center text-gray-700 text-sm mt-1">{(tool.attributes as any).description ? (tool.attributes as any).description : ''}</p>
-              </Link>
-            ))}
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      )}
+
+      {/* Authors Section */}
+      {authors.length > 0 && (
+        <section className="bg-gray-50 py-12">
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-blue-900 font-extrabold uppercase text-lg tracking-wide mb-6">Our Contributors</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {authors.map((author: any) => (
+                <div key={author.id} className="bg-white rounded-xl shadow p-6 text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span className="text-blue-600 font-bold text-xl">
+                      {author.attributes.name.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-1">{author.attributes.name}</h3>
+                  <p className="text-gray-600 text-sm">{author.attributes.email}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </main>
   );
-}
+} 

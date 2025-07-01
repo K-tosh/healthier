@@ -4,7 +4,7 @@
   "info": {
     "singularName": "tool",
     "pluralName": "tools",
-    "displayName": "Tool",
+    "displayName": "tools",
     "description": "Health tools, calculators and trackers"
   },
   "options": {
@@ -12,24 +12,15 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
+    "toolName": {
       "type": "string",
       "required": true
     },
     "description": {
       "type": "text"
     },
-    "icon": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images"
-      ]
-    },
     "slug": {
-      "type": "uid",
-      "targetField": "title"
+      "type": "uid"
     },
     "category": {
       "type": "enumeration",
@@ -44,9 +35,30 @@
       ],
       "required": true
     },
-    "order": {
-      "type": "integer",
-      "default": 0
+    "toolType": {
+      "type": "enumeration",
+      "enum": [
+        "e.g.",
+        "BMI",
+        "Due Date",
+        "etc"
+      ]
+    },
+    "embedCode": {
+      "type": "blocks"
+    },
+    "featured": {
+      "type": "boolean"
+    },
+    "thumbnail": {
+      "allowedTypes": [
+        "images",
+        "videos",
+        "audios",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
-} 
+}

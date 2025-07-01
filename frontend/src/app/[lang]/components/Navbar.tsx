@@ -11,7 +11,7 @@ const DISEASES_CATEGORIES = [
   {
     title: "Infectious Diseases",
     examples: [
-      "Malaria", "HIV/AIDS", "Hepatitis B", "Malaria", "Tuberculosis", "Typhoid Fever"
+      "Malaria", "HIV/AIDS", "Hepatitis B", "Tuberculosis", "Typhoid Fever"
     ]
   },
   {
@@ -43,6 +43,57 @@ const NAV_LINKS = [
   { id: 6, url: "/contact", newTab: false, text: "Contact" },
 ];
 
+type Category = {
+  title: string;
+  examples: string[];
+};
+
+const MEGAMENUS: Record<string, Category[]> = {
+  "Diseases & Conditions": DISEASES_CATEGORIES,
+  "Drugs & Medications": [
+    {
+      title: "Drug Classes",
+      examples: ["Antibiotics", "Analgesics", "Antidepressants", "Antihypertensives", "Antivirals"]
+    },
+    {
+      title: "Common Medications",
+      examples: ["Paracetamol", "Ibuprofen", "Amoxicillin", "Metformin", "Amlodipine"]
+    },
+    {
+      title: "Usage & Safety",
+      examples: ["Dosage Info", "Side Effects", "Interactions", "Pregnancy Safety", "Storage"]
+    }
+  ],
+  "Symptoms & Diagnosis": [
+    {
+      title: "Common Symptoms",
+      examples: ["Fever", "Cough", "Headache", "Fatigue", "Nausea"]
+    },
+    {
+      title: "Diagnostic Tools",
+      examples: ["Blood Tests", "Imaging", "Physical Exam", "Questionnaires", "Screenings"]
+    },
+    {
+      title: "When to See a Doctor",
+      examples: ["Emergency Signs", "Persistent Symptoms", "Self-Assessment", "Red Flags", "Follow-up"]
+    }
+  ],
+  "Wellness & Lifestyle": [
+    {
+      title: "Healthy Living",
+      examples: ["Nutrition", "Exercise", "Sleep", "Stress Management", "Hydration"]
+    },
+    {
+      title: "Preventive Care",
+      examples: ["Vaccinations", "Screenings", "Check-ups", "Healthy Habits", "Mental Wellness"]
+    },
+    {
+      title: "Lifestyle Tips",
+      examples: ["Work-Life Balance", "Healthy Aging", "Travel Health", "Family Wellness", "Community Support"]
+    }
+  ]
+};
+
 export default function Navbar({
   links = NAV_LINKS,
   logoUrl = null,
@@ -53,7 +104,18 @@ export default function Navbar({
   logoText?: string | null;
 }) {
   const path = usePathname();
-  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [openMegaMenu, setOpenMegaMenu] = useState<string | null>(null);
+
+  console.log("Navbar links:", links);
+
+  const MEGAMENU_KEYS = [
+    "Diseases & Conditions",
+    "Drugs & Medications",
+    "Symptoms & Diagnosis",
+    "Wellness & Lifestyle"
+  ];
+
+  const effectiveLinks = links.filter(l => !l.newTab);
 
   return (
     <nav className="sticky top-0 z-50 bg-[#19224b] text-white w-full border-b border-blue-900">
@@ -61,37 +123,45 @@ export default function Navbar({
         {/* Logo */}
         <div className="flex items-center space-x-4">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-extrabold tracking-tight text-white">{logoText}</span>
+            <span className="text-2xl font-extrabold tracking-tight text-white" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>{logoText}</span>
           </Link>
         </div>
         {/* Main Nav */}
-        <ul className="hidden md:flex space-x-2 text-base font-bold uppercase">
-          <li
+        <ul className="hidden md:flex flex-1 justify-center space-x-2 text-[1.08rem] font-bold uppercase tracking-wide items-center ml-6" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>
+          {effectiveLinks
+            .filter(l => l.text !== 'Health News' && l.text !== 'Contact')
+            .filter(l => MEGAMENU_KEYS.some(key => l.text.trim().toLowerCase() === key.toLowerCase()))
+            .map(link => (
+              <li
+                key={link.id}
             className="relative"
-            onMouseEnter={() => setShowMegaMenu(true)}
-            onMouseLeave={() => setShowMegaMenu(false)}
+                onMouseEnter={() => setOpenMegaMenu(link.text)}
+                onMouseLeave={() => setOpenMegaMenu(null)}
           >
-            <button className={`flex items-center gap-1 py-2 px-4 border-b-2 border-transparent hover:border-white hover:text-blue-200 transition ${showMegaMenu ? "border-white" : ""}`}
-              style={{ letterSpacing: "0.5px" }}
+                <button className={`flex items-center gap-2 py-4 px-4 border-b-2 border-transparent hover:border-white hover:text-blue-200 transition-all duration-150 whitespace-nowrap ${openMegaMenu === link.text ? "border-white" : ""}`}
+                  style={{ letterSpacing: "0.5px", fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}
             >
-              Diseases & Conditions <FaChevronDown className="h-3 w-3 ml-1" />
+                  {link.text} <FaChevronDown className="h-4 w-4 ml-1" />
             </button>
-            {showMegaMenu && (
-              <div className="absolute left-0 top-full mt-2 w-[900px] bg-white text-[#19224b] shadow-2xl rounded-lg p-6 flex z-50 border border-gray-100">
-                {DISEASES_CATEGORIES.map((cat, idx) => (
-                  <div key={cat.title} className={`flex-1 min-w-[200px] px-4 ${idx < DISEASES_CATEGORIES.length - 1 ? "border-r border-gray-200" : ""} flex flex-col justify-between`}>
+                {openMegaMenu === link.text && (
+                  <div
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-2 max-w-[90vw] w-[900px] bg-white text-[#19224b] shadow-2xl rounded-lg p-6 flex z-50 border border-gray-100"
+                    style={{ right: 'auto', left: '50%', transform: 'translateX(-50%)' }}
+                  >
+                    {MEGAMENUS[link.text]?.map((cat: Category, idx: number) => (
+                      <div key={cat.title} className={`flex-1 min-w-[200px] px-4 ${idx < MEGAMENUS[link.text].length - 1 ? "border-r border-gray-200" : ""} flex flex-col justify-between`}>
                     <div>
-                      <h4 className="font-extrabold text-xs text-blue-700 uppercase tracking-wide mb-2 border-b border-gray-200 pb-1">{cat.title}</h4>
+                          <h4 className="font-extrabold text-lg text-blue-800 uppercase tracking-wide mb-2 border-b border-gray-200 pb-2" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>{cat.title}</h4>
                       <ul>
-                        {cat.examples.map((ex, i) => (
-                          <li key={ex} className={`py-1 flex items-center group cursor-pointer hover:text-blue-700 ${i === 0 ? "font-bold" : "font-normal"}`}>{ex}</li>
+                            {cat.examples.map((ex: string, i: number) => (
+                              <li key={ex} className="py-2 flex items-center group cursor-pointer text-[0.98rem] font-normal hover:text-blue-700 transition-colors duration-150 border-b border-gray-200 last:border-b-0" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>{ex}</li>
                         ))}
                       </ul>
                     </div>
                     {idx === 0 && (
-                      <div className="mt-4 pt-2 border-t border-gray-200">
-                        <Link href="/diseases-conditions" className="flex items-center font-extrabold text-sm text-[#19224b] hover:text-blue-700">
-                          View All Conditions <FaChevronRight className="ml-1 h-3 w-3" />
+                          <div className="mt-4 pt-2 border-t border-gray-200 flex justify-end">
+                            <Link href={link.url} className="flex items-center font-bold text-sm text-blue-600 hover:underline transition-colors" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>
+                              View All <FaChevronRight className="ml-1 h-4 w-4" />
                         </Link>
                       </div>
                     )}
@@ -100,33 +170,35 @@ export default function Navbar({
               </div>
             )}
           </li>
-          {links.filter(l => l.text !== "Diseases & Conditions").map(link => (
-            <li key={link.id} className="relative group">
+            ))}
+          {effectiveLinks
+            .filter(l => l.text !== 'Health News' && l.text !== 'Contact')
+            .filter(l => !MEGAMENU_KEYS.some(key => l.text.trim().toLowerCase() === key.toLowerCase()))
+            .map(link => (
+              <li key={link.id} className="relative group flex items-center">
               <Link
                 href={link.url}
-                className={`py-2 px-4 border-b-2 border-transparent hover:border-white hover:text-blue-200 transition ${path === link.url ? "border-white" : ""}`}
-                style={{ letterSpacing: "0.5px" }}
+                  className={`py-4 px-4 border-b-2 border-transparent hover:border-white hover:text-blue-200 transition-all duration-150 whitespace-nowrap flex items-center ${path === link.url ? "border-white" : ""}`}
+                  style={{ letterSpacing: "0.5px", fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}
               >
-                {link.text}
-                {link.dropdown && <FaChevronDown className="h-3 w-3 ml-1 inline-block" />}
+                  {link.text === 'Health News' ? 'health news' : link.text === 'Contact' ? 'contact' : link.text}
               </Link>
-              {/* You can add dropdowns for other menus here if needed */}
             </li>
           ))}
         </ul>
         {/* Right Actions */}
         <div className="flex items-center space-x-4">
-          <button className="hidden md:inline-block border border-white text-white px-4 py-1 rounded hover:bg-white hover:text-[#19224b] font-bold transition">Subscribe</button>
-          <Link href="/login" className="hidden md:inline-block hover:underline font-semibold">Log In</Link>
-          <button className="ml-2 hover:text-blue-200">
+          <button className="border border-white text-white px-4 py-1 rounded hover:bg-white hover:text-[#19224b] font-bold transition" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>Subscribe</button>
+          <Link href="/login" className="hover:underline font-semibold text-white" style={{ fontFamily: "'Source Sans Pro', 'Proxima Nova', sans-serif" }}>Log In</Link>
+          <button className="ml-2 hover:text-blue-200 text-white">
             <FaSearch className="h-5 w-5" />
           </button>
+        </div>
           {/* Hamburger for mobile */}
-          <button className="md:hidden p-2">
+        <button className="md:hidden p-2 ml-2">
             <span className="sr-only">Open menu</span>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
-        </div>
       </div>
     </nav>
   );

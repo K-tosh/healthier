@@ -8,6 +8,7 @@ export async function fetchAPI(
   options = {}
 ) {
   try {
+    
     // Merge default and user options
     const mergedOptions = {
       next: { revalidate: 60 },

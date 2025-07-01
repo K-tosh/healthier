@@ -13,8 +13,7 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "description": {
       "type": "text",
@@ -63,18 +62,16 @@
       "component": "shared.seo"
     },
     "isTopStory": {
-      "type": "boolean",
-      "default": false
+      "type": "boolean"
     },
     "topStoryOrder": {
-      "type": "integer",
-      "default": 0
+      "type": "integer"
     },
-    "livingHealthyCategory": {
+    "conditions": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::living-healthy.living-healthy",
-      "inversedBy": "articles"
+      "relation": "manyToMany",
+      "target": "api::condition.condition",
+      "mappedBy": "articles"
     }
   }
 }

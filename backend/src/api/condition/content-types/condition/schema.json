@@ -1,0 +1,74 @@
+{
+  "kind": "collectionType",
+  "collectionName": "conditions",
+  "info": {
+    "singularName": "condition",
+    "pluralName": "conditions",
+    "displayName": "condition",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "overview": {
+      "type": "blocks"
+    },
+    "causes": {
+      "type": "blocks"
+    },
+    "symptoms": {
+      "type": "blocks"
+    },
+    "diagnosis": {
+      "type": "blocks"
+    },
+    "treatment": {
+      "type": "blocks"
+    },
+    "references": {
+      "type": "blocks"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "articles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::article.article",
+      "inversedBy": "conditions"
+    },
+    "prevention": {
+      "type": "richtext"
+    },
+    "medications": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::medication.medication",
+      "mappedBy": "conditions"
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

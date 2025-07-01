@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "medications",
+  "info": {
+    "singularName": "medication",
+    "pluralName": "medications",
+    "displayName": "medication"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "uses": {
+      "type": "blocks"
+    },
+    "dosage": {
+      "type": "blocks"
+    },
+    "sideEffects": {
+      "type": "blocks"
+    },
+    "interactions": {
+      "type": "blocks"
+    },
+    "precautions": {
+      "type": "blocks"
+    },
+    "manafucture": {
+      "type": "string"
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "conditions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::condition.condition",
+      "inversedBy": "medications"
+    },
+    "availability": {
+      "type": "string"
+    }
+  }
+}

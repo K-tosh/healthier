@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "symptoms",
+  "info": {
+    "singularName": "symptom",
+    "pluralName": "symptoms",
+    "displayName": "symptom"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "symptomeName": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "overview": {
+      "type": "blocks"
+    },
+    "conditions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::condition.condition"
+    },
+    "whenToSeeDoctor": {
+      "type": "blocks"
+    }
+  }
+}

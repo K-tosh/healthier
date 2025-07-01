@@ -23,3 +23,12 @@ export function formatDate(dateString: string) {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
+export function getImageUrl(attributes: any): string {
+    const imageField = attributes.cover || attributes.shareImage || attributes.image;
+    if (!imageField?.data?.attributes?.url) {
+        return "https://via.placeholder.com/400x300?text=No+Image";
+    }
+    const url = getStrapiMedia(imageField.data.attributes.url);
+    return url || "https://via.placeholder.com/400x300?text=No+Image";
+}

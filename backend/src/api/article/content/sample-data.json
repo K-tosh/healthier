@@ -56,7 +56,6 @@
       "title": "Understanding Anxiety and Depression",
       "description": "A comprehensive guide to recognizing symptoms and finding help for anxiety and depression.",
       "slug": "understanding-anxiety-depression",
-      "livingHealthyCategory": "mental-health",
       "blocks": [
         {
           "__component": "shared.rich-text",
@@ -68,7 +67,6 @@
       "title": "The Science of Weight Loss",
       "description": "Evidence-based strategies for sustainable weight management and healthy living.",
       "slug": "science-of-weight-loss",
-      "livingHealthyCategory": "diet-and-weight-management",
       "blocks": [
         {
           "__component": "shared.rich-text",
