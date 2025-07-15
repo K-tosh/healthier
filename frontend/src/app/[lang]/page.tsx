@@ -18,6 +18,8 @@ export default async function RootRoute({params}: { params: { lang: string } }) 
         componentResolver(section, index)
       )
     } catch (error: any) {
-      window.alert('Missing or invalid credentials')
+      console.error("Failed to load homepage:", error.message || error);
+      return null;
     }
+    
 }
