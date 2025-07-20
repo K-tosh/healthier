@@ -6,40 +6,37 @@
 
 const populate = {
   contentSections: {
-    populate: {
-      picture: {
-        fields: ["url", "alternativeText", "caption", "width", "height"],
+    on: {
+      "sections.hero": { populate: "*" },
+      "sections.features": { populate: "*" },
+      "sections.bottom-actions": { populate: "*" },
+      "sections.feature-columns-group": { populate: "*" },
+      "sections.feature-rows-group": { populate: "*" },
+      "sections.testimonials-group": {
+        populate: { testimonials: { populate: "*" } },
       },
-      buttons: {
-        populate: true,
+      "sections.large-video": { populate: "*" },
+      "sections.rich-text": { populate: "*" },
+      "sections.pricing": {
+        populate: { plans: { populate: "*" } },
       },
-      feature: {
+      "sections.lead-form": { populate: "*" },
+      "sections.heading": { populate: "*" },
+      "sections.trending-article": {
         populate: {
-          fields: ["title", "description", "showLink", "newTab", "url", "text"],
-          media: {
-            fields: ["url", "alternativeText", "caption", "width", "height"],
-          },
+          articles: { populate: "*" },
         },
       },
-      testimonials: {
+      "sections.explore-conditions": {
         populate: {
-          picture: {
-            fields: ["url", "alternativeText", "caption", "width", "height"],
-          },
+          conditions: { populate: "*" },
         },
-      },
-      plans: {
-        populate: ["product_features"],
-      },
-      submitButton: {
-        populate: true,
       },
     },
   },
   seo: {
-    fields: ["metaTitle", "metaDescription"],
-    populate: { shareImage: true },
-  }
+    populate: "*",
+  },
 };
 
 module.exports = (config, { strapi }) => {

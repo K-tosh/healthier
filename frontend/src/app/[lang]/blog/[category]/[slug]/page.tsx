@@ -8,24 +8,31 @@ async function getPostBySlug(slug: string) {
     const urlParamsObject = {
         filters: { slug },
         populate: {
-            cover: { fields: ['url'] },
-            authorsBio: { populate: '*' },
-            category: { fields: ['name'] },
+        cover: { fields: ["url"] },
+        authorsBio: { populate: "*" },
+        category: { fields: ["name"] },
             blocks: { 
-                populate: {
-                    '__component': '*', 
-                    'files': '*',
-                    'file': '*',
-                    'url': '*',
-                    'body': '*',
-                    'title': '*',
-                    'author': '*',
-                }
+          on: {
+            "shared.media": {
+              populate: "*",
+            },
+            "shared.quote": {
+              populate: "*",
+            },
+            "shared.rich-text": {
+              populate: "*",
+            },
+            "shared.slider": {
+              populate: "*",
+            },
+            "shared.video-embed": {
+              populate: "*",
+            },
+          },
             },
         },
     };
-    const options = { headers: { Authorization: `Bearer ${token}` } };
-    const response = await fetchAPI(path, urlParamsObject, options);
+    const response = await fetchAPI(path, urlParamsObject, token);
     return response;
 }
 
@@ -34,10 +41,9 @@ async function getMetaData(slug: string) {
     const path = `/articles`;
     const urlParamsObject = {
         filters: { slug },
-        populate: { seo: { populate: '*' } },
+      populate: { seo: { populate: "*" } },
     };
-    const options = { headers: { Authorization: `Bearer ${token}` } };
-    const response = await fetchAPI(path, urlParamsObject, options);
+    const response = await fetchAPI(path, urlParamsObject, token);
     return response.data;
 }
 
@@ -61,13 +67,12 @@ export default async function PostRoute({ params }: { params: { slug: string } }
 export async function generateStaticParams() {
     const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
     const path = `/articles`;
-    const options = { headers: { Authorization: `Bearer ${token}` } };
     const articleResponse = await fetchAPI(
         path,
         {
-            populate: ['category'],
+      populate: ["category"],
         },
-        options
+    token
     );
 
     return articleResponse.data.map(

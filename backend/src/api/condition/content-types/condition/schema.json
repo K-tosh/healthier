@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "conditions",
+  "info": {
+    "singularName": "condition",
+    "pluralName": "conditions",
+    "displayName": "condition"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "condition_groups": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::condition-group.condition-group",
+      "mappedBy": "conditions"
+    }
+  }
+}

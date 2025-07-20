@@ -5,9 +5,9 @@ interface PageHeaderProps {
 
 export default function PageHeader({ heading, text } : PageHeaderProps) {
   return (
-    <div className="my-16 w-full text-center">
-    { text && <span className="text-violet-400 font-bold">{text}</span> }
-    <h2 className="text-4xl my-4 lg:text-5xl font-bold font-heading">{heading}</h2>
-  </div>
+    <div className="w-full text-center space-y-1 mb-4">
+      {text && <span className="text-gray-500 text-sm mt-2 block">{text}</span>}
+      <h1 className="text-3xl font-bold tracking-tight font-sans">{heading}</h1>
+    </div>
   );
 }

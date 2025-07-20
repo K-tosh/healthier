@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_sections_explore_conditions",
+  "info": {
+    "displayName": "Explore Conditions"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "conditions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::condition.condition"
+    }
+  },
+  "config": {}
+}

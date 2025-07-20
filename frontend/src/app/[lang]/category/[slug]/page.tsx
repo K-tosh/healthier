@@ -1,4 +1,4 @@
-import { fetchAPI } from "@/app/[lang]/utils/fetch-api";
+import { fetchAPI } from "@/utils/fetch-api";
 import { notFound } from "next/navigation";
 
 export default async function CategoryPage({

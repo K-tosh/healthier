@@ -6,11 +6,11 @@
   "options": {},
   "attributes": {
     "heading": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "description": {
       "type": "string"
     }
-  }
+  },
+  "config": {}
 }
