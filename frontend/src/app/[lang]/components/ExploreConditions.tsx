@@ -2,12 +2,43 @@
 import Link from "next/link";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
-export default function ExploreConditions({ data }: { data: { heading: string; conditions: any[]; articles?: any } }) {
+// Define types for conditions and articles
+interface Condition {
+  name: string;
+  slug?: string;
+}
+
+interface Article {
+  id: string | number;
+  attributes: {
+    slug: string;
+    title: string;
+    excerpt?: string;
+    cover?: {
+      data?: {
+        attributes: {
+          url: string;
+          alternativeText?: string;
+        };
+      };
+    };
+  };
+}
+
+interface ExploreConditionsProps {
+  data: {
+    heading: string;
+    conditions: Condition[] | { data: Condition[] };
+    articles?: { data: Article[] };
+  };
+}
+
+export default function ExploreConditions({ data }: ExploreConditionsProps) {
   // Support both array and object-with-data for conditions
-  const conditionsArray = Array.isArray(data.conditions)
+  const conditionsArray: Condition[] = Array.isArray(data.conditions)
     ? data.conditions
-    : data.conditions?.data || [];
-  const articlesArray = data.articles?.data || [];
+    : (data.conditions as { data: Condition[] })?.data || [];
+  const articlesArray: Article[] = data.articles?.data || [];
 
   if (!data || !conditionsArray.length) {
     return <div className="text-gray-400">No conditions available</div>;
@@ -27,7 +58,7 @@ export default function ExploreConditions({ data }: { data: { heading: string; c
         </div>
         {/* Condition Pills */}
         <div className="flex flex-wrap gap-3 mb-6">
-          {conditionsArray.map((condition, index) => (
+          {conditionsArray.map((condition: Condition, index: number) => (
             <Link
               key={index}
               href={condition.slug ? `/conditions/${condition.slug}` : "#"}
@@ -41,14 +72,14 @@ export default function ExploreConditions({ data }: { data: { heading: string; c
         {/* Featured Articles Grid */}
         {articlesArray.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articlesArray.map((article: any) => {
+            {articlesArray.map((article: Article) => {
               const imageUrl = article.attributes.cover?.data ? article.attributes.cover.data.attributes.url : null;
               return (
                 <Card key={article.id} className="h-full flex flex-col">
                   {imageUrl && (
                     <img
                       src={imageUrl}
-                      alt={article.attributes.cover.data.attributes.alternativeText || "Article image"}
+                      alt={article.attributes.cover?.data?.attributes.alternativeText || "Article image"}
                       className="w-full h-48 object-cover rounded-t-lg mb-2"
                     />
                   )}

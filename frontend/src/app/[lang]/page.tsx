@@ -3,8 +3,6 @@ export const dynamic = 'force-dynamic';
 import LangRedirect from './components/LangRedirect';
 import componentResolver from './utils/component-resolver';
 import { getPageBySlug } from "@/app/[lang]/utils/get-page-by-slug";
-import TrendingArticle from '@/app/[lang]/components/TrendingArticle';
-import ExploreConditions from "@/app/[lang]/components/ExploreConditions";
 
 export default async function RootRoute({ params }: { params: { lang: string } }) {
   try {
@@ -24,22 +22,12 @@ export default async function RootRoute({ params }: { params: { lang: string } }
     }
 
     const contentSections = page.data[0].attributes.contentSections;
-    console.log("✅ contentSections received:", contentSections);
-
-    const trendingSection = contentSections.find(
-      (section: any) => section.__component === "sections.trending-article"
-    );
-    const exploreSection = contentSections.find(
-      (section: any) => section.__component === "sections.explore-conditions"
-    );
 
     return (
       <>
         {contentSections.map((section: any, index: number) =>
           componentResolver(section, index)
         )}
-        {trendingSection && <TrendingArticle data={trendingSection} />}
-        {exploreSection && <ExploreConditions data={exploreSection} />}
       </>
     );
   } catch (error: any) {

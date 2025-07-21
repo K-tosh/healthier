@@ -14,42 +14,24 @@ interface FooterLink {
   social?: string;
 }
 
-interface CategoryLink {
-  id: string;
-  attributes: {
-    name: string;
-    slug: string;
-  };
-}
-
-function FooterLink({ url, text }: FooterLink) {
-  const path = usePathname();
-  return (
-    <li className="flex">
-      <Link
-        href={url}
-        className={`hover:dark:text-violet-400 ${
-          path === url && "dark:text-violet-400 dark:border-violet-400"
-        }}`}
-      >
-        {text}
-      </Link>
-    </li>
-  );
-}
-
-function CategoryLink({ attributes }: CategoryLink) {
-  return (
-    <li className="flex">
-      <Link
-        href={`/blog/${attributes.slug}`}
-        className="hover:dark:text-violet-400"
-      >
-        {attributes.name}
-      </Link>
-    </li>
-  );
-}
+// Define default arrays for all link sections
+const defaultCategoryLinks = [
+  { id: 1, url: '/conditions', text: 'Conditions' },
+  { id: 2, url: '/symptoms', text: 'Symptoms' },
+  { id: 3, url: '/drugs', text: 'Drugs & Supplements' },
+  { id: 4, url: '/well-being', text: 'Well-Being' },
+];
+const defaultMenuLinks = [
+  { id: 1, url: '/', text: 'Home', newTab: false },
+  { id: 2, url: '/about', text: 'About', newTab: false },
+];
+const defaultLegalLinks = [
+  { id: 1, url: '/privacy', text: 'Privacy Policy', newTab: false },
+  { id: 2, url: '/terms', text: 'Terms of Use', newTab: false },
+];
+const defaultSocialLinks = [
+  { id: 1, url: 'https://twitter.com', text: 'Twitter', newTab: true, social: 'TWITTER' },
+];
 
 function RenderSocialIcon({ social }: { social: string | undefined }) {
   switch (social) {
@@ -67,21 +49,21 @@ function RenderSocialIcon({ social }: { social: string | undefined }) {
 }
 
 export default function Footer({
-  logoUrl,
-  logoText,
-  menuLinks,
-  categoryLinks,
-  legalLinks,
-  socialLinks,
+  logoUrl = null,
+  logoText = "Healthier Kenya",
+  menuLinks = defaultMenuLinks,
+  categoryLinks = defaultCategoryLinks,
+  legalLinks = defaultLegalLinks,
+  socialLinks = defaultSocialLinks,
 }: {
-  logoUrl: string | null;
-  logoText: string | null;
-  menuLinks: Array<FooterLink>;
-  categoryLinks: Array<CategoryLink>;
-  legalLinks: Array<FooterLink>;
-  socialLinks: Array<FooterLink>;
-}) {
-
+  logoUrl?: string | null;
+  logoText?: string | null;
+  menuLinks?: Array<FooterLink>;
+  categoryLinks?: Array<any>;
+  legalLinks?: Array<FooterLink>;
+  socialLinks?: Array<FooterLink>;
+} = {}) {
+  const path = usePathname();
   return (
     <footer className="py-6 dark:bg-black dark:text-gray-50">
       <div className="container px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50">
@@ -95,8 +77,10 @@ export default function Footer({
           <div className="col-span-6 text-center md:text-left md:col-span-3">
             <p className="pb-1 text-lg font-medium">Categories</p>
             <ul>
-              {categoryLinks.map((link: CategoryLink) => (
-                <CategoryLink key={link.id} {...link} />
+              {(categoryLinks || []).map((link) => (
+                <li key={link.id}>
+                  <a href={link.url} className="hover:underline">{link.text || link.attributes?.name}</a>
+                </li>
               ))}
             </ul>
           </div>
@@ -104,8 +88,15 @@ export default function Footer({
           <div className="col-span-6 text-center md:text-left md:col-span-3">
             <p className="pb-1 text-lg font-medium">Menu</p>
             <ul>
-              {menuLinks.map((link: FooterLink) => (
-                <FooterLink key={link.id} {...link} />
+              {(menuLinks || []).map((link: FooterLink) => (
+                <li key={link.id}>
+                  <Link
+                    href={link.url}
+                    className={`hover:dark:text-violet-400 ${path === link.url ? "dark:text-violet-400 dark:border-violet-400" : ""}`}
+                  >
+                    {link.text}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
@@ -116,7 +107,7 @@ export default function Footer({
               ©{new Date().getFullYear()} All rights reserved
             </span>
             <ul className="flex">
-              {legalLinks.map((link: FooterLink) => (
+              {(legalLinks || []).map((link: FooterLink) => (
                 <Link
                   href={link.url}
                   className="text-gray-400 hover:text-gray-300 mr-2"
@@ -128,7 +119,7 @@ export default function Footer({
             </ul>
           </div>
           <div className="flex justify-center pt-4 space-x-4 lg:pt-0 lg:col-end-13">
-            {socialLinks.map((link: FooterLink) => {
+            {(socialLinks || []).map((link: FooterLink) => {
               return (
                 <a
                   key={link.id}
@@ -147,4 +138,4 @@ export default function Footer({
       </div>
     </footer>
   );
-}
+} 
