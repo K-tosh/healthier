@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_sections_browse_conditions",
+  "info": {
+    "displayName": "Browse Conditions"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

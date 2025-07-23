@@ -65,34 +65,82 @@ export default function Footer({
 } = {}) {
   const path = usePathname();
   return (
-    <footer className="py-6 dark:bg-black dark:text-gray-50">
-      <div className="container px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50">
-        <div className="grid grid-cols-12">
-          <div className="pb-6 col-span-full md:pb-0 md:col-span-6">
+    <footer className="bg-gray-900 text-white py-12">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          {/* Logo and Description */}
+          <div className="md:col-span-1">
             <Logo src={logoUrl}>
-              {logoText && <h2 className="text-2xl font-bold">{logoText}</h2>}
+              {logoText && <h2 className="text-2xl font-bold text-white mb-4">{logoText}</h2>}
             </Logo>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              Your trusted source for health information and medical resources.
+            </p>
           </div>
 
-          <div className="col-span-6 text-center md:text-left md:col-span-3">
-            <p className="pb-1 text-lg font-medium">Categories</p>
-            <ul>
+          {/* Health Categories */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">Health Topics</h3>
+            <ul className="space-y-2">
               {(categoryLinks || []).map((link) => (
                 <li key={link.id}>
-                  <a href={link.url} className="hover:underline">{link.text || link.attributes?.name}</a>
+                  <a 
+                    href={link.url} 
+                    className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm"
+                  >
+                    {link.text || link.attributes?.name}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="col-span-6 text-center md:text-left md:col-span-3">
-            <p className="pb-1 text-lg font-medium">Menu</p>
-            <ul>
+          {/* Navigation Menu */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">Navigation</h3>
+            <ul className="space-y-2">
               {(menuLinks || []).map((link: FooterLink) => (
                 <li key={link.id}>
                   <Link
                     href={link.url}
-                    className={`hover:dark:text-violet-400 ${path === link.url ? "dark:text-violet-400 dark:border-violet-400" : ""}`}
+                    className={`text-sm transition-colors duration-200 ${
+                      path === link.url 
+                        ? "text-blue-400 font-medium" 
+                        : "text-gray-300 hover:text-blue-400"
+                    }`}
+                  >
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Connect & Legal */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-4">Connect</h3>
+            <div className="flex space-x-3 mb-6">
+              {(socialLinks || []).map((link: FooterLink) => {
+                return (
+                  <a
+                    key={link.id}
+                    rel="noopener noreferrer"
+                    href={link.url}
+                    title={link.text}
+                    target={link.newTab ? "_blank" : "_self"}
+                    className="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors duration-200 text-gray-300 hover:text-white"
+                  >
+                    <RenderSocialIcon social={link.social} />
+                  </a>
+                );
+              })}
+            </div>
+            <ul className="space-y-2">
+              {(legalLinks || []).map((link: FooterLink) => (
+                <li key={link.id}>
+                  <Link
+                    href={link.url}
+                    className="text-gray-400 hover:text-gray-300 text-sm transition-colors duration-200"
                   >
                     {link.text}
                   </Link>
@@ -101,38 +149,16 @@ export default function Footer({
             </ul>
           </div>
         </div>
-        <div className="grid justify-center pt-6 lg:justify-between">
-          <div className="flex">
-            <span className="mr-2">
-              ©{new Date().getFullYear()} All rights reserved
-            </span>
-            <ul className="flex">
-              {(legalLinks || []).map((link: FooterLink) => (
-                <Link
-                  href={link.url}
-                  className="text-gray-400 hover:text-gray-300 mr-2"
-                  key={link.id}
-                >
-                  {link.text}
-                </Link>
-              ))}
-            </ul>
-          </div>
-          <div className="flex justify-center pt-4 space-x-4 lg:pt-0 lg:col-end-13">
-            {(socialLinks || []).map((link: FooterLink) => {
-              return (
-                <a
-                  key={link.id}
-                  rel="noopener noreferrer"
-                  href={link.url}
-                  title={link.text}
-                  target={link.newTab ? "_blank" : "_self"}
-                  className="flex items-center justify-center w-10 h-10 rounded-full dark:bg-violet-400 dark:text-gray-900"
-                >
-                  <RenderSocialIcon social={link.social} />
-                </a>
-              );
-            })}
+
+        {/* Bottom Border and Copyright */}
+        <div className="border-t border-gray-700 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              ©{new Date().getFullYear()} {logoText || "Healthier Kenya"}. All rights reserved.
+            </p>
+            <p className="text-gray-500 text-xs mt-2 md:mt-0">
+              This information is not intended to replace professional medical advice.
+            </p>
           </div>
         </div>
       </div>

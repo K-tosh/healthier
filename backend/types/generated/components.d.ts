@@ -264,6 +264,16 @@ export interface SectionsBottomActions extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsBrowseConditions extends Struct.ComponentSchema {
+  collectionName: 'components_sections_browse_conditions';
+  info: {
+    displayName: 'Browse Conditions';
+  };
+  attributes: {
+    heading: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsExploreConditions extends Struct.ComponentSchema {
   collectionName: 'components_sections_explore_conditions';
   info: {
@@ -521,6 +531,7 @@ declare module '@strapi/strapi' {
       'links.social-link': LinksSocialLink;
       'meta.metadata': MetaMetadata;
       'sections.bottom-actions': SectionsBottomActions;
+      'sections.browse-conditions': SectionsBrowseConditions;
       'sections.explore-conditions': SectionsExploreConditions;
       'sections.feature-columns-group': SectionsFeatureColumnsGroup;
       'sections.feature-rows-group': SectionsFeatureRowsGroup;

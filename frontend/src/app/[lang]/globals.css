@@ -4,7 +4,40 @@
 @import "react-slideshow-image/dist/styles.css";
 
 body {
-  @apply dark:bg-white
+  @apply bg-white text-gray-900;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* WebMD-inspired medical theme */
+:root {
+  --medical-blue: #0066cc;
+  --medical-blue-light: #e8f4fd;
+  --medical-blue-dark: #004d99;
+  --medical-green: #28a745;
+  --medical-red: #dc3545;
+  --medical-gray: #6c757d;
+  --medical-gray-light: #f8f9fa;
+}
+
+/* Global medical styling */
+.medical-card {
+  @apply bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200;
+}
+
+.medical-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.medical-badge-blue {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.medical-badge-green {
+  @apply bg-green-100 text-green-800;
+}
+
+.medical-badge-red {
+  @apply bg-red-100 text-red-800;
 }
 
 
@@ -14,27 +47,27 @@ body {
 
 /* Headers */
 .rich-text h1 {
-  @apply text-4xl font-bold mb-4 text-violet-400;
+  @apply text-4xl font-bold mb-4 text-blue-600;
 }
 
 .rich-text h2 {
-  @apply text-3xl font-bold mb-4 text-violet-400;
+  @apply text-3xl font-bold mb-4 text-blue-600;
 }
 
 .rich-text h3 {
-  @apply text-2xl font-bold mb-4 text-violet-400;
+  @apply text-2xl font-bold mb-4 text-blue-600;
 }
 
 .rich-text h4 {
-  @apply text-xl font-bold mb-4 text-violet-400;
+  @apply text-xl font-bold mb-4 text-blue-600;
 }
 
 .rich-text h5 {
-  @apply text-lg font-bold mb-4 text-violet-400;
+  @apply text-lg font-bold mb-4 text-blue-600;
 }
 
 .rich-text h6 {
-  @apply text-base font-bold mb-4 text-violet-200;
+  @apply text-base font-bold mb-4 text-blue-500;
 }
 
 /* Horizontal rules */
@@ -43,7 +76,7 @@ body {
 }
 
 .rich-text a {
-  @apply text-violet-400 underline;
+  @apply text-blue-600 underline hover:text-blue-800;
 }
 
 /* Typographic replacements */

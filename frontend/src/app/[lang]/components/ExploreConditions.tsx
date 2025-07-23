@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
+
 // Define types for conditions and articles
 interface Condition {
   name: string;
@@ -39,6 +40,7 @@ export default function ExploreConditions({ data }: ExploreConditionsProps) {
     ? data.conditions
     : (data.conditions as { data: Condition[] })?.data || [];
   const articlesArray: Article[] = data.articles?.data || [];
+  console.log("🩺 ExploreConditions Data:", data);
 
   if (!data || !conditionsArray.length) {
     return <div className="text-gray-400">No conditions available</div>;

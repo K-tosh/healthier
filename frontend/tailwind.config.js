@@ -43,6 +43,32 @@ module.exports = {
     			border: 'hsl(var(--border))',
     			input: 'hsl(var(--input))',
     			ring: 'hsl(var(--ring))',
+    			// Medical theme colors inspired by WebMD
+    			medical: {
+    				blue: {
+    					50: '#e8f4fd',
+    					100: '#d1e9fb',
+    					500: '#0066cc',
+    					600: '#0066cc',
+    					700: '#004d99',
+    					800: '#003d7a',
+    					900: '#002d5c'
+    				},
+    				green: {
+    					500: '#28a745',
+    					600: '#1e7e34'
+    				},
+    				red: {
+    					500: '#dc3545',
+    					600: '#c82333'
+    				},
+    				gray: {
+    					50: '#f8f9fa',
+    					100: '#e9ecef',
+    					500: '#6c757d',
+    					600: '#495057'
+    				}
+    			},
     			chart: {
     				'1': 'hsl(var(--chart-1))',
     				'2': 'hsl(var(--chart-2))',

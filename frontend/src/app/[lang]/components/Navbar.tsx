@@ -28,27 +28,28 @@ export default function Navbar({
   const pathname = usePathname();
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm">
+    <nav className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Logo src={logoUrl}>
             {logoText && (
-              <span className="text-2xl font-semibold text-blue-700">
+              <span className="text-2xl font-bold text-blue-600">
                 {logoText}
               </span>
             )}
           </Logo>
         </div>
+        
         {/* Desktop Nav */}
-        <ul className="hidden lg:flex items-center space-x-6">
+        <ul className="hidden lg:flex items-center space-x-8">
           {links.map(({ id, url, text }) => (
             <li key={id}>
               <Link
                 href={url}
-                className={`text-base font-medium transition-colors px-2 py-1 rounded-md ${
+                className={`text-sm font-medium transition-colors hover:text-blue-600 ${
                   pathname === url
-                    ? "text-blue-600 font-medium bg-blue-50"
-                    : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-700"
                 }`}
               >
                 {text}
@@ -56,6 +57,7 @@ export default function Navbar({
             </li>
           ))}
         </ul>
+
         {/* Mobile Nav */}
         <div className="lg:hidden">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>

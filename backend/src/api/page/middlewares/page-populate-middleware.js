@@ -29,7 +29,11 @@ const populate = {
       },
       "sections.explore-conditions": {
         populate: {
-          conditions: { populate: "*" },
+          conditions: {
+            populate: {
+              condition_groups: { populate: "*" },
+            },
+          },
         },
       },
     },
@@ -40,11 +44,10 @@ const populate = {
 };
 
 module.exports = (config, { strapi }) => {
-  // Add your own logic here.
   return async (ctx, next) => {
     ctx.query = {
       populate,
-      filters: { slug: ctx.query.filters.slug },
+      filters: { slug: ctx.query.filters?.slug },
       locale: ctx.query.locale,
     };
 

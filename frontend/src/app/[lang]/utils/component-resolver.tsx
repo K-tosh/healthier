@@ -37,6 +37,7 @@ export default function componentResolver(section: any, index: number) : ReactEl
     // Create react element. The 'type' argument needs to be a FunctionComponent, not a string
     const reactElement = createElement(module, {data: section, key: index})
     console.log(`ComponentResolver: Loading component -> ${componentName}`);
+    console.log("🧠 ComponentResolver:", section.__component, section);
 
     return (
         <Suspense fallback={<Loader />} key={index}>
