@@ -21,14 +21,14 @@ interface Feature {
 
 function Feature({ title, description, showLink, newTab, url, text }: Feature) {
   return (
-    <Card className="bg-white border border-gray-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
+    <Card className="webmd-card-feature h-full flex flex-col group">
       <CardHeader className="text-center pb-4">
-        <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-6 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-6 h-6 text-blue-600"
+            className="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors duration-300"
           >
             <path
               fillRule="evenodd"
@@ -37,7 +37,7 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
             />
           </svg>
         </div>
-        <CardTitle className="text-xl font-bold text-gray-900">{title}</CardTitle>
+        <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors duration-300">{title}</CardTitle>
       </CardHeader>
       
       <CardContent className="pt-0 flex-1">
@@ -45,13 +45,16 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
       </CardContent>
       
       {showLink && url && text && (
-        <CardFooter className="pt-4 justify-center">
+        <CardFooter className="pt-6 justify-center">
           <Link
             href={url}
             target={newTab ? "_blank" : "_self"}
-            className="inline-flex items-center px-4 py-2 text-sm font-semibold text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition-colors duration-200"
+            className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
             {text}
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
           </Link>
         </CardFooter>
       )}
@@ -61,14 +64,22 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
 
 export default function Features({ data }: FeaturesProps) {
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">{data.heading}</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">{data.description}</p>
+    <section className="webmd-section section-transition webmd-section-alt">
+      <div className="content-container">
+        <div className="webmd-section-header text-center mb-16">
+          <div className="flex justify-center mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          </div>
+          <h2 className="webmd-section-title text-4xl lg:text-5xl mb-6">{data.heading}</h2>
+          <p className="webmd-section-subtitle text-xl max-w-4xl mx-auto leading-relaxed">{data.description}</p>
+          <div className="webmd-section-divider-line mt-8"></div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {data.feature.map((feature: Feature) => (
             <Feature key={feature.id} {...feature} />
           ))}
