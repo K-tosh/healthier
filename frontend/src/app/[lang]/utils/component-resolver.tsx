@@ -24,6 +24,8 @@ export default function componentResolver(section: any, index: number) : ReactEl
     ///////////////////////////////////////////////
 
     //console.log(`ComponentResolver: Category => ${category} | Component => ${componentName} | Path => ../components/${componentName}`)
+    console.log(`🔧 ComponentResolver: Loading ${section.__component} -> ${componentName}`);
+    console.log(`📦 ComponentResolver Data:`, section);
 
     // The path for dynamic imports cannot be fully dynamic.
     // Webpack requires a static part of the import path at the beginning. 
@@ -32,12 +34,30 @@ export default function componentResolver(section: any, index: number) : ReactEl
     // See https://webpack.js.org/api/module-methods/#import-1
     
     // Use react lazy loading to import the module. By convention: The file name needs to match the name of the component (what is a good idea)
-    let module = lazy(() => import( `@/app/[lang]/components/${componentName}`))
+    let module = lazy(() => 
+        import( `@/app/[lang]/components/${componentName}`)
+            .catch(error => {
+                console.error(`❌ ComponentResolver: Failed to load component ${componentName}:`, error);
+                // Return a fallback component
+                return { default: () => (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 my-4">
+                        <h3 className="text-red-800 font-semibold">Component Error</h3>
+                        <p className="text-red-600 text-sm">Failed to load component: {componentName}</p>
+                        <details className="mt-2">
+                            <summary className="text-xs text-red-500 cursor-pointer">Debug Info</summary>
+                            <pre className="text-xs text-red-500 mt-1 overflow-auto">
+                                Component: {section.__component}{'\n'}
+                                Expected File: {componentName}.tsx
+                            </pre>
+                        </details>
+                    </div>
+                )};
+            })
+    )
 
     // Create react element. The 'type' argument needs to be a FunctionComponent, not a string
     const reactElement = createElement(module, {data: section, key: index})
-    console.log(`ComponentResolver: Loading component -> ${componentName}`);
-    console.log("🧠 ComponentResolver:", section.__component, section);
+    console.log(`✅ ComponentResolver: Successfully loaded component -> ${componentName}`);
 
     return (
         <Suspense fallback={<Loader />} key={index}>

@@ -1,5 +1,7 @@
 export default function layout({children} : {children: React.ReactNode}) {
   return (
-    <div>{children}</div>
+    <div className="min-h-screen bg-gray-50">
+      {children}
+    </div>
   )
 }

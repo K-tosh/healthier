@@ -34,6 +34,13 @@ const populate = {
               condition_groups: { populate: "*" },
             },
           },
+          articles: { populate: "*" },
+        },
+      },
+      "sections.featured-content": {
+        populate: {
+          featuredArticles: { populate: "*" },
+          featuredConditions: { populate: "*" },
         },
       },
     },

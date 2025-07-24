@@ -12,6 +12,11 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::condition.condition"
+    },
+    "articles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article.article"
     }
   },
   "config": {}

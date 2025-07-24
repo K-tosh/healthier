@@ -46,39 +46,45 @@ export default function FormSubmit({
   }
 
   return (
-    <div className="flex flex-row items-center self-center justify-center flex-shrink-0 shadow-md lg:justify-end">
-      <div className="flex flex-col">
-        <div className="flex flex-row">
-          {successMessage ? (
-            <p className="text-green-700 bg-green-300 px-4 py-2 rounded-lg">
-              {successMessage}
-            </p>
-          ) : (
-            <>
-              <input
-                type="email"
-                placeholder={errorMessage || placeholder}
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                className={"w-3/5 p-3 rounded-l-lg sm:w-2/3 text-gray-700"}
-              />
-              <button
-                type="button"
-                className="w-2/5 p-3 font-semibold rounded-r-lg sm:w-1/3 dark:bg-violet-400 dark:text-gray-900"
-                onClick={handleSubmit}
-              >
-                {text}
-              </button>
-            </>
-          )}
+    <div className="w-full">
+      {successMessage ? (
+        <div className="flex items-center justify-center p-4 bg-green-50 border border-green-200 rounded-lg">
+          <svg className="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <p className="text-green-700 font-medium">{successMessage}</p>
         </div>
+      ) : (
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            placeholder={placeholder}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            className={`flex-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
+              errorMessage 
+                ? 'border-red-300 bg-red-50 placeholder-red-400' 
+                : 'border-gray-300 bg-white'
+            }`}
+          />
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md"
+          >
+            {text}
+          </button>
+        </div>
+      )}
 
-        {errorMessage && (
-          <p className="text-red-500 bg-red-200 px-4 py-2 rounded-lg my-2">
-            {errorMessage}
-          </p>
-        )}
-      </div>
+      {errorMessage && (
+        <div className="flex items-center mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <svg className="w-5 h-5 text-red-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-red-700 text-sm">{errorMessage}</p>
+        </div>
+      )}
     </div>
   );
 }

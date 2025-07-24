@@ -280,6 +280,7 @@ export interface SectionsExploreConditions extends Struct.ComponentSchema {
     displayName: 'Explore Conditions';
   };
   attributes: {
+    articles: Schema.Attribute.Relation<'oneToMany', 'api::article.article'>;
     conditions: Schema.Attribute.Relation<
       'oneToMany',
       'api::condition.condition'
@@ -309,6 +310,32 @@ export interface SectionsFeatureRowsGroup extends Struct.ComponentSchema {
   };
   attributes: {
     features: Schema.Attribute.Component<'elements.feature-row', true>;
+  };
+}
+
+export interface SectionsFeaturedContent extends Struct.ComponentSchema {
+  collectionName: 'components_sections_featured_contents';
+  info: {
+    description: 'A section to showcase selected articles and conditions for category pages';
+    displayName: 'Featured Content';
+  };
+  attributes: {
+    allArticlesButtonText: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'View All Articles'>;
+    allArticlesButtonUrl: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    featuredArticles: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::article.article'
+    >;
+    featuredConditions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::condition.condition'
+    >;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Featured Content'>;
+    showAllArticlesButton: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -535,6 +562,7 @@ declare module '@strapi/strapi' {
       'sections.explore-conditions': SectionsExploreConditions;
       'sections.feature-columns-group': SectionsFeatureColumnsGroup;
       'sections.feature-rows-group': SectionsFeatureRowsGroup;
+      'sections.featured-content': SectionsFeaturedContent;
       'sections.features': SectionsFeatures;
       'sections.heading': SectionsHeading;
       'sections.hero': SectionsHero;

@@ -38,8 +38,7 @@ export default function Profile() {
           limit: limit,
         },
       };
-      const options = { headers: { Authorization: `Bearer ${token}` } };
-      const responseData = await fetchAPI(path, urlParamsObject, options);
+      const responseData = await fetchAPI(path, urlParamsObject, token);
 
       if (start === 0) {
         setData(responseData.data);
@@ -67,18 +66,26 @@ export default function Profile() {
   if (isLoading) return <Loader />;
 
   return (
-    <div>
-      <PageHeader heading="Our Blog" text="Checkout Something Cool" />
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-16">
+          <PageHeader 
+            heading="Health & Wellness Blog" 
+            text="Expert insights, health tips, and medical updates from our team of healthcare professionals" 
+          />
+        </div>
+      </div>
+      
       <Blog data={data}>
         {meta!.pagination.start + meta!.pagination.limit <
           meta!.pagination.total && (
-          <div className="flex justify-center">
+          <div className="flex justify-center pb-16">
             <button
               type="button"
-              className="px-6 py-3 text-sm rounded-lg hover:underline dark:bg-gray-900 dark:text-gray-400"
+              className="medical-card px-8 py-3 text-blue-600 font-semibold hover:bg-blue-50 transition-colors duration-200 border border-blue-200 hover:border-blue-300"
               onClick={loadMorePosts}
             >
-              Load more posts...
+              Load More Articles
             </button>
           </div>
         )}

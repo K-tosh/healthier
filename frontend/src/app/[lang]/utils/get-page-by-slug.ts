@@ -8,14 +8,7 @@ export async function getPageBySlug(slug: string, lang: string) {
   const urlParamsObject = {
     filters: { slug: { $eq: slug } },
     locale: lang,
-    populate: {
-      contentSections: {
-        populate: {
-          articles: { populate: "*" }, // also populate images, etc.
-        },
-      },
-      seo: "*",
-    },
+    populate: "deep", // Use deep population to get all nested relationships
   };
 
   return await fetchAPI(path, urlParamsObject, token);

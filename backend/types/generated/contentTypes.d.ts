@@ -684,6 +684,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.features',
         'sections.trending-article',
         'sections.explore-conditions',
+        'sections.featured-content',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

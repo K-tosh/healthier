@@ -44,7 +44,8 @@
         "sections.lead-form",
         "sections.features",
         "sections.trending-article",
-        "sections.explore-conditions"
+        "sections.explore-conditions",
+        "sections.featured-content"
       ]
     },
     "slug": {

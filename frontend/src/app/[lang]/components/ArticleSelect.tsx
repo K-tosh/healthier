@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 interface Category {
   id: number;
@@ -21,8 +22,8 @@ interface Article {
 
 function selectedFilter(current: string, selected: string) {
   return current === selected
-    ? "px-3 py-1 rounded-lg hover:underline dark:bg-violet-700 dark:text-gray-100"
-    : "px-3 py-1 rounded-lg hover:underline dark:bg-violet-400 dark:text-gray-900";
+    ? "medical-badge medical-badge-blue"
+    : "medical-badge bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600";
 }
 
 export default function ArticleSelect({
@@ -39,52 +40,72 @@ export default function ArticleSelect({
 }) {
 
   return (
-    <div className="p-4 rounded-lg dark:bg-gray-900 min-h-[365px] relative">
-      <h4 className="text-xl font-semibold">Browse By Category</h4>
-
+    <div className="space-y-6">
+      {/* Category Tags */}
       <div>
-        <div className="flex flex-wrap py-6 space-x-2 dark:border-gray-400">
+        <h4 className="text-base font-semibold text-gray-900 mb-3">Browse by Category</h4>
+        <div className="flex flex-wrap gap-2">
           {categories.map((category: Category) => {
             if (category.attributes.articles.data.length === 0) return null;
             return (
               <Link
+                key={category.id}
                 href={`/blog/${category.attributes.slug}`}
                 className={selectedFilter(
                   category.attributes.slug,
                   params.category
                 )}
               >
-                #{category.attributes.name}
+                {category.attributes.name}
               </Link>
             );
           })}
-          <Link href={"/blog"} className={selectedFilter("", "filter")}>
-            #all
+          <Link 
+            href={"/blog"} 
+            className={selectedFilter("", "filter")}
+          >
+            All Articles
           </Link>
         </div>
+      </div>
 
-        <div className="space-y-2">
-          <h4 className="text-lg font-semibold">Other Posts You May Like</h4>
-          <ul className="ml-4 space-y-1 list-disc">
-            {articles.map((article: Article) => {
+      {/* Related Articles */}
+      {articles.length > 0 && (
+        <div>
+          <h4 className="text-base font-semibold text-gray-900 mb-3">Related Articles</h4>
+          <div className="space-y-3">
+            {articles.slice(0, 5).map((article: Article) => {
+              const isCurrentArticle = params.slug === article.attributes.slug;
               return (
-                <li>
-                  <Link
-                    rel="noopener noreferrer"
-                    href={`/blog/${params.category}/${article.attributes.slug}`}
-                    className={`${
-                      params.slug === article.attributes.slug &&
-                      "text-violet-400"
-                    }  hover:underline hover:text-violet-400 transition-colors duration-200`}
-                  >
-                    {article.attributes.title}
-                  </Link>
-                </li>
+                <Link
+                  key={article.id}
+                  href={`/blog/${params.category}/${article.attributes.slug}`}
+                  className={`group block p-3 rounded-lg transition-all duration-200 ${
+                    isCurrentArticle 
+                      ? "bg-blue-50 border border-blue-200" 
+                      : "hover:bg-gray-50 border border-transparent"
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <h5 className={`text-sm font-medium leading-relaxed ${
+                      isCurrentArticle 
+                        ? "text-blue-700" 
+                        : "text-gray-900 group-hover:text-blue-600"
+                    } transition-colors duration-200 line-clamp-2`}>
+                      {article.attributes.title}
+                    </h5>
+                    <ArrowRight className={`w-4 h-4 ml-2 flex-shrink-0 ${
+                      isCurrentArticle 
+                        ? "text-blue-600" 
+                        : "text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1"
+                    } transition-all duration-200`} />
+                  </div>
+                </Link>
               );
             })}
-          </ul>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
