@@ -4,61 +4,110 @@
 @import "react-slideshow-image/dist/styles.css";
 
 body {
-  @apply bg-gray-50 text-gray-900;
+  @apply bg-slate-50 text-slate-900;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   letter-spacing: -0.01em;
 }
 
-/* Enhanced Medical Theme */
+/* HealthierKE Custom Color Palette */
 :root {
-  --medical-blue: #0066cc;
-  --medical-blue-light: #e8f4fd;
-  --medical-blue-dark: #004d99;
-  --medical-green: #28a745;
-  --medical-red: #dc3545;
-  --medical-gray: #6c757d;
-  --medical-gray-light: #f8f9fa;
-  --trust-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --surface-elevation-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --surface-elevation-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --surface-elevation-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* Core HealthierKE Colors */
+  --healthierke-oxford-blue: #021373;
+  --healthierke-dark-imperial-blue: #2e3b7a;
+  --healthierke-rich-black: #0a0f1c;
+  --healthierke-cetacean-blue: #1c2a4e;
+  --healthierke-vista-blue: #8491d9;
+
+  /* Professional Medical UI Colors */
+  --medical-primary: #021373;
+  --medical-primary-hover: #2e3b7a;
+  --medical-secondary: #1c2a4e;
+  --medical-accent: #8491d9;
+  --medical-text-primary: #0a0f1c;
+  --medical-text-secondary: #4a5568;
+  --medical-text-muted: #718096;
+  
+  /* Medical Backgrounds */
+  --medical-bg-primary: #ffffff;
+  --medical-bg-secondary: #f8fafc;
+  --medical-bg-muted: #f1f5f9;
+  --medical-info-light: #eff6ff;
+  --medical-success-light: #f0fff4;
+  --medical-warning-light: #fffbeb;
+  --medical-error-light: #fef2f2;
+  
+  /* Medical Borders and Dividers */
+  --medical-border-light: #e2e8f0;
+  --medical-border-medium: #cbd5e0;
+  --medical-divider: #e2e8f0;
+  
+  /* Elevation and Shadows */
+  --medical-shadow-sm: 0 1px 2px 0 rgba(2, 19, 115, 0.05);
+  --medical-shadow-md: 0 4px 6px -1px rgba(2, 19, 115, 0.1), 0 2px 4px -1px rgba(2, 19, 115, 0.06);
+  --medical-shadow-lg: 0 10px 15px -3px rgba(2, 19, 115, 0.1), 0 4px 6px -2px rgba(2, 19, 115, 0.05);
 }
 
-/* Enhanced Medical Components - WebMD Style */
+/* Enhanced Medical Components - Professional Style */
 .medical-card {
-  @apply bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300;
-  box-shadow: var(--surface-elevation-1);
+  background: var(--medical-bg-primary);
+  border: 1px solid var(--medical-border-light);
+  border-radius: 12px;
+  box-shadow: var(--medical-shadow-sm);
+  transition: all 0.2s ease-in-out;
 }
 
 .medical-card:hover {
-  box-shadow: var(--surface-elevation-2);
+  box-shadow: var(--medical-shadow-md);
   transform: translateY(-1px);
+  border-color: var(--medical-accent);
 }
 
 .medical-card-elevated {
-  @apply bg-white rounded-xl border border-gray-100;
-  box-shadow: var(--surface-elevation-2);
+  background: var(--medical-bg-primary);
+  border: 1px solid var(--medical-border-light);
+  border-radius: 12px;
+  box-shadow: var(--medical-shadow-md);
 }
 
 .medical-badge {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium transition-all duration-200;
+  @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 shadow-sm;
 }
 
 .medical-badge-blue {
-  @apply bg-blue-100 text-blue-800 border border-blue-200;
+  background-color: var(--healthierke-vista-blue);
+  color: white;
+  border: 1px solid var(--healthierke-cetacean-blue);
+}
+
+.medical-badge-primary {
+  background-color: var(--healthierke-oxford-blue);
+  color: white;
+  border: 1px solid var(--healthierke-dark-imperial-blue);
+}
+
+.medical-badge-success {
+  background-color: #059669;
+  color: white;
+  border: 1px solid #047857;
 }
 
 .medical-badge-green {
-  @apply bg-green-100 text-green-800 border border-green-200;
+  background-color: #059669;
+  color: white;
+  border: 1px solid #047857;
 }
 
 .medical-badge-red {
-  @apply bg-red-100 text-red-800 border border-red-200;
+  background-color: #dc2626;
+  color: white;
+  border: 1px solid #b91c1c;
 }
 
 .medical-badge-purple {
-  @apply bg-purple-100 text-purple-800 border border-purple-200;
+  background-color: var(--healthierke-cetacean-blue);
+  color: white;
+  border: 1px solid var(--healthierke-vista-blue);
 }
 
 /* Trust indicators */
@@ -66,68 +115,118 @@ body {
   @apply inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-sm font-medium;
 }
 
-/* WebMD-Inspired Section System */
+/* Professional WebMD-Inspired Section System */
 .webmd-section {
-  @apply relative;
-  padding: 3rem 0; /* Reduced from 4-5rem */
+  position: relative;
+  padding: 4rem 0;
+  background: var(--medical-background);
+}
+
+@media (min-width: 1024px) {
+  .webmd-section {
+    padding: 5rem 0;
+  }
+}
+
+.webmd-section:not(:first-child) {
+  border-top: 1px solid var(--medical-border);
 }
 
 .webmd-section-primary {
-  @apply bg-white;
+  background: var(--medical-background);
 }
 
 .webmd-section-secondary {
-  @apply bg-gray-50;
+  background: var(--medical-background-alt);
 }
 
 .webmd-section-accent {
-  @apply bg-gradient-to-b from-blue-50 to-white;
+  background: linear-gradient(180deg, var(--medical-info-light) 0%, var(--medical-background) 100%);
 }
 
-.webmd-section-divider {
-  @apply relative;
-}
-
-.webmd-section-divider::after {
-  content: '';
-  @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent;
-}
-
-/* WebMD-style section hero variant */
+/* Section hero variant with professional styling */
 .webmd-section-hero {
-  @apply py-16 lg:py-24; /* Larger padding for hero sections */
+  padding: 6rem 0;
+  background: linear-gradient(135deg, var(--medical-background-alt) 0%, #f1f5f9 100%);
+}
+
+@media (min-width: 1024px) {
+  .webmd-section-hero {
+    padding: 8rem 0;
+  }
 }
 
 /* Alternative background for section variation */
 .webmd-section-alt {
-  @apply bg-gradient-to-b from-gray-50 to-white;
+  background: var(--medical-background-alt);
+  border-top: 1px solid var(--medical-border);
 }
 
-/* Enhanced divider styles */
-.webmd-section-divider {
-  @apply border-t border-gray-200 pt-8;
-}
-
-.webmd-section-divider-full {
-  @apply w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-8;
-}
-
-/* Section Headers - WebMD Style */
+/* Section Headers - WebMD Style with HealthierKE colors */
 .webmd-section-header {
-  @apply text-center mb-8;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .webmd-section-header {
+    margin-bottom: 4rem;
+  }
 }
 
 .webmd-section-title {
-  @apply text-2xl md:text-3xl font-bold text-gray-900 mb-3 tracking-tight;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--medical-text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
   font-variation-settings: "wght" 700;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .webmd-section-title {
+    font-size: 1.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .webmd-section-title {
+    font-size: 2.25rem;
+  }
 }
 
 .webmd-section-subtitle {
-  @apply text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed;
+  font-size: 1.125rem;
+  color: var(--medical-text-secondary);
+  max-width: 56rem;
+  line-height: 1.6;
 }
 
+@media (min-width: 768px) {
+  .webmd-section-subtitle {
+    font-size: 1.25rem;
+  }
+}
+
+/* Section Heading for components */
+.webmd-section-heading {
+  font-weight: 700;
+  color: var(--medical-text-primary);
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  font-variation-settings: "wght" 700;
+  line-height: 1.3;
+}
+
+/* WebMD-style underline divider */
 .webmd-section-divider-line {
-  @apply w-16 h-0.5 bg-blue-600 mx-auto mt-4 rounded-full;
+  width: 6rem;
+  height: 0.25rem;
+  background-color: var(--medical-accent);
+  margin-top: 1.5rem;
+  border-radius: 9999px;
+  display: block;
 }
 
 /* Content sections - Reduced spacing */
@@ -192,25 +291,57 @@ body {
   Rich Text Styles
 *******************************************/ 
 
-/* Headers */
+/* Headers with HealthierKE colors */
 .rich-text h1 {
-  @apply text-4xl font-bold mb-4 text-blue-600;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--healthierke-dark-imperial);
 }
 
 .rich-text h2 {
-  @apply text-3xl font-bold mb-4 text-blue-600;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--healthierke-dark-imperial);
 }
 
 .rich-text h3 {
-  @apply text-2xl font-bold mb-4 text-blue-600;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--healthierke-dark-imperial);
 }
 
 .rich-text h4 {
-  @apply text-xl font-bold mb-4 text-blue-600;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--healthierke-dark-imperial);
+}
+.rich-text h5 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--healthierke-dark-imperial);
 }
 
-.rich-text h5 {
-  @apply text-lg font-bold mb-4 text-blue-600;
+.rich-text h6 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--healthierke-dark-imperial);
+}
+
+/* Links with HealthierKE accent color */
+.rich-text a {
+  color: var(--healthierke-vista-blue);
+  text-decoration: underline;
+  transition: color 0.2s ease-in-out;
+}
+
+.rich-text a:hover {
+  color: var(--healthierke-dark-imperial);
 }
 
 .rich-text h6 {
@@ -377,3 +508,261 @@ body {
     @apply border-border;}
   body {
     @apply bg-background text-foreground;}}
+    
+/* HealthierKE Utility Classes */
+.healthierke-primary {
+  background-color: var(--healthierke-dark-imperial);
+  color: white;
+}
+
+.healthierke-primary-text {
+  color: var(--healthierke-dark-imperial);
+}
+
+.healthierke-accent {
+  background-color: var(--healthierke-vista-blue);
+  color: white;
+}
+
+.healthierke-accent-text {
+  color: var(--healthierke-vista-blue);
+}
+
+.healthierke-background {
+  background-color: var(--healthierke-oxford-blue);
+  color: white;
+}
+
+.healthierke-text-dark {
+  color: var(--healthierke-cetacean-blue);
+}
+
+/* HealthierKE Button Variants */
+.btn-healthierke-primary {
+  background-color: var(--healthierke-dark-imperial);
+  color: white;
+  border: 1px solid var(--healthierke-dark-imperial);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-healthierke-primary:hover {
+  background-color: var(--healthierke-rich-black);
+  border-color: var(--healthierke-rich-black);
+}
+
+.btn-healthierke-accent {
+  background-color: var(--healthierke-vista-blue);
+  color: white;
+  border: 1px solid var(--healthierke-vista-blue);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-healthierke-accent:hover {
+  background-color: var(--healthierke-dark-imperial);
+  border-color: var(--healthierke-dark-imperial);
+}
+
+.btn-healthierke-outline {
+  background-color: transparent;
+  color: var(--healthierke-dark-imperial);
+  border: 1px solid var(--healthierke-dark-imperial);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-healthierke-outline:hover {
+  background-color: var(--healthierke-dark-imperial);
+  color: white;
+}
+
+/* HealthierKE Gradients */
+.healthierke-gradient {
+  background: linear-gradient(135deg, var(--healthierke-vista-blue) 0%, var(--healthierke-dark-imperial) 100%);
+}
+
+.healthierke-gradient-subtle {
+  background: linear-gradient(135deg, rgba(132, 145, 217, 0.1) 0%, rgba(2, 19, 115, 0.05) 100%);
+}
+
+/* WebMD Section variants with professional medical colors */
+.webmd-section-light {
+  background-color: var(--medical-bg-secondary);
+}
+
+.webmd-section-white {
+  background-color: var(--medical-bg-primary);
+}
+
+.webmd-section-primary {
+  background-color: var(--medical-primary);
+  color: white;
+}
+
+.webmd-section-accent {
+  background: linear-gradient(135deg, var(--medical-info-light) 0%, var(--medical-bg-primary) 100%);
+}
+
+/* Professional Section Variants */
+.webmd-section-white {
+  background: var(--medical-background);
+}
+
+.webmd-section-light {
+  background: var(--medical-background-alt);
+}
+
+.webmd-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .webmd-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .webmd-container {
+    padding: 0 2rem;
+  }
+}
+
+/* Professional Typography Classes */
+.medical-heading {
+  font-weight: 700;
+  color: var(--medical-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.medical-subheading {
+  font-weight: 600;
+  color: var(--medical-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.medical-body {
+  color: var(--medical-text-secondary);
+  line-height: 1.6;
+}
+
+.medical-body-light {
+  color: var(--medical-text-tertiary);
+  line-height: 1.6;
+}
+
+/* Professional Button Styles */
+.healthierke-btn-primary {
+  background: var(--healthierke-dark-imperial);
+  color: white;
+  border: 1px solid var(--healthierke-dark-imperial);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--shadow-card);
+}
+
+.healthierke-btn-primary:hover {
+  background: var(--healthierke-rich-black);
+  border-color: var(--healthierke-rich-black);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+.healthierke-btn-secondary {
+  background: transparent;
+  color: var(--healthierke-dark-imperial);
+  border: 1px solid var(--healthierke-vista-blue);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.healthierke-btn-secondary:hover {
+  background: var(--healthierke-vista-blue);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Professional Color Utilities */
+.healthierke-primary-text { color: var(--healthierke-dark-imperial); }
+.healthierke-accent-text { color: var(--healthierke-vista-blue); }
+.healthierke-primary-bg { background-color: var(--healthierke-dark-imperial); }
+.healthierke-accent-bg { background-color: var(--healthierke-vista-blue); }
+
+/* Professional Medical Utility Classes */
+.medical-text-primary {
+  color: var(--medical-text-primary);
+}
+
+.medical-text-secondary {
+  color: var(--medical-text-secondary);
+}
+
+.medical-text-muted {
+  color: var(--medical-text-muted);
+}
+
+.medical-bg-primary {
+  background-color: var(--medical-bg-primary);
+}
+
+.medical-bg-secondary {
+  background-color: var(--medical-bg-secondary);
+}
+
+.medical-bg-muted {
+  background-color: var(--medical-bg-muted);
+}
+
+.medical-border {
+  border-color: var(--medical-border-light);
+}
+
+.medical-shadow-sm {
+  box-shadow: var(--medical-shadow-sm);
+}
+
+.medical-shadow-md {
+  box-shadow: var(--medical-shadow-md);
+}
+
+.medical-shadow-lg {
+  box-shadow: var(--medical-shadow-lg);
+}
+
+/* Professional Medical Buttons */
+.medical-button-primary {
+  background-color: var(--medical-primary);
+  color: white;
+  border: 1px solid var(--medical-primary);
+  transition: all 200ms ease-in-out;
+}
+
+.medical-button-primary:hover {
+  background-color: var(--medical-primary-hover);
+  border-color: var(--medical-primary-hover);
+  box-shadow: var(--medical-shadow-md);
+}
+
+.medical-button-secondary {
+  background-color: transparent;
+  color: var(--medical-primary);
+  border: 1px solid var(--medical-accent);
+}
+
+.medical-button-secondary:hover {
+  background-color: var(--medical-info-light);
+  border-color: var(--medical-primary);
+}

@@ -68,6 +68,33 @@ module.exports = {
     					'600': '#495057'
     				}
     			},
+    			// HealthierKE Custom Color Palette
+    			healthierke: {
+    				'oxford-blue': '#021373',      // Primary
+    				'dark-imperial-blue': '#2e3b7a', // Primary Hover
+    				'rich-black': '#0a0f1c',       // Text Primary
+    				'cetacean-blue': '#1c2a4e',    // Secondary
+    				'vista-blue': '#8491d9',       // Accent
+    			},
+    			// Professional Medical Colors
+    			medical: {
+    				primary: '#021373',
+    				'primary-hover': '#2e3b7a',
+    				secondary: '#1c2a4e',
+    				accent: '#8491d9',
+    				'text-primary': '#0a0f1c',
+    				'text-secondary': '#4a5568',
+    				'text-muted': '#718096',
+    				'bg-primary': '#ffffff',
+    				'bg-secondary': '#f8fafc',
+    				'bg-muted': '#f1f5f9',
+    				'info-light': '#eff6ff',
+    				'success-light': '#f0fff4',
+    				'warning-light': '#fffbeb',
+    				'error-light': '#fef2f2',
+    				'border-light': '#e2e8f0',
+    				'border-medium': '#cbd5e0',
+    			},
     			chart: {
     				'1': 'hsl(var(--chart-1))',
     				'2': 'hsl(var(--chart-2))',

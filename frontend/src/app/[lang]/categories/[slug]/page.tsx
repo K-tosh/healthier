@@ -113,14 +113,14 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       </section>
       
-      <section className="webmd-section section-transition">
+      <section className="webmd-section">
         <div className="content-container">
 
           {/* Articles Grid */}
           {category.articles && category.articles.length > 0 ? (
             <>
-              <div className="webmd-section-header text-center mb-12">
-                <h2 className="webmd-section-title text-3xl lg:text-4xl mb-4">Articles in {category.name}</h2>
+              <div className="webmd-section-header">
+                <h2 className="webmd-section-title">Articles in {category.name}</h2>
                 <div className="webmd-section-divider-line"></div>
               </div>
               
@@ -188,30 +188,32 @@ export default async function CategoryPage({ params }: Props) {
             </>
           ) : (
             /* Enhanced Empty State */
-            <div className="webmd-section-header text-center py-20">
+            <div className="webmd-section-header py-20">
               <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
                 <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-2-3H9m12 0a2 2 0 012 2v8a2 2 0 01-2 2h-2m-2-3v3m0 0h3m-3 0h-3" />
                 </svg>
               </div>
-              <h3 className="webmd-section-title text-2xl mb-4">No articles yet</h3>
-              <p className="webmd-section-subtitle text-lg mb-8 max-w-lg mx-auto">
+              <h3 className="webmd-section-title text-center text-2xl mb-4">No articles yet</h3>
+              <p className="webmd-section-subtitle text-center text-lg mb-8 max-w-lg mx-auto">
                 We're working on adding comprehensive content for this category. Check back soon for valuable health information!
               </p>
-              <Link 
-                href="/categories" 
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                Browse Other Categories
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
+              <div className="text-center">
+                <Link 
+                  href="/categories" 
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  Browse Other Categories
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+              </div>
             </div>
           )}
 
           {/* Back to Categories */}
-          <div className="webmd-section-divider text-center mt-20 pt-8 border-t border-gray-200">
+          <div className="text-center mt-20 pt-8 border-t border-gray-200">
             <Link 
               href="/categories" 
               className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors duration-300 text-lg"

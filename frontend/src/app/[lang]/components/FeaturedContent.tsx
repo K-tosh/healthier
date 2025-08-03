@@ -120,26 +120,28 @@ export default function FeaturedContent({ data }: FeaturedContentProps) {
   }
 
   return (
-    <section className="webmd-section section-transition">
+    <section className="webmd-section">
       <div className="content-container">
         {/* Header */}
-        <div className="webmd-section-header text-center mb-16">
-          <div className="flex justify-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center">
+        <div className="webmd-section-header">
+          <div className="flex items-center mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>
             </div>
+            <div>
+              <h2 className="webmd-section-title">
+                {heading}
+              </h2>
+              <div className="webmd-section-divider-line"></div>
+            </div>
           </div>
-          <h2 className="webmd-section-title text-4xl lg:text-5xl mb-6">
-            {heading}
-          </h2>
           {description && (
-            <p className="webmd-section-subtitle text-xl max-w-4xl mx-auto leading-relaxed">
+            <p className="webmd-section-subtitle">
               {description}
             </p>
           )}
-          <div className="webmd-section-divider-line mt-8"></div>
         </div>
 
         {/* Featured Conditions */}
@@ -160,7 +162,7 @@ export default function FeaturedContent({ data }: FeaturedContentProps) {
                   <Link
                     key={condition.id}
                     href={`/conditions/${conditionData.slug}`}
-                    className="medical-badge-blue hover:bg-blue-200 hover:border-blue-300 font-semibold px-6 py-3 rounded-full text-sm transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                    className="medical-badge medical-badge-blue hover:shadow-lg font-semibold px-6 py-3 rounded-full text-sm transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
                   >
                     {conditionData.name}
                   </Link>

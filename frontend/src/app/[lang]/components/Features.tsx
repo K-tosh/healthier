@@ -64,19 +64,21 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
 
 export default function Features({ data }: FeaturesProps) {
   return (
-    <section className="webmd-section section-transition webmd-section-alt">
+    <section className="webmd-section webmd-section-alt">
       <div className="content-container">
-        <div className="webmd-section-header text-center mb-16">
-          <div className="flex justify-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+        <div className="webmd-section-header">
+          <div className="flex items-center mb-6">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
+            <div>
+              <h2 className="webmd-section-title">{data.heading}</h2>
+              <div className="webmd-section-divider-line"></div>
+            </div>
           </div>
-          <h2 className="webmd-section-title text-4xl lg:text-5xl mb-6">{data.heading}</h2>
-          <p className="webmd-section-subtitle text-xl max-w-4xl mx-auto leading-relaxed">{data.description}</p>
-          <div className="webmd-section-divider-line mt-8"></div>
+          <p className="webmd-section-subtitle">{data.description}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">

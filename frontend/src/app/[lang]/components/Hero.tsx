@@ -39,10 +39,10 @@ export default function Hero({ data }: HeroProps) {
   return (
     <section className="webmd-section webmd-section-hero webmd-section-alt relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-30 -translate-y-20 translate-x-20"></div>
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-green-100 to-blue-100 rounded-full blur-3xl opacity-30 translate-y-20 -translate-x-20"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 -translate-y-20 translate-x-20" style={{ background: 'linear-gradient(135deg, var(--medical-info-light), var(--medical-accent))' }}></div>
+      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl opacity-20 translate-y-20 -translate-x-20" style={{ background: 'linear-gradient(135deg, var(--medical-success-light), var(--medical-info-light))' }}></div>
       
-      <div className="relative max-w-7xl mx-auto px-4 py-20 lg:py-28">
+      <div className="content-container">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Side - Content */}
           <div className="space-y-8">
@@ -66,17 +66,17 @@ export default function Hero({ data }: HeroProps) {
               <HighlightedText
                 text={data.title}
                 tag="h1"
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 tracking-tight"
-                color="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight medical-text-primary"
+                color=""
               />
               
-              <div className="w-20 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"></div>
+              <div className="w-20 h-1.5 rounded-full" style={{ background: 'linear-gradient(90deg, var(--medical-primary), var(--medical-accent))' }}></div>
             </div>
 
             <HighlightedText
               text={data.description}
               tag="p"
-              className="text-xl text-gray-600 leading-relaxed max-w-2xl"
+              className="text-xl leading-relaxed max-w-2xl medical-text-secondary"
               color=""
             />
 
@@ -90,17 +90,17 @@ export default function Hero({ data }: HeroProps) {
                 >
                   <Button
                     variant={button.type === "secondary" ? "outline" : "default"}
-                    size="xl"
+                    size="lg"
                     asChild
-                    className={`font-semibold text-lg px-10 py-4 h-auto ${
+                    className={`font-semibold px-8 py-3 h-auto ${
                       button.type === "secondary" 
-                        ? "border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300" 
-                        : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+                        ? "medical-button-secondary hover:bg-medical-info-light transition-all duration-300" 
+                        : "medical-button-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
                     }`}
                   >
                     <span className="flex items-center gap-2">
                       {button.text}
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
                     </span>
@@ -108,28 +108,12 @@ export default function Hero({ data }: HeroProps) {
                 </Link>
               ))}
             </div>
-
-            {/* Health Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">500K+</div>
-                <div className="text-sm text-gray-600">Trusted Readers</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">24/7</div>
-                <div className="text-sm text-gray-600">Health Support</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">Expert</div>
-                <div className="text-sm text-gray-600">Medical Team</div>
-              </div>
-            </div>
           </div>
 
           {/* Right Side - Image */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative">
-              <div className="absolute -inset-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-3xl blur-xl opacity-20 animate-pulse"></div>
+              <div className="absolute -inset-6 rounded-3xl blur-xl opacity-15 animate-pulse" style={{ background: 'linear-gradient(135deg, var(--medical-primary), var(--medical-accent), var(--medical-secondary))' }}></div>
               <div className="relative medical-card-elevated p-3 rounded-3xl">
                 <Image
                   src={imgUrl || ""}
@@ -140,18 +124,11 @@ export default function Hero({ data }: HeroProps) {
                 />
               </div>
               
-              {/* Floating Elements */}
+              {/* Floating Element */}
               <div className="absolute -top-4 -right-4 w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center medical-card">
                 <svg className="w-10 h-10 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-              </div>
-              
-              <div className="absolute -bottom-4 -left-4 w-24 h-16 bg-white rounded-xl shadow-lg flex items-center justify-center medical-card">
-                <div className="text-center">
-                  <div className="text-lg font-bold text-blue-600">A+</div>
-                  <div className="text-xs text-gray-600">Rated</div>
-                </div>
               </div>
             </div>
           </div>

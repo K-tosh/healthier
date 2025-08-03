@@ -92,27 +92,29 @@ export default function MedicalStats({
   };
 
   return (
-    <section className="webmd-section section-transition webmd-section-alt">
+    <section className="webmd-section webmd-section-alt">
       <div className="content-container">
         
         {/* Stats Section */}
         {showStats && (
           <div className="mb-20">
-            <div className="webmd-section-header text-center mb-16">
-              <div className="flex justify-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-xl flex items-center justify-center">
+            <div className="webmd-section-header">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-xl flex items-center justify-center mr-4">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
+                <div>
+                  <h2 className="webmd-section-title">
+                    Trusted by Healthcare Professionals
+                  </h2>
+                  <div className="webmd-section-divider-line"></div>
+                </div>
               </div>
-              <h2 className="webmd-section-title text-4xl lg:text-5xl mb-6">
-                Trusted by Healthcare Professionals
-              </h2>
-              <p className="webmd-section-subtitle text-xl max-w-3xl mx-auto">
+              <p className="webmd-section-subtitle">
                 Our commitment to medical accuracy and evidence-based content has earned the trust of healthcare professionals and patients worldwide.
               </p>
-              <div className="webmd-section-divider-line mt-8"></div>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

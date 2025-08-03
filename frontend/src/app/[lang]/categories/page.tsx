@@ -77,7 +77,7 @@ export default async function CategoriesPage() {
                       {category.description}
                     </p>
                     {category.articles && category.articles.length > 0 && (
-                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                      <Badge variant="category" className="font-medium">
                         {category.articles.length} article{category.articles.length !== 1 ? 's' : ''}
                       </Badge>
                     )}

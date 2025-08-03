@@ -65,9 +65,9 @@ export default function Footer({
 } = {}) {
   const path = usePathname();
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <footer className="text-white" style={{ backgroundColor: 'var(--healthierke-oxford-blue)' }}>
       {/* Medical Disclaimer Banner */}
-      <div className="bg-blue-900 border-b border-blue-800">
+      <div className="border-b" style={{ backgroundColor: 'var(--healthierke-rich-black)', borderBottomColor: 'var(--healthierke-vista-blue)' }}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-center gap-3 text-sm text-blue-100">
             <svg className="w-5 h-5 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
@@ -87,16 +87,9 @@ export default function Footer({
             <div className="md:col-span-1">
               <Logo src={logoUrl}>
                 {logoText && (
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-xl flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
-                      {logoText}
-                    </h2>
-                  </div>
+                  <h2 className="text-2xl font-bold text-white mb-6">
+                    {logoText}
+                  </h2>
                 )}
               </Logo>
               <p className="text-gray-300 text-sm leading-relaxed mb-6">
@@ -122,10 +115,7 @@ export default function Footer({
 
             {/* Health Categories */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
+              <h3 className="text-lg font-semibold text-white mb-6">
                 Health Topics
               </h3>
               <ul className="space-y-3">
@@ -133,11 +123,8 @@ export default function Footer({
                   <li key={link.id}>
                     <a 
                       href={link.url} 
-                      className="text-gray-300 hover:text-blue-400 transition-colors duration-300 text-sm flex items-center gap-2 hover:translate-x-1 transform transition-transform"
+                      className="text-gray-300 hover:text-blue-400 transition-colors duration-300 text-sm hover:translate-x-1 transform transition-transform"
                     >
-                      <svg className="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                      </svg>
                       {link.text || link.attributes?.name}
                     </a>
                   </li>
@@ -147,10 +134,7 @@ export default function Footer({
 
             {/* Navigation Menu */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
+              <h3 className="text-lg font-semibold text-white mb-6">
                 Quick Links
               </h3>
               <ul className="space-y-3">
@@ -158,15 +142,12 @@ export default function Footer({
                   <li key={link.id}>
                     <Link
                       href={link.url}
-                      className={`text-sm transition-colors duration-300 flex items-center gap-2 hover:translate-x-1 transform transition-transform ${
+                      className={`text-sm transition-colors duration-300 hover:translate-x-1 transform transition-transform ${
                         path === link.url 
                           ? "text-blue-400 font-medium" 
                           : "text-gray-300 hover:text-blue-400"
                       }`}
                     >
-                      <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                      </svg>
                       {link.text}
                     </Link>
                   </li>
@@ -176,10 +157,7 @@ export default function Footer({
 
             {/* Connect & Legal */}
             <div>
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+              <h3 className="text-lg font-semibold text-white mb-6">
                 Connect With Us
               </h3>
               <div className="flex space-x-4 mb-6">
@@ -203,11 +181,8 @@ export default function Footer({
                   <li key={link.id}>
                     <Link
                       href={link.url}
-                      className="text-gray-400 hover:text-gray-300 text-sm transition-colors duration-300 flex items-center gap-2 hover:translate-x-1 transform transition-transform"
+                      className="text-gray-400 hover:text-gray-300 text-sm transition-colors duration-300 hover:translate-x-1 transform transition-transform"
                     >
-                      <svg className="w-3 h-3 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                      </svg>
                       {link.text}
                     </Link>
                   </li>
@@ -219,13 +194,10 @@ export default function Footer({
       </div>
 
       {/* Bottom Border and Copyright */}
-      <div className="border-t border-gray-700 bg-gray-900/50">
+      <div className="border-t border-gray-700" style={{ backgroundColor: 'var(--healthierke-cetacean-blue)' }}>
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm flex items-center gap-2">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
+            <p className="text-gray-400 text-sm">
               ©{new Date().getFullYear()} {logoText || "Healthier Kenya"}. All rights reserved.
             </p>
             <p className="text-gray-500 text-xs mt-2 md:mt-0 text-center">
