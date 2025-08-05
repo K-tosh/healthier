@@ -43,6 +43,7 @@ const populate = {
           featuredConditions: { populate: "*" },
         },
       },
+      
     },
   },
   seo: {
