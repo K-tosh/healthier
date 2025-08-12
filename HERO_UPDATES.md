@@ -3,8 +3,8 @@
 ## ✅ Changes Made to Hero.tsx
 
 ### 🎯 **Spacing Improvements**
-- **Updated container**: Changed from custom padding to use `content-container` class for consistent WebMD spacing
-- **Proper section spacing**: Now uses `webmd-section-hero` class with standardized padding
+- **Updated container**: Changed from custom padding to use `content-container` class for consistent HealthierKE spacing
+- **Proper section spacing**: Now uses `healthier-section-hero` class with standardized padding
 - **Better responsive layout**: Improved grid layout spacing and alignment
 
 ### 🗑️ **Removed Elements**
@@ -21,9 +21,9 @@ The Hero component now features:
 - **Hero image** with single floating checkmark element
 - **Clean background** with subtle gradient elements
 
-### 📏 **WebMD-Style Spacing**
+### 📏 **HealthierKE-Style Spacing**
 ```tsx
-<section className="webmd-section webmd-section-hero webmd-section-alt">
+<section className="healthier-section healthier-section-hero healthier-section-alt">
   <div className="content-container">
     {/* Clean, spacious layout without clutter */}
   </div>
@@ -33,7 +33,7 @@ The Hero component now features:
 ### 🎯 **Result**
 The Hero section now has:
 - **Better visual hierarchy** with less clutter
-- **Professional spacing** matching WebMD standards
+- **Professional spacing** matching HealthierKE standards
 - **Cleaner design** focused on core messaging
 - **Improved readability** without distracting stats
 

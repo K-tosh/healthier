@@ -1,5 +1,6 @@
 import ArticleSelect from "@/app/[lang]/components/ArticleSelect";
 import { fetchAPI } from "@/app/[lang]/utils/fetch-api";
+import LeadForm from "@/app/[lang]/components/LeadForm";
 
 async function fetchSideMenuData(filter: string) {
   try {
@@ -143,28 +144,12 @@ export default async function LayoutRoute({
               </div>
 
               {/* Newsletter Signup */}
-              <div className="medical-card p-6 bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200">
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Stay Informed</h3>
-                  <p className="text-sm text-gray-600 mb-4">Get the latest health tips and medical insights delivered to your inbox.</p>
-                  <div className="space-y-3">
-                    <input 
-                      type="email" 
-                      placeholder="Enter your email"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <button className="w-full bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                      Subscribe
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-3">No spam, unsubscribe anytime.</p>
-                </div>
-              </div>
+              <LeadForm data={{
+                title: "Stay Informed",
+                description: "Get the latest health tips and medical insights delivered to your inbox.",
+                submitButton: { text: "Subscribe" },
+                emailPlaceholder: "Enter your email"
+              }} />
             </div>
           </aside>
         </div>

@@ -44,7 +44,7 @@ border-healthierke-rich-black
 - `.medical-badge-purple` - Uses vista blue with transparency
 
 ### 2. Section Headings
-- All `.webmd-section-heading` now use `--healthierke-cetacean-blue`
+- All `.healthier-section-heading` now use `--healthierke-cetacean-blue`
 - Rich text headings (h1-h6) use `--healthierke-dark-imperial`
 
 ### 3. Links and Interactive Elements

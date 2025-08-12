@@ -82,7 +82,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <section className="webmd-section webmd-section-hero webmd-section-alt relative overflow-hidden">
+      <section className="healthier-section healthier-section-hero healthier-section-alt relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-20 -translate-y-20 translate-x-20"></div>
         
         <div className="relative content-container">
@@ -93,10 +93,10 @@ export default async function CategoryPage({ params }: Props) {
             </div>
             
             {/* Category Name */}
-            <h1 className="webmd-section-title text-4xl md:text-5xl lg:text-6xl mb-6">{category.name}</h1>
+            <h1 className="healthier-section-title text-4xl md:text-5xl lg:text-6xl mb-6">{category.name}</h1>
             
             {/* Description */}
-            <p className="webmd-section-subtitle text-xl max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="healthier-section-subtitle text-xl max-w-4xl mx-auto leading-relaxed mb-8">
               {category.description}
             </p>
             
@@ -113,15 +113,15 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       </section>
       
-      <section className="webmd-section">
+      <section className="healthier-section">
         <div className="content-container">
 
           {/* Articles Grid */}
           {category.articles && category.articles.length > 0 ? (
             <>
-              <div className="webmd-section-header">
-                <h2 className="webmd-section-title">Articles in {category.name}</h2>
-                <div className="webmd-section-divider-line"></div>
+              <div className="healthier-section-header">
+                <h2 className="healthier-section-title">Articles in {category.name}</h2>
+                <div className="healthier-section-divider-line"></div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -141,7 +141,7 @@ export default async function CategoryPage({ params }: Props) {
                       href={`/blog/${category.slug}/${article.slug}`}
                       className="group block transform hover:-translate-y-2 transition-all duration-300"
                     >
-                      <Card className="h-full flex flex-col webmd-card-feature hover:shadow-2xl hover:border-blue-200 transition-all duration-300 overflow-hidden">
+                      <Card className="h-full flex flex-col healthier-card-feature hover:shadow-2xl hover:border-blue-200 transition-all duration-300 overflow-hidden">
                         {imageUrl && (
                           <div className="relative h-52 w-full overflow-hidden">
                             <img
@@ -188,14 +188,14 @@ export default async function CategoryPage({ params }: Props) {
             </>
           ) : (
             /* Enhanced Empty State */
-            <div className="webmd-section-header py-20">
+            <div className="healthier-section-header py-20">
               <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
                 <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-2-3H9m12 0a2 2 0 012 2v8a2 2 0 01-2 2h-2m-2-3v3m0 0h3m-3 0h-3" />
                 </svg>
               </div>
-              <h3 className="webmd-section-title text-center text-2xl mb-4">No articles yet</h3>
-              <p className="webmd-section-subtitle text-center text-lg mb-8 max-w-lg mx-auto">
+              <h3 className="healthier-section-title text-center text-2xl mb-4">No articles yet</h3>
+              <p className="healthier-section-subtitle text-center text-lg mb-8 max-w-lg mx-auto">
                 We're working on adding comprehensive content for this category. Check back soon for valuable health information!
               </p>
               <div className="text-center">

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import { getStrapiMedia } from "@/app/[lang]/utils/api-helpers";
 
 interface FeatureRowsGroupProps {
   data: {
@@ -14,6 +16,34 @@ interface FeatureRowsGroupProps {
   };
 }
 
+// Handle different Strapi response structures
+interface StrapiMediaResponse {
+  id?: number;
+  url?: string;
+  name?: string;
+  alternativeText?: string;
+  data?: {
+    attributes: StrapiImage;
+  };
+  attributes?: StrapiImage;
+}
+
+interface StrapiImage {
+  id: number;
+  name: string;
+  alternativeText?: string;
+  caption?: string;
+  width: number;
+  height: number;
+  url: string;
+  formats?: {
+    thumbnail?: { url: string };
+    small?: { url: string };
+    medium?: { url: string };
+    large?: { url: string };
+  };
+}
+
 interface Feature {
   id: string;
   title: string;
@@ -23,8 +53,13 @@ interface Feature {
   url?: string;
   text?: string;
   icon?: string;
+  media?: StrapiMediaResponse;
   // Additional properties that might be present
-  link?: string;
+  link?: {
+    url?: string;
+    newTab?: boolean;
+    text?: string;
+  };
   linkText?: string;
   image?: {
     data?: {
@@ -44,8 +79,8 @@ export default function FeatureRowsGroup({ data }: FeatureRowsGroupProps) {
 
   if (!features || features.length === 0) {
     return (
-      <section className="webmd-section webmd-section-white">
-        <div className="webmd-container">
+      <section className="healthier-section healthier-section-white">
+        <div className="healthier-container">
           <div className="text-center py-8">
             <p className="medical-text-muted">No features to display</p>
           </div>
@@ -55,20 +90,20 @@ export default function FeatureRowsGroup({ data }: FeatureRowsGroupProps) {
   }
 
   return (
-    <section className="webmd-section webmd-section-light">
-      <div className="webmd-container">
-        <div className="webmd-section-header">
+    <section className="healthier-section healthier-section-light">
+      <div className="healthier-container">
+        <div className="healthier-section-header">
           {heading && (
-            <h2 className="webmd-section-title medical-text-primary">
+            <h2 className="healthier-section-title medical-text-primary">
               {heading}
             </h2>
           )}
           {description && (
-            <p className="webmd-section-subtitle medical-text-secondary">
+            <p className="healthier-section-subtitle medical-text-secondary">
               {description}
             </p>
           )}
-          <div className="webmd-section-divider-line"></div>
+          <div className="healthier-section-divider-line"></div>
         </div>
 
         <div className="space-y-12 mt-12">
@@ -90,17 +125,8 @@ export default function FeatureRowsGroup({ data }: FeatureRowsGroupProps) {
                       background: 'linear-gradient(135deg, var(--medical-primary), var(--medical-accent))',
                     }}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className="w-6 h-6 text-white"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
                   <h3 className="text-2xl font-bold medical-text-primary">
@@ -112,16 +138,16 @@ export default function FeatureRowsGroup({ data }: FeatureRowsGroupProps) {
                   {feature.description}
                 </p>
 
-                {((feature.showLink || feature.url || feature.link) && (feature.url || feature.link) && (feature.text || feature.linkText)) && (
+                {((feature.showLink || feature.url || feature.link) && (feature.url || feature.link?.url) && (feature.text || feature.link?.text || feature.linkText)) && (
                   <div className="pt-4">
                     <Link
-                      href={feature.url || feature.link || '#'}
-                      target={feature.newTab ? "_blank" : "_self"}
+                      href={feature.url || feature.link?.url || '#'}
+                      target={(feature.newTab || feature.link?.newTab) ? "_blank" : "_self"}
                       className="medical-button-primary px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md inline-flex items-center space-x-2"
                     >
-                      <span>{feature.text || feature.linkText}</span>
+                      <span>{feature.text || feature.link?.text || feature.linkText}</span>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </Link>
                   </div>
@@ -130,45 +156,69 @@ export default function FeatureRowsGroup({ data }: FeatureRowsGroupProps) {
 
               {/* Visual Side */}
               <div className={`mt-8 lg:mt-0 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                {feature.image?.data?.attributes?.url ? (
-                  <div className="relative">
-                    <img
-                      src={feature.image.data.attributes.url}
-                      alt={feature.image.data.attributes.alternativeText || feature.title}
-                      className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
-                    />
-                    <div className="absolute inset-0 rounded-xl" style={{ 
-                      background: 'linear-gradient(135deg, rgba(2, 19, 115, 0.1), rgba(132, 145, 217, 0.1))'
-                    }}></div>
-                  </div>
-                ) : (
-                  <div 
-                    className="w-full h-64 lg:h-80 rounded-xl flex items-center justify-center"
-                    style={{ 
-                      background: 'linear-gradient(135deg, var(--medical-info-light), var(--medical-bg-secondary))'
-                    }}
-                  >
+                {(() => {
+                  // Handle Strapi v5 media structure - media could be an object directly or have nested structure
+                  let imageUrl = null;
+                  let altText = feature.title;
+                  
+                  if (feature.media) {
+                    // If media.url exists directly (Strapi v5 format)
+                    if (feature.media.url) {
+                      imageUrl = getStrapiMedia(feature.media.url);
+                      altText = feature.media.alternativeText || feature.media.name || feature.title;
+                    }
+                    // If media has a data property (some Strapi structures)
+                    else if (feature.media.data && feature.media.data.attributes) {
+                      imageUrl = getStrapiMedia(feature.media.data.attributes.url);
+                      altText = feature.media.data.attributes.alternativeText || feature.media.data.attributes.name || feature.title;
+                    }
+                    // If media has attributes directly
+                    else if (feature.media.attributes) {
+                      imageUrl = getStrapiMedia(feature.media.attributes.url);
+                      altText = feature.media.attributes.alternativeText || feature.media.attributes.name || feature.title;
+                    }
+                  }
+                  // Fallback to legacy image structure
+                  else if (feature.image?.data?.attributes?.url) {
+                    imageUrl = getStrapiMedia(feature.image.data.attributes.url);
+                    altText = feature.image.data.attributes.alternativeText || feature.title;
+                  }
+
+                  return imageUrl ? (
+                    <div className="relative">
+                      <Image
+                        src={imageUrl}
+                        alt={altText}
+                        width={400}
+                        height={300}
+                        className="w-full h-64 lg:h-80 object-cover rounded-xl shadow-lg"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+                      />
+                      <div className="absolute inset-0 rounded-xl" style={{ 
+                        background: 'linear-gradient(135deg, rgba(2, 19, 115, 0.1), rgba(132, 145, 217, 0.1))'
+                      }}></div>
+                    </div>
+                  ) : (
                     <div 
-                      className="w-24 h-24 rounded-2xl flex items-center justify-center"
+                      className="w-full h-64 lg:h-80 rounded-xl flex items-center justify-center"
                       style={{ 
-                        background: 'linear-gradient(135deg, var(--medical-primary), var(--medical-accent))'
+                        background: 'linear-gradient(135deg, var(--medical-info-light), var(--medical-bg-secondary))'
                       }}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        className="w-12 h-12 text-white"
+                      <div 
+                        className="w-24 h-24 rounded-2xl flex items-center justify-center"
+                        style={{ 
+                          background: 'linear-gradient(135deg, var(--medical-primary), var(--medical-accent))'
+                        }}
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        {/* Image placeholder */}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
               </div>
             </div>
           ))}

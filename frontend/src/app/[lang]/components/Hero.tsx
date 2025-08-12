@@ -37,7 +37,7 @@ export default function Hero({ data }: HeroProps) {
   const imgUrl = getStrapiMedia(data.picture.data.attributes.url);
 
   return (
-    <section className="webmd-section webmd-section-hero webmd-section-alt relative overflow-hidden">
+    <section className="healthier-section healthier-section-hero healthier-section-alt relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20 -translate-y-20 translate-x-20" style={{ background: 'linear-gradient(135deg, var(--medical-info-light), var(--medical-accent))' }}></div>
       <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl opacity-20 translate-y-20 -translate-x-20" style={{ background: 'linear-gradient(135deg, var(--medical-success-light), var(--medical-info-light))' }}></div>

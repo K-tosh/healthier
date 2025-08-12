@@ -6,175 +6,65 @@ import { Badge } from "@/components/ui/badge";
 import { getStrapiMedia } from "@/app/[lang]/utils/api-helpers";
 import { useState, useEffect } from "react";
 
-interface Article {
-  id: string | number;
-  attributes?: {
-    title: string;
-    slug: string;
-    description?: string;
-    excerpt?: string;
-    cover?: any; // Use any for flexible cover structure
-    category?: {
-      data?: {
-        attributes: {
-          name: string;
-          slug: string;
-        };
-      };
-    };
+interface StrapiImage {
+  id: number;
+  name: string;
+  alternativeText?: string;
+  caption?: string;
+  width: number;
+  height: number;
+  url: string;
+  formats?: {
+    thumbnail?: { url: string };
+    small?: { url: string };
+    medium?: { url: string };
+    large?: { url: string };
   };
-  // Handle Strapi v5 format (direct properties)
-  title?: string;
-  slug?: string;
+}
+
+interface StrapiCategory {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+}
+
+// Strapi v5 Article format (direct properties, no attributes wrapper)
+interface Article {
+  id: number;
+  title: string;
+  slug: string;
   description?: string;
   excerpt?: string;
-  cover?: any;
-  category?: any;
+  cover?: StrapiImage;
+  category?: StrapiCategory;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  documentId: string;
 }
 
 interface TrendingArticleProps {
   data: {
+    id?: number;
     heading?: string;
     description?: string;
     articles?: {
-      data: Article[];
+      data: any[];
     };
   };
 }
 
 export default function TrendingArticle({ data }: TrendingArticleProps) {
-  console.log("📈 TrendingArticle Data:", data);
-  console.log("📰 Articles field:", data.articles);
-  console.log("📰 Articles data array:", data.articles?.data);
-  console.log("📰 Articles length:", data.articles?.data?.length);
+  // Use the manually selected articles from Strapi with proper structure access
+  const articles = Array.isArray(data.articles?.data) ? data.articles.data : [];
   
-  // State for fetched articles
-  const [fetchedArticles, setFetchedArticles] = useState<Article[]>([]);
-  const [isLoadingArticles, setIsLoadingArticles] = useState(false);
-
-  // Fetch articles if none are provided via Strapi relation
-  useEffect(() => {
-    // Only fetch articles automatically if none are provided via Strapi relation
-    if (data.articles?.data && data.articles.data.length > 0) {
-      console.log("✅ Using articles from Strapi relation:", data.articles.data.length);
-      setFetchedArticles([]); // Clear any previously fetched articles
-      return;
-    }
-
-    const fetchArticles = async () => {
-      setIsLoadingArticles(true);
-      try {
-        console.log("🔄 No articles in relation, fetching trending articles...");
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/articles?populate=*&pagination[limit]=5&sort=createdAt:desc`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`,
-            },
-          }
-        );
-        
-        console.log("📊 Article fetch response status:", response.status);
-        
-        if (response.ok) {
-          const result = await response.json();
-          
-          // Debug: Log the actual article structure
-          console.log("📊 Article API response:", result);
-          if (result.data && result.data.length > 0) {
-            console.log("📄 First article structure:", result.data[0]);
-          }
-          
-          setFetchedArticles(result.data || []);
-          console.log("✅ TrendingArticle: Fetched", result.data?.length || 0, "fallback articles");
-        } else {
-          console.error("❌ Failed to fetch articles:", response.statusText);
-          // Try to get error details
-          const errorText = await response.text();
-          console.error("❌ Error details:", errorText);
-        }
-      } catch (error) {
-        console.error("❌ Error fetching articles:", error);
-      } finally {
-        setIsLoadingArticles(false);
-      }
-    };
-
-    fetchArticles();
-  }, [data.articles]);
-
-  // Prioritize articles from Strapi relation, fallback to fetched articles
-  const articlesArray: Article[] = (data.articles?.data && data.articles.data.length > 0) 
-    ? data.articles.data 
-    : fetchedArticles;
-
-  // Filter out any invalid articles - handle both v4 and v5 formats
-  const validArticles = articlesArray.filter(article => {
-    if (!article) return false;
-    
-    // Handle both Strapi v4 format (with attributes) and v5 format (direct properties)
-    const articleData = article.attributes || article;
-    return articleData && articleData.title && articleData.slug;
+  // Filter out any invalid articles
+  const validArticles = articles.filter(article => {
+    return article && article.attributes && article.attributes.title && article.attributes.slug;
   });
-
-  console.log("📰 Valid articles count:", validArticles.length);
-  console.log("📄 Sample article for debugging:", articlesArray[0]);
-
-  // Show loading state if articles are being fetched
-  if (isLoadingArticles) {
-    return (
-      <section className="bg-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {data.heading || "Trending Health Topics"}
-            </h2>
-            {data.description && (
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {data.description}
-              </p>
-            )}
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Loading skeleton for main article */}
-            <div className="animate-pulse">
-              <Card className="h-full flex flex-col overflow-hidden">
-                <div className="h-64 w-full bg-gray-200"></div>
-                <CardHeader className="pb-3">
-                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-                </CardHeader>
-                <CardContent className="pt-0 flex-1">
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            {/* Loading skeletons for other articles */}
-            <div className="space-y-4">
-              {[1, 2, 3, 4].map((index) => (
-                <div key={index} className="animate-pulse">
-                  <Card className="flex items-start gap-4 p-4">
-                    <div className="w-20 h-16 bg-gray-200 rounded"></div>
-                    <div className="flex-1">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-4 bg-gray-200 rounded w-4/5 mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                    </div>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Return null if no articles available
+  
+  // Return null if no valid articles
   if (!validArticles.length) {
     console.warn("🚨 TrendingArticle: No valid articles found");
     return null;
@@ -182,43 +72,35 @@ export default function TrendingArticle({ data }: TrendingArticleProps) {
 
   const [mainArticle, ...otherArticles] = validArticles;
 
-  // Helper function to get image URL with null safety
-  const getImageUrl = (article: Article) => {
-    const articleData = article.attributes || article;
-    
-    // Handle cover image - Strapi v5 has cover directly
-    if (articleData.cover?.url) {
-      return getStrapiMedia(articleData.cover.url);
-    } else if (articleData.cover?.data?.attributes?.url) {
-      // Fallback for v4 format
-      return getStrapiMedia(articleData.cover.data.attributes.url);
+  // Helper function to get image URL with null safety for Strapi structure
+  const getImageUrl = (article: any) => {
+    const cover = article.attributes?.cover?.data?.attributes;
+    if (cover?.url) {
+      return getStrapiMedia(cover.url);
     }
     return null;
   };
 
-  // Helper function to get alt text with null safety
-  const getAltText = (article: Article) => {
-    const articleData = article.attributes || article;
-    
-    if (articleData.cover?.alternativeText) {
-      return articleData.cover.alternativeText;
-    } else if (articleData.cover?.data?.attributes?.alternativeText) {
-      return articleData.cover.data.attributes.alternativeText;
-    } else if (articleData.cover?.name) {
-      return articleData.cover.name;
+  // Helper function to get alt text with null safety for Strapi structure
+  const getAltText = (article: any) => {
+    const cover = article.attributes?.cover?.data?.attributes;
+    if (cover?.alternativeText) {
+      return cover.alternativeText;
+    } else if (cover?.name) {
+      return cover.name;
     }
     return "Article image";
   };
 
-  // Helper function to get article data with null safety
-  const getArticleData = (article: Article) => {
-    const articleData = article.attributes || article;
+  // Helper function to get article data with null safety for Strapi structure
+  const getArticleData = (article: any) => {
+    const attrs = article.attributes;
     return {
-      title: articleData.title,
-      slug: articleData.slug,
-      description: articleData.description || articleData.excerpt || "",
-      categoryName: (articleData.category as any)?.name || articleData.category?.data?.attributes?.name,
-      categorySlug: (articleData.category as any)?.slug || articleData.category?.data?.attributes?.slug
+      title: attrs?.title || "",
+      slug: attrs?.slug || "",
+      description: attrs?.description || attrs?.excerpt || "",
+      categoryName: attrs?.category?.data?.attributes?.name,
+      categorySlug: attrs?.category?.data?.attributes?.slug
     };
   };
 

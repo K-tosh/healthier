@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import { getStrapiMedia } from "@/app/[lang]/utils/api-helpers";
 
 interface FeatureColumnsGroupProps {
   data: {
@@ -14,6 +16,34 @@ interface FeatureColumnsGroupProps {
   };
 }
 
+// Handle different Strapi response structures
+interface StrapiMediaResponse {
+  id?: number;
+  url?: string;
+  name?: string;
+  alternativeText?: string;
+  data?: {
+    attributes: StrapiImage;
+  };
+  attributes?: StrapiImage;
+}
+
+interface StrapiImage {
+  id: number;
+  name: string;
+  alternativeText?: string;
+  caption?: string;
+  width: number;
+  height: number;
+  url: string;
+  formats?: {
+    thumbnail?: { url: string };
+    small?: { url: string };
+    medium?: { url: string };
+    large?: { url: string };
+  };
+}
+
 interface Feature {
   id: string;
   title: string;
@@ -22,7 +52,7 @@ interface Feature {
   newTab?: boolean;
   url?: string;
   text?: string;
-  icon?: string;
+  icon?: StrapiMediaResponse;
   // Additional properties that might be present
   link?: string;
   linkText?: string;
@@ -36,8 +66,8 @@ export default function FeatureColumnsGroup({ data }: FeatureColumnsGroupProps) 
 
   if (!features || features.length === 0) {
     return (
-      <section className="webmd-section webmd-section-white">
-        <div className="webmd-container">
+      <section className="healthier-section healthier-section-white">
+        <div className="healthier-container">
           <div className="text-center py-8">
             <p className="medical-text-muted">No features to display</p>
           </div>
@@ -47,20 +77,20 @@ export default function FeatureColumnsGroup({ data }: FeatureColumnsGroupProps) 
   }
 
   return (
-    <section className="webmd-section webmd-section-white">
-      <div className="webmd-container">
-        <div className="webmd-section-header">
+    <section className="healthier-section healthier-section-white">
+      <div className="healthier-container">
+        <div className="healthier-section-header">
           {heading && (
-            <h2 className="webmd-section-title medical-text-primary">
+            <h2 className="healthier-section-title medical-text-primary">
               {heading}
             </h2>
           )}
           {description && (
-            <p className="webmd-section-subtitle medical-text-secondary">
+            <p className="healthier-section-subtitle medical-text-secondary">
               {description}
             </p>
           )}
-          <div className="webmd-section-divider-line"></div>
+          <div className="healthier-section-divider-line"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
@@ -70,24 +100,53 @@ export default function FeatureColumnsGroup({ data }: FeatureColumnsGroupProps) 
               className="medical-card h-full flex flex-col group p-6"
             >
               <div className="text-center pb-4">
-                <div className="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:shadow-md transition-all duration-300" 
+                <div className="mx-auto w-20 h-20 rounded-2xl flex items-center justify-center mb-6 group-hover:shadow-md transition-all duration-300 overflow-hidden" 
                      style={{ 
                        background: 'linear-gradient(135deg, var(--medical-info-light), var(--medical-accent))',
                        opacity: 0.8
                      }}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    className="w-8 h-8 transition-colors duration-300"
-                    style={{ color: 'var(--medical-primary)' }}
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  {(() => {
+                    // Handle Strapi v5 media structure for icons
+                    let iconUrl = null;
+                    let altText = feature.title;
+                    
+                    if (feature.icon) {
+                      // If icon.url exists directly (Strapi v5 format)
+                      if (feature.icon.url) {
+                        iconUrl = getStrapiMedia(feature.icon.url);
+                        altText = feature.icon.alternativeText || feature.icon.name || feature.title;
+                      }
+                      // If icon has a data property (some Strapi structures)
+                      else if (feature.icon.data && feature.icon.data.attributes) {
+                        iconUrl = getStrapiMedia(feature.icon.data.attributes.url);
+                        altText = feature.icon.data.attributes.alternativeText || feature.icon.data.attributes.name || feature.title;
+                      }
+                      // If icon has attributes directly
+                      else if (feature.icon.attributes) {
+                        iconUrl = getStrapiMedia(feature.icon.attributes.url);
+                        altText = feature.icon.attributes.alternativeText || feature.icon.attributes.name || feature.title;
+                      }
+                    }
+
+                    return iconUrl ? (
+                      <Image
+                        src={iconUrl}
+                        alt={altText}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-300"
+                        sizes="80px"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center" 
+                           style={{ background: 'rgba(255, 255, 255, 0.2)' }}>
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                        {/* Icon placeholder */}
+                      </div>
+                    );
+                  })()}
                 </div>
                 <h3 className="text-xl font-bold medical-text-primary group-hover:text-blue-700 transition-colors duration-300">
                   {feature.title}
@@ -106,6 +165,10 @@ export default function FeatureColumnsGroup({ data }: FeatureColumnsGroupProps) 
                     className="medical-button-secondary px-6 py-2 rounded-full font-medium transition-all duration-300 hover:shadow-md inline-block"
                   >
                     {feature.text || feature.linkText}
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                    {/* Removed SVG icon for clean reading experience */}
                   </Link>
                 </div>
               )}

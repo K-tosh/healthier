@@ -63,8 +63,8 @@ export default function LargeVideo({ data }: LargeVideoProps) {
 
   if (!videoUrl) {
     return (
-      <section className="webmd-section webmd-section-white">
-        <div className="webmd-container">
+      <section className="healthier-section healthier-section-white">
+        <div className="healthier-container">
           <div className="text-center py-8">
             <p className="medical-text-muted">No video available</p>
           </div>
@@ -74,22 +74,22 @@ export default function LargeVideo({ data }: LargeVideoProps) {
   }
 
   return (
-    <section className="webmd-section webmd-section-light">
-      <div className="webmd-container">
+    <section className="healthier-section healthier-section-light">
+      <div className="healthier-container">
         {/* Header */}
         {(heading || description) && (
-          <div className="webmd-section-header">
+          <div className="healthier-section-header">
             {heading && (
-              <h2 className="webmd-section-title medical-text-primary">
+              <h2 className="healthier-section-title medical-text-primary">
                 {heading}
               </h2>
             )}
             {description && (
-              <p className="webmd-section-subtitle medical-text-secondary">
+              <p className="healthier-section-subtitle medical-text-secondary">
                 {description}
               </p>
             )}
-            <div className="webmd-section-divider-line"></div>
+            <div className="healthier-section-divider-line"></div>
           </div>
         )}
 

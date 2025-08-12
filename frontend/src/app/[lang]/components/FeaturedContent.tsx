@@ -120,10 +120,10 @@ export default function FeaturedContent({ data }: FeaturedContentProps) {
   }
 
   return (
-    <section className="webmd-section">
+    <section className="healthier-section">
       <div className="content-container">
         {/* Header */}
-        <div className="webmd-section-header">
+        <div className="healthier-section-header">
           <div className="flex items-center mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,14 +131,14 @@ export default function FeaturedContent({ data }: FeaturedContentProps) {
               </svg>
             </div>
             <div>
-              <h2 className="webmd-section-title">
+              <h2 className="healthier-section-title">
                 {heading}
               </h2>
-              <div className="webmd-section-divider-line"></div>
+              <div className="healthier-section-divider-line"></div>
             </div>
           </div>
           {description && (
-            <p className="webmd-section-subtitle">
+            <p className="healthier-section-subtitle">
               {description}
             </p>
           )}
@@ -194,7 +194,7 @@ export default function FeaturedContent({ data }: FeaturedContentProps) {
                     href={`/blog/${articleData.categorySlug || 'general'}/${articleData.slug}`}
                     className="group block transform hover:-translate-y-1 transition-all duration-300"
                   >
-                    <Card className="h-full flex flex-col webmd-card-feature hover:shadow-xl hover:border-blue-200 transition-all duration-300 overflow-hidden">
+                    <Card className="h-full flex flex-col healthier-card-feature hover:shadow-xl hover:border-blue-200 transition-all duration-300 overflow-hidden">
                       {imageUrl && (
                         <div className="relative h-52 w-full overflow-hidden">
                           <img

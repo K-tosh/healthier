@@ -48,29 +48,29 @@ export default function Heading({ data }: HeadingProps) {
   };
 
   return (
-    <section className="webmd-section webmd-section-white">
-      <div className="webmd-container">
-        <div className={`webmd-section-header ${alignmentClass}`}>
+    <section className="healthier-section healthier-section-white">
+      <div className="healthier-container">
+        <div className={`healthier-section-header ${alignmentClass}`}>
           {heading && (
-            <HeadingTag className={`webmd-section-title medical-text-primary font-bold leading-tight ${getHeadingSize(level)}`}>
+            <HeadingTag className={`healthier-section-title medical-text-primary font-bold leading-tight ${getHeadingSize(level)}`}>
               {heading}
             </HeadingTag>
           )}
           
           {description && (
-            <p className="webmd-section-subtitle medical-text-secondary mt-4 leading-relaxed max-w-4xl">
+            <p className="healthier-section-subtitle medical-text-secondary mt-4 leading-relaxed max-w-4xl">
               {description}
             </p>
           )}
           
           {/* Divider line - only show if we have content and it's not centered */}
           {(heading || description) && !centered && (
-            <div className="webmd-section-divider-line mt-6"></div>
+            <div className="healthier-section-divider-line mt-6"></div>
           )}
           
           {/* Centered divider for centered content */}
           {(heading || description) && centered && (
-            <div className="webmd-section-divider-line mx-auto mt-6"></div>
+            <div className="healthier-section-divider-line mx-auto mt-6"></div>
           )}
         </div>
       </div>

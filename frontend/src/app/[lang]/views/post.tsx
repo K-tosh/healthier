@@ -70,8 +70,8 @@ export default function Post({ data }: { data: Article }) {
     return (
         <div className="min-h-screen bg-white">
             {/* Navigation Section */}
-            <section className="webmd-section webmd-section-white border-b">
-                <div className="webmd-container">
+            <section className="healthier-section healthier-section-white border-b">
+                <div className="healthier-container">
                     <Link 
                         href="/blog" 
                         className="inline-flex items-center font-medium transition-colors duration-200 healthierke-accent-text hover:healthierke-primary-text"
@@ -85,8 +85,8 @@ export default function Post({ data }: { data: Article }) {
             {/* Article Content */}
             <div className="space-y-0">
                 {/* Article Header Section */}
-                <section className="webmd-section webmd-section-white">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-white">
+                    <div className="healthier-container">
                         <article className="max-w-4xl mx-auto">
                             <div className="space-y-6">
                                 <div className="flex flex-wrap gap-2 mb-4">
@@ -98,7 +98,7 @@ export default function Post({ data }: { data: Article }) {
                                     </Badge>
                                 </div>
                                 
-                                <h1 className="webmd-section-heading text-3xl md:text-4xl leading-tight">
+                                <h1 className="healthier-section-heading text-3xl md:text-4xl leading-tight">
                                     {title}
                                 </h1>
                                 
@@ -136,8 +136,8 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* Medical Disclaimer Section */}
-                <section className="webmd-section webmd-section-light">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-light">
+                    <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <Alert style={{ 
                                 backgroundColor: 'var(--medical-info-light)', 
@@ -156,8 +156,8 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* Main Article Content */}
-                <section className="webmd-section webmd-section-white">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-white">
+                    <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <div className="prose prose-lg max-w-none">
                                 {richTextBlock && <RichText data={{ body: markdown }} />}
@@ -172,11 +172,11 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* Share Article Section */}
-                <section className="webmd-section webmd-section-light">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-light">
+                    <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <div className="medical-card p-6">
-                                <h2 className="webmd-section-heading text-xl">Share This Article</h2>
+                                <h2 className="healthier-section-heading text-xl">Share This Article</h2>
                                 <div className="flex items-center flex-wrap gap-3">
                                     <Button 
                                         variant="outline" 
@@ -236,11 +236,11 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* Kenya Health Information */}
-                <section className="webmd-section webmd-section-white">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-white">
+                    <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <div className="medical-card p-6">
-                                <h2 className="webmd-section-heading text-xl">Kenya Health Information</h2>
+                                <h2 className="healthier-section-heading text-xl">Kenya Health Information</h2>
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                                     <div style={{ 
@@ -287,11 +287,11 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* FAQ Section */}
-                <section className="webmd-section webmd-section-light">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-light">
+                    <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                                <h2 className="webmd-section-heading text-xl">Frequently Asked Questions</h2>
+                                <h2 className="healthier-section-heading text-xl">Frequently Asked Questions</h2>
                                 
                                 <Accordion type="single" collapsible className="w-full">
                                     <AccordionItem value="faq-1">
@@ -328,11 +328,11 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* Medical Review Footer */}
-                <section className="webmd-section webmd-section-white border-t">
-                    <div className="webmd-container">
+                <section className="healthier-section healthier-section-white border-t">
+                    <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <div className="medical-card p-6">
-                                <h3 className="webmd-section-heading text-lg">Medical Review</h3>
+                                <h3 className="healthier-section-heading text-lg">Medical Review</h3>
                                 <div className="flex items-start space-x-4">
                                     <Avatar className="h-12 w-12">
                                         {authorImgUrl ? (

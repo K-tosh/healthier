@@ -37,8 +37,8 @@ export default function BottomActions({ data }: BottomActionsProps) {
   }
 
   return (
-    <section className="webmd-section webmd-section-primary">
-      <div className="webmd-container">
+    <section className="healthier-section healthier-section-primary">
+      <div className="healthier-container">
         <div className="text-center space-y-8">
           {/* Header Content */}
           <div className="space-y-4">

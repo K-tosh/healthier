@@ -7,20 +7,70 @@
 const populate = {
   contentSections: {
     on: {
-      "sections.hero": { populate: "*" },
-      "sections.features": { populate: "*" },
-      "sections.bottom-actions": { populate: "*" },
-      "sections.feature-columns-group": { populate: "*" },
-      "sections.feature-rows-group": { populate: "*" },
+      "sections.hero": { 
+        populate: {
+          picture: { populate: "*" },
+          buttons: { populate: "*" }
+        }
+      },
+      "sections.features": {
+        populate: {
+          feature: { 
+            populate: {
+              media: { populate: "*" }
+            }
+          }
+        }
+      },
+      "sections.bottom-actions": { 
+        populate: {
+          buttons: { populate: "*" }
+        }
+      },
+      "sections.feature-columns-group": { 
+        populate: {
+          features: { 
+            populate: {
+              icon: { populate: "*" }
+            }
+          }
+        }
+      },
+      "sections.feature-rows-group": { 
+        populate: {
+          features: {
+            populate: {
+
+              media: { populate: "*" },
+              link: { populate: "*" }
+            }
+          }
+        }
+      },
       "sections.testimonials-group": {
         populate: { testimonials: { populate: "*" } },
       },
-      "sections.large-video": { populate: "*" },
+      "sections.large-video": { 
+        populate: {
+          video: { populate: "*" },
+          poster: { populate: "*" }
+        }
+      },
       "sections.rich-text": { populate: "*" },
       "sections.pricing": {
-        populate: { plans: { populate: "*" } },
+        populate: { 
+          plans: { 
+            populate: {
+              product_features: { populate: "*" }
+            }
+          }
+        }
       },
-      "sections.lead-form": { populate: "*" },
+      "sections.lead-form": { 
+        populate: {
+          submitButton: { populate: "*" }
+        }
+      },
       "sections.heading": { populate: "*" },
       "sections.trending-article": {
         populate: {

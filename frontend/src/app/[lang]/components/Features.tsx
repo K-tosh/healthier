@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { getStrapiMedia } from "@/app/[lang]/utils/api-helpers";
 
 interface FeaturesProps {
   data: {
@@ -7,6 +9,34 @@ interface FeaturesProps {
     description: string;
     feature: Feature[];
   };
+}
+
+interface StrapiImage {
+  id: number;
+  name: string;
+  alternativeText?: string;
+  caption?: string;
+  width: number;
+  height: number;
+  url: string;
+  formats?: {
+    thumbnail?: { url: string };
+    small?: { url: string };
+    medium?: { url: string };
+    large?: { url: string };
+  };
+}
+
+// Handle different Strapi response structures
+interface StrapiMediaResponse {
+  id?: number;
+  url?: string;
+  name?: string;
+  alternativeText?: string;
+  data?: {
+    attributes: StrapiImage;
+  };
+  attributes?: StrapiImage;
 }
 
 interface Feature {
@@ -17,25 +47,52 @@ interface Feature {
   newTab: boolean;
   url: string;
   text: string;
+  media?: StrapiMediaResponse;
 }
 
-function Feature({ title, description, showLink, newTab, url, text }: Feature) {
+function Feature({ title, description, showLink, newTab, url, text, media }: Feature) {
+  // Handle Strapi v5 media structure - media could be an object directly or have nested structure
+  let imageUrl = null;
+  let altText = title;
+  
+  if (media) {
+    // If media.url exists directly (Strapi v5 format)
+    if (media.url) {
+      imageUrl = getStrapiMedia(media.url);
+      altText = media.alternativeText || media.name || title;
+    }
+    // If media has a data property (some Strapi structures)
+    else if (media.data && media.data.attributes) {
+      imageUrl = getStrapiMedia(media.data.attributes.url);
+      altText = media.data.attributes.alternativeText || media.data.attributes.name || title;
+    }
+    // If media has attributes directly
+    else if (media.attributes) {
+      imageUrl = getStrapiMedia(media.attributes.url);
+      altText = media.attributes.alternativeText || media.attributes.name || title;
+    }
+  }
+
   return (
-    <Card className="webmd-card-feature h-full flex flex-col group">
+    <Card className="healthier-card-feature h-full flex flex-col group">
       <CardHeader className="text-center pb-4">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-6 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors duration-300"
-          >
-            <path
-              fillRule="evenodd"
-              d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-              clipRule="evenodd"
+        <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-6 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300 overflow-hidden">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={altText}
+              width={80}
+              height={80}
+              className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-300"
+              sizes="80px"
             />
-          </svg>
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            </div>
+          )}
         </div>
         <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors duration-300">{title}</CardTitle>
       </CardHeader>
@@ -53,7 +110,7 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
           >
             {text}
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </Link>
         </CardFooter>
@@ -64,9 +121,9 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
 
 export default function Features({ data }: FeaturesProps) {
   return (
-    <section className="webmd-section webmd-section-alt">
+    <section className="healthier-section healthier-section-alt">
       <div className="content-container">
-        <div className="webmd-section-header">
+        <div className="healthier-section-header">
           <div className="flex items-center mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,11 +131,11 @@ export default function Features({ data }: FeaturesProps) {
               </svg>
             </div>
             <div>
-              <h2 className="webmd-section-title">{data.heading}</h2>
-              <div className="webmd-section-divider-line"></div>
+              <h2 className="healthier-section-title">{data.heading}</h2>
+              <div className="healthier-section-divider-line"></div>
             </div>
           </div>
-          <p className="webmd-section-subtitle">{data.description}</p>
+          <p className="healthier-section-subtitle">{data.description}</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
