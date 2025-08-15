@@ -52,7 +52,8 @@
         "elements.feature-column",
         "shared.rich-text",
         "sections.heading",
-        "elements.plan"
+        "elements.plan",
+        "sections.contact"
       ]
     },
     "slug": {

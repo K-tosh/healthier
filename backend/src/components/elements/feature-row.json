@@ -8,13 +8,6 @@
   },
   "options": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
-    "description": {
-      "type": "text"
-    },
     "media": {
       "type": "media",
       "multiple": false,
@@ -24,10 +17,17 @@
         "videos"
       ]
     },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
     "link": {
       "type": "component",
-      "repeatable": false,
-      "component": "links.link"
+      "component": "links.link",
+      "repeatable": false
     }
   }
 }

@@ -14,6 +14,7 @@ import MedicalStats from "@/app/[lang]/components/MedicalStats";
 import TestimonialsGroup from "@/app/[lang]/components/TestimonialsGroup";
 import LeadForm from "@/app/[lang]/components/LeadForm";
 import Quote from "@/app/[lang]/components/Quote";
+import Contact from "@/app/[lang]/components/Contact";
 import { Twitter, Facebook, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -59,6 +60,8 @@ const componentMap: { [key: string]: any } = {
   'sections.lead-form': LeadForm,
   'sections.newsletter': LeadForm,
   'sections.newsletter-signup': LeadForm,
+  'sections.contact': Contact,
+  'sections.contact-us': Contact,
   // Add missing Strapi component mappings
   'sections.hero': Hero,
   'sections.feature-rows-group': FeatureRowsGroup,

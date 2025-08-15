@@ -692,6 +692,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'shared.rich-text',
         'sections.heading',
         'elements.plan',
+        'sections.contact',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

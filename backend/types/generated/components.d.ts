@@ -274,6 +274,22 @@ export interface SectionsBrowseConditions extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsContact extends Struct.ComponentSchema {
+  collectionName: 'components_sections_contacts';
+  info: {
+    displayName: 'contact';
+  };
+  attributes: {
+    address: Schema.Attribute.Text;
+    email: Schema.Attribute.Email;
+    mapEmbededUrl: Schema.Attribute.String;
+    officeHours: Schema.Attribute.Text;
+    phone: Schema.Attribute.BigInteger;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsExploreConditions extends Struct.ComponentSchema {
   collectionName: 'components_sections_explore_conditions';
   info: {
@@ -559,6 +575,7 @@ declare module '@strapi/strapi' {
       'meta.metadata': MetaMetadata;
       'sections.bottom-actions': SectionsBottomActions;
       'sections.browse-conditions': SectionsBrowseConditions;
+      'sections.contact': SectionsContact;
       'sections.explore-conditions': SectionsExploreConditions;
       'sections.feature-columns-group': SectionsFeatureColumnsGroup;
       'sections.feature-rows-group': SectionsFeatureRowsGroup;
