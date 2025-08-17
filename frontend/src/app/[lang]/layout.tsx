@@ -7,8 +7,9 @@ import { i18n } from "../../../i18n-config";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import {FALLBACK_SEO} from "@/app/[lang]/utils/constants";
-
+import { FALLBACK_SEO } from "@/app/[lang]/utils/constants";
+import NetworkStatus from "./components/NetworkStatus";
+import PerformanceMonitor from "./components/PerformanceMonitor";
 
 async function getGlobal(lang: string): Promise<any> {
   const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
@@ -36,7 +37,11 @@ async function getGlobal(lang: string): Promise<any> {
   return await fetchAPI(path, urlParamsObject, token);
 }
 
-export async function generateMetadata({ params } : { params: {lang: string}}): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string };
+}): Promise<Metadata> {
   const meta = await getGlobal(params.lang);
 
   if (!meta.data) return FALLBACK_SEO;
@@ -63,7 +68,7 @@ export default async function RootLayout({
   const global = await getGlobal(params.lang);
   // TODO: CREATE A CUSTOM ERROR PAGE
   if (!global.data) return null;
-  
+
   const { notificationBanner, navbar, footer } = global.data.attributes;
 
   const navbarLogoUrl = getStrapiMedia(
@@ -77,6 +82,10 @@ export default async function RootLayout({
   return (
     <html lang={params.lang}>
       <body>
+        <NetworkStatus />
+        {/* PerformanceMonitor disabled for production - only enable for development debugging */}
+        {/* <PerformanceMonitor enabled={process.env.NODE_ENV === 'development'} /> */}
+        
         <Navbar
           links={navbar.links}
           logoUrl={navbarLogoUrl}
@@ -96,6 +105,25 @@ export default async function RootLayout({
           categoryLinks={footer.categories.data}
           legalLinks={footer.legalLinks}
           socialLinks={footer.socialLinks}
+        />
+        
+        {/* Service Worker Registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw-enhanced.js')
+                    .then(function(registration) {
+                      console.log('[SW] Registered successfully');
+                    })
+                    .catch(function(registrationError) {
+                      console.log('[SW] Registration failed:', registrationError);
+                    });
+                });
+              }
+            `,
+          }}
         />
       </body>
     </html>

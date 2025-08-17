@@ -1,4 +1,4 @@
-import Image from "next/image";
+import OptimizedImage from "./OptimizedImage";
 import { getStrapiMedia } from "@/app/[lang]/utils/api-helpers";
 
 interface Logo {
@@ -115,12 +115,13 @@ export default function Logos({ data }: LogosProps) {
                 className="group relative p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-gray-200"
               >
                 <div className="relative h-16 w-full">
-                  <Image
+                  <OptimizedImage
                     src={imageUrl}
                     alt={altText}
-                    fill
+                    fill={true}
                     className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:scale-105"
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+                    quality={75}
                   />
                 </div>
               </div>

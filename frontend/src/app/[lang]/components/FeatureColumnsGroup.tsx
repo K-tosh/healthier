@@ -93,7 +93,7 @@ export default function FeatureColumnsGroup({ data }: FeatureColumnsGroupProps) 
           <div className="healthier-section-divider-line"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mt-8 md:mt-10 lg:mt-12">
           {features.map((feature: Feature, index: number) => (
             <div
               key={feature.id || `feature-${index}`}

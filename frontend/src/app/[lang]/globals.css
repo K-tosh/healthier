@@ -118,13 +118,13 @@ body {
 /* Professional HealthierKE-Inspired Section System */
 .healthier-section {
   position: relative;
-  padding: 4rem 0;
+  padding: 1rem 0; /* Reduced from 4rem for better spacing */
   background: var(--medical-background);
 }
 
 @media (min-width: 1024px) {
   .healthier-section {
-    padding: 5rem 0;
+    padding: 1.25rem 0; /* Reduced from 5rem for desktop */
   }
 }
 
@@ -164,12 +164,12 @@ body {
 
 /* Section Headers - HealthierKE Style with HealthierKE colors */
 .healthier-section-header {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 1024px) {
   .healthier-section-header {
-    margin-bottom: 4rem;
+    margin-bottom: 1.25rem;
   }
 }
 
@@ -231,7 +231,7 @@ body {
 
 /* Content sections - Reduced spacing */
 .content-section {
-  @apply py-12 lg:py-16; /* Reduced from py-16 lg:py-20 */
+  @apply py-4 lg:py-6; /* Reduced from py-16 lg:py-20 */
 }
 
 .content-container {
@@ -244,7 +244,7 @@ body {
 }
 
 .content-section-hero {
-  @apply py-16 lg:py-20; /* Keep hero sections larger */
+  @apply py-6 lg:py-8; /* Keep hero sections larger */
 }
 
 /* Section transitions */
@@ -268,6 +268,38 @@ body {
 
 .healthier-card-highlight {
   @apply bg-gradient-to-br from-blue-50 to-white border border-blue-200 rounded-xl shadow-sm;
+}
+
+/* Compact section for article pages with reduced spacing */
+.healthier-section-compact {
+  position: relative;
+  padding: 1.5rem 0; /* More compact than regular sections */
+  background: var(--medical-background);
+}
+
+@media (min-width: 1024px) {
+  .healthier-section-compact {
+    padding: 2rem 0; /* Compact desktop spacing */
+  }
+}
+
+.healthier-section-compact:not(:first-child) {
+  border-top: 1px solid var(--medical-border);
+}
+
+/* Special spacing for connected article sections */
+.article-content-group {
+  margin-bottom: 0;
+}
+
+.article-content-group > .healthier-section:not(:last-child) {
+  margin-bottom: -1rem; /* Negative margin to reduce gap between connected sections */
+}
+
+@media (min-width: 1024px) {
+  .article-content-group > .healthier-section:not(:last-child) {
+    margin-bottom: -1.5rem; /* Larger reduction on desktop */
+  }
 }
 
 /* Typography enhancements */
@@ -350,7 +382,7 @@ body {
 
 /* Horizontal rules */
 .rich-text hr {
-  @apply border-gray-300 my-8;
+  @apply border-gray-300 my-2;
 }
 
 .rich-text a {
@@ -403,7 +435,7 @@ body {
 
 /* Code blocks */
 .rich-text pre {
-  @apply font-mono bg-gray-900 text-gray-100 rounded p-4  my-6;
+  @apply bg-gray-100 rounded-lg p-3 overflow-x-auto my-3;
 }
 
 .rich-text code {
@@ -425,7 +457,7 @@ body {
 
 /* Images */
 .rich-text img {
-  @apply w-full object-cover rounded-xl my-6;
+  @apply w-full object-cover rounded-xl my-3;
 }
 
 /* Custom containers */
@@ -765,4 +797,99 @@ body {
 .medical-button-secondary:hover {
   background-color: var(--medical-info-light);
   border-color: var(--medical-primary);
+}
+
+/* Card spacing improvements for cohesive layout */
+.card-grid {
+  display: grid;
+  gap: 1rem; /* Reduced from default 1.5rem */
+}
+
+@media (min-width: 768px) {
+  .card-grid {
+    gap: 1.25rem; /* Slightly larger on tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    gap: 1.5rem; /* Standard spacing on desktop */
+  }
+}
+
+/* Reduced spacing between consecutive cards */
+.medical-card + .medical-card {
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .medical-card + .medical-card {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Compact card variant for tighter layouts */
+.medical-card-compact {
+  background: white;
+  border: 1px solid var(--medical-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .medical-card-compact {
+    padding: 1.25rem;
+  }
+}
+
+.medical-card-compact:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Section spacing overrides for cards */
+.healthier-section .medical-card:first-child {
+  margin-top: 0;
+}
+
+.healthier-section .medical-card:last-child {
+  margin-bottom: 0;
+}
+
+/* Grid layouts with improved spacing */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .articles-grid {
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .articles-grid {
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+/* Compact spacing for mobile to fit more content */
+@media (max-width: 640px) {
+  .healthier-section-compact {
+    padding: 1rem 0;
+  }
+  
+  .medical-card {
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-grid {
+    gap: 0.75rem;
+  }
 }

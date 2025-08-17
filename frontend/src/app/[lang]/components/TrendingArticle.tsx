@@ -111,7 +111,7 @@ export default function TrendingArticle({ data }: TrendingArticleProps) {
   return (
     <section className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             {data.heading || "Trending Health Topics"}
           </h2>
@@ -122,7 +122,7 @@ export default function TrendingArticle({ data }: TrendingArticleProps) {
           )}
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           {/* Main Article */}
           <Link
             href={`/blog/${mainData.categorySlug || 'general'}/${mainData.slug}`}
@@ -167,7 +167,7 @@ export default function TrendingArticle({ data }: TrendingArticleProps) {
           </Link>
           
           {/* Other Articles */}
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {otherArticles.slice(0, 4).map((article) => {
               const otherImageUrl = getImageUrl(article);
               const otherAltText = getAltText(article);

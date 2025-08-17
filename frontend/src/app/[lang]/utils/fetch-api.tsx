@@ -12,10 +12,9 @@ export async function fetchAPI(path: string, query: any, authToken?: string) {
       "Content-Type": "application/json",
       "Strapi-Response-Format": "v4",
     },
-    // Disable caching to always get fresh data from Strapi
-    cache: "no-store" as RequestCache,
+    // Use default caching for static generation
     next: { 
-      revalidate: 0,  // Disable Next.js caching
+      revalidate: 3600,  // Revalidate every hour
     },
   };
 

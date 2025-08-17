@@ -51,7 +51,7 @@ export default function Contact({ data }: ContactProps) {
   return (
     <section className="healthier-section">
       <div className="content-container">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="healthier-section-title">{title}</h2>
           <div className="healthier-section-divider-line mx-auto mb-6"></div>
           <p className="healthier-section-subtitle max-w-3xl mx-auto">

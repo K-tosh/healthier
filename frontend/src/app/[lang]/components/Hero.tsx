@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import HighlightedText from "./HighlightedText";
+import OptimizedImage from "./OptimizedImage";
 import { getStrapiMedia } from "../utils/api-helpers";
 import { Button } from "@/components/ui/button";
 
@@ -115,12 +115,15 @@ export default function Hero({ data }: HeroProps) {
             <div className="relative">
               <div className="absolute -inset-6 rounded-3xl blur-xl opacity-15 animate-pulse" style={{ background: 'linear-gradient(135deg, var(--medical-primary), var(--medical-accent), var(--medical-secondary))' }}></div>
               <div className="relative medical-card-elevated p-3 rounded-3xl">
-                <Image
-                  src={imgUrl || ""}
+                <OptimizedImage
+                  src={imgUrl || "/placeholder-health.svg"}
                   alt={data.picture.data.attributes.alternativeText || "Health illustration"}
                   width={600}
                   height={500}
                   className="rounded-2xl object-cover w-full h-auto max-w-lg lg:max-w-xl"
+                  priority={true}
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                 />
               </div>
               

@@ -80,9 +80,9 @@ export default function Footer({
         </div>
       </div>
 
-      <div className="py-16">
+      <div className="py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Logo and Description */}
             <div className="md:col-span-1">
               <Logo src={logoUrl}>

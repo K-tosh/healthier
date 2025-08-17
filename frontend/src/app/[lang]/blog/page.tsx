@@ -68,7 +68,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="max-w-7xl mx-auto px-4 py-12">
           <PageHeader 
             heading="Health & Wellness Blog" 
             text="Expert insights, health tips, and medical updates from our team of healthcare professionals" 

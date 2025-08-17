@@ -163,10 +163,10 @@ export default function ExploreConditions({ data }: ExploreConditionsProps) {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="healthier-section bg-white">
       <div className="max-w-7xl mx-auto px-4">
         {/* Heading Row */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             {heading}
           </h2>
@@ -197,7 +197,7 @@ export default function ExploreConditions({ data }: ExploreConditionsProps) {
               })}
             </div>
             
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <Link 
                 href="/conditions" 
                 className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors duration-200"
@@ -218,7 +218,7 @@ export default function ExploreConditions({ data }: ExploreConditionsProps) {
             
             {/* Loading State */}
             {isLoadingArticles && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
                 {[1, 2, 3].map((index) => (
                   <div key={index} className="animate-pulse">
                     <Card className="h-full flex flex-col medical-card overflow-hidden">
@@ -238,7 +238,7 @@ export default function ExploreConditions({ data }: ExploreConditionsProps) {
             
             {/* Articles Grid */}
             {!isLoadingArticles && validArticles.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
               {validArticles.slice(0, 3).map((article: Article) => {
                 // Handle different cover data structures with proper null checking
                 let imageUrl = null;

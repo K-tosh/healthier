@@ -1,0 +1,25 @@
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A958B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2D6A4F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="192" height="192" fill="url(#healthGrad)" rx="32"/>
+  
+  <!-- Medical Cross -->
+  <g fill="white">
+    <!-- Vertical bar -->
+    <rect x="84" y="48" width="24" height="96" rx="4"/>
+    <!-- Horizontal bar -->
+    <rect x="60" y="84" width="72" height="24" rx="4"/>
+  </g>
+  
+  <!-- Heart accent -->
+  <path d="M96 140 C 96 140, 80 132, 80 148 C 80 156, 96 172, 96 172 C 96 172, 112 156, 112 148 C 112 132, 96 140, 96 140 Z" fill="white" opacity="0.9"/>
+  
+  <!-- Brand text -->
+  <text x="96" y="180" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">HealthierKE</text>
+</svg>

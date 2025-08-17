@@ -31,6 +31,7 @@ interface Article {
             data: {
                 attributes: {
                     name: string;
+                    bio?: string;
                     avatar: {
                         data: {
                             attributes: {
@@ -67,10 +68,40 @@ export default function Post({ data }: { data: Article }) {
     // Extract category from data if available
     const category = data.attributes.category?.data?.attributes?.name || 'Health Article';
 
+    // Extract headings from blocks for table of contents
+    const extractHeadings = () => {
+        const headings: { title: string; id: string }[] = [];
+        
+        // Extract from rich text content (markdown headings)
+        if (markdown) {
+            const headingMatches = markdown.match(/^#{1,6}\s+(.+)$/gm);
+            if (headingMatches) {
+                headingMatches.forEach((match: string) => {
+                    const title = match.replace(/^#{1,6}\s+/, '').trim();
+                    const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    headings.push({ title, id });
+                });
+            }
+        }
+
+        // Extract from other blocks that have titles
+        blocks.forEach((block) => {
+            if (block.__component !== 'shared.rich-text' && (block.title || block.heading)) {
+                const title = block.title || block.heading;
+                const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                headings.push({ title, id });
+            }
+        });
+
+        return headings;
+    };
+
+    const headings = extractHeadings();
+
     return (
         <div className="min-h-screen bg-white">
             {/* Navigation Section */}
-            <section className="healthier-section healthier-section-white border-b">
+            <section className="healthier-section-compact healthier-section-white border-b">
                 <div className="healthier-container">
                     <Link 
                         href="/blog" 
@@ -82,19 +113,16 @@ export default function Post({ data }: { data: Article }) {
                 </div>
             </section>
 
-            {/* Article Content */}
-            <div className="space-y-0">
+            {/* Article Content Group - Connected sections with reduced spacing */}
+            <div className="article-content-group">
                 {/* Article Header Section */}
-                <section className="healthier-section healthier-section-white">
+                <section className="healthier-section-compact healthier-section-white">
                     <div className="healthier-container">
                         <article className="max-w-4xl mx-auto">
                             <div className="space-y-6">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     <Badge className="medical-badge medical-badge-primary">
                                         {category}
-                                    </Badge>
-                                    <Badge className="medical-badge medical-badge-success">
-                                        Kenya Health Info
                                     </Badge>
                                 </div>
                                 
@@ -121,7 +149,7 @@ export default function Post({ data }: { data: Article }) {
 
                             {/* Featured Image */}
                             {imageUrl && (
-                                <div className="my-8">
+                                <div className="my-6">
                                     <Image 
                                         src={imageUrl} 
                                         alt={title} 
@@ -135,28 +163,38 @@ export default function Post({ data }: { data: Article }) {
                     </div>
                 </section>
 
-                {/* Medical Disclaimer Section */}
-                <section className="healthier-section healthier-section-light">
-                    <div className="healthier-container">
-                        <div className="max-w-4xl mx-auto">
-                            <Alert style={{ 
-                                backgroundColor: 'var(--medical-info-light)', 
-                                borderColor: 'var(--healthierke-vista-blue)',
-                                color: 'var(--medical-text-primary)'
-                            }}>
-                                <AlertTriangle className="h-4 w-4" style={{ color: 'var(--healthierke-vista-blue)' }} />
-                                <AlertTitle style={{ color: 'var(--medical-text-primary)' }}>Medical Information Notice</AlertTitle>
-                                <AlertDescription style={{ color: 'var(--medical-text-secondary)' }}>
-                                    This article is for educational purposes only and should not replace professional medical advice. 
-                                    Always consult with a qualified healthcare provider for medical concerns.
-                                </AlertDescription>
-                            </Alert>
+                {/* Table of Contents */}
+                {headings.length > 0 && (
+                    <section className="healthier-section-compact healthier-section-light">
+                        <div className="healthier-container">
+                            <div className="max-w-4xl mx-auto">
+                                <div className="medical-card p-4 md:p-6 border-l-4 border-blue-600">
+                                    <h2 className="text-lg md:text-xl font-bold text-gray-900 tracking-tight mb-3 md:mb-4">
+                                        Table of Contents
+                                    </h2>
+                                    <nav className="flex flex-wrap items-center gap-1 text-sm md:text-base leading-relaxed">
+                                        {headings.map((heading, index) => (
+                                            <span key={heading.id} className="contents">
+                                                <Link 
+                                                    href={`#${heading.id}`} 
+                                                    className="text-blue-700 hover:text-blue-900 transition-colors font-bold tracking-tight hover:underline"
+                                                >
+                                                    {heading.title}
+                                                </Link>
+                                                {index < headings.length - 1 && (
+                                                    <span className="text-gray-400 mx-2 font-bold text-lg">|</span>
+                                                )}
+                                            </span>
+                                        ))}
+                                    </nav>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* Main Article Content */}
-                <section className="healthier-section healthier-section-white">
+                <section className="healthier-section-compact healthier-section-white">
                     <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
                             <div className="prose prose-lg max-w-none">
@@ -172,12 +210,12 @@ export default function Post({ data }: { data: Article }) {
                 </section>
 
                 {/* Share Article Section */}
-                <section className="healthier-section healthier-section-light">
+                <section className="healthier-section-compact healthier-section-light">
                     <div className="healthier-container">
                         <div className="max-w-4xl mx-auto">
-                            <div className="medical-card p-6">
-                                <h2 className="healthier-section-heading text-xl">Share This Article</h2>
-                                <div className="flex items-center flex-wrap gap-3">
+                            <div className="medical-card p-4 md:p-6">
+                                <h2 className="healthier-section-heading text-lg md:text-xl mb-3 md:mb-4">Share This Article</h2>
+                                <div className="flex items-center flex-wrap gap-2 md:gap-3">
                                     <Button 
                                         variant="outline" 
                                         size="sm" 
@@ -235,128 +273,20 @@ export default function Post({ data }: { data: Article }) {
                     </div>
                 </section>
 
-                {/* Kenya Health Information */}
-                <section className="healthier-section healthier-section-white">
-                    <div className="healthier-container">
-                        <div className="max-w-4xl mx-auto">
-                            <div className="medical-card p-6">
-                                <h2 className="healthier-section-heading text-xl">Kenya Health Information</h2>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                                    <div style={{ 
-                                        backgroundColor: 'var(--medical-error-light)', 
-                                        borderColor: '#dc2626',
-                                        border: '1px solid'
-                                    }} className="rounded-lg p-4">
-                                        <h3 className="font-semibold flex items-center mb-3" style={{ color: '#dc2626' }}>
-                                            <AlertTriangle className="w-5 h-5 mr-2" />
-                                            Emergency Contacts
-                                        </h3>
-                                        <div className="space-y-3">
-                                            <div>
-                                                <p className="font-medium" style={{ color: '#dc2626' }}>Emergency Services</p>
-                                                <p style={{ color: '#b91c1c' }}>Call 999 or 112</p>
-                                            </div>
-                                            <div>
-                                                <p className="font-medium" style={{ color: '#dc2626' }}>Ministry of Health Hotline</p>
-                                                <p style={{ color: '#b91c1c' }}>0800 721 253</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style={{ 
-                                        backgroundColor: 'var(--medical-info-light)', 
-                                        borderColor: 'var(--medical-accent)',
-                                        border: '1px solid'
-                                    }} className="rounded-lg p-4">
-                                        <h3 className="font-semibold mb-3" style={{ color: 'var(--medical-primary)' }}>Healthcare Access</h3>
-                                        <div className="text-sm space-y-2">
-                                            <p style={{ color: 'var(--medical-text-secondary)' }}>
-                                                This health information is particularly relevant for individuals living in Kenya. 
-                                                Healthcare access and treatment options may vary by region.
-                                            </p>
-                                            <p style={{ color: 'var(--medical-text-secondary)' }}>
-                                                For local healthcare facilities and specialists, consult your nearest health center.
-                                            </p>
-                                        </div>
-                                    </div>
+                {/* Author Bio Section */}
+                {author && (
+                    <section className="healthier-section-compact healthier-section-white" style={{ paddingTop: '1rem', paddingBottom: '2rem' }}>
+                        <div className="healthier-container">
+                            <div className="max-w-4xl mx-auto">
+                                <div className="prose prose-lg max-w-none [&_img]:w-16 [&_img]:h-16 [&_img]:rounded-full [&_img]:object-cover [&_img]:inline [&_img]:mr-3 [&_img]:align-middle">
+                                    <RichText data={{ 
+                                        body: `${authorImgUrl ? `![${author.name}](${authorImgUrl}) ` : ''}**${author.name}** - Author\n\n${author.bio || ''}` 
+                                    }} />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                {/* FAQ Section */}
-                <section className="healthier-section healthier-section-light">
-                    <div className="healthier-container">
-                        <div className="max-w-4xl mx-auto">
-                            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                                <h2 className="healthier-section-heading text-xl">Frequently Asked Questions</h2>
-                                
-                                <Accordion type="single" collapsible className="w-full">
-                                    <AccordionItem value="faq-1">
-                                        <AccordionTrigger className="text-left font-medium">
-                                            Is this information specific to Kenya?
-                                        </AccordionTrigger>
-                                        <AccordionContent className="text-gray-700">
-                                            Yes, this health information has been tailored to be relevant for individuals living in Kenya, 
-                                            taking into account local healthcare systems, prevalent conditions, and available treatments.
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                    <AccordionItem value="faq-2">
-                                        <AccordionTrigger className="text-left font-medium">
-                                            Should I consult a doctor before following this advice?
-                                        </AccordionTrigger>
-                                        <AccordionContent className="text-gray-700">
-                                            Absolutely. This article is for educational purposes only. Always consult with a qualified 
-                                            healthcare provider before making any medical decisions or if you have specific health concerns.
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                    <AccordionItem value="faq-3">
-                                        <AccordionTrigger className="text-left font-medium">
-                                            How often is this information updated?
-                                        </AccordionTrigger>
-                                        <AccordionContent className="text-gray-700">
-                                            Our medical content is regularly reviewed and updated to ensure accuracy. 
-                                            The last update date is shown in the article header.
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </Accordion>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Medical Review Footer */}
-                <section className="healthier-section healthier-section-white border-t">
-                    <div className="healthier-container">
-                        <div className="max-w-4xl mx-auto">
-                            <div className="medical-card p-6">
-                                <h3 className="healthier-section-heading text-lg">Medical Review</h3>
-                                <div className="flex items-start space-x-4">
-                                    <Avatar className="h-12 w-12">
-                                        {authorImgUrl ? (
-                                            <AvatarImage src={authorImgUrl} alt={author?.name} />
-                                        ) : (
-                                            <AvatarFallback style={{ backgroundColor: 'var(--medical-primary)', color: 'white' }}>
-                                                {author?.name?.charAt(0) || 'M'}
-                                            </AvatarFallback>
-                                        )}
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-semibold" style={{ color: 'var(--medical-text-primary)' }}>{author?.name || 'Medical Team'}</p>
-                                        <p className="text-sm" style={{ color: 'var(--medical-text-secondary)' }}>Medical Writer & Health Expert</p>
-                                        <p className="text-sm mt-2" style={{ color: 'var(--medical-text-muted)' }}>
-                                            This article has been medically reviewed to ensure accuracy and reliability of health information. 
-                                            Our medical review team consists of qualified healthcare professionals who specialize in various 
-                                            areas of medicine and are committed to providing accurate, up-to-date health information.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                    </section>
+                )}
             </div>
         </div>
     );
