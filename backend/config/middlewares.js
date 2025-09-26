@@ -32,6 +32,6 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
-  // Health content response transformer (after body parser)
-  'global::health-error-handler',
+  // Temporarily disable health error handler to fix admin panel
+  // 'global::health-error-handler',
 ];
