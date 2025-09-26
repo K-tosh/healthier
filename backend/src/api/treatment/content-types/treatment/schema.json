@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "treatments",
+  "info": {
+    "singularName": "treatment",
+    "pluralName": "treatments",
+    "displayName": "Treatment",
+    "description": "Treatment options for health conditions"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "medication",
+        "lifestyle",
+        "surgical",
+        "therapy",
+        "alternative",
+        "emergency"
+      ],
+      "default": "medication"
+    },
+    "relatedConditions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::condition.condition"
+    },
+    "sideEffects": {
+      "type": "richtext"
+    },
+    "contraindications": {
+      "type": "richtext"
+    },
+    "dosageInformation": {
+      "type": "richtext"
+    },
+    "duration": {
+      "type": "text"
+    },
+    "estimatedCost": {
+      "type": "enumeration",
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "varies"
+      ],
+      "default": "varies"
+    },
+    "availableInKenya": {
+      "type": "boolean",
+      "default": true
+    },
+    "requiresPrescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

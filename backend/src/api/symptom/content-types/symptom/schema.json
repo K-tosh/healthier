@@ -1,0 +1,80 @@
+{
+  "kind": "collectionType",
+  "collectionName": "symptoms",
+  "info": {
+    "singularName": "symptom",
+    "pluralName": "symptoms",
+    "displayName": "Symptom",
+    "description": "Individual symptoms that can be linked to health conditions"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "commonSeverity": {
+      "type": "enumeration",
+      "enum": [
+        "mild",
+        "moderate",
+        "severe",
+        "emergency"
+      ],
+      "default": "moderate"
+    },
+    "bodySystem": {
+      "type": "enumeration",
+      "enum": [
+        "cardiovascular",
+        "respiratory",
+        "digestive",
+        "nervous",
+        "musculoskeletal",
+        "endocrine",
+        "immune",
+        "reproductive",
+        "urinary",
+        "integumentary",
+        "general"
+      ],
+      "default": "general"
+    },
+    "relatedConditions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::condition.condition"
+    },
+    "whenToSeekCare": {
+      "type": "enumeration",
+      "enum": [
+        "self_care",
+        "routine_checkup",
+        "urgent",
+        "emergency"
+      ],
+      "default": "routine_checkup"
+    },
+    "commonInKenya": {
+      "type": "boolean",
+      "default": false
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}
