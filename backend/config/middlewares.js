@@ -32,6 +32,6 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
-  // Temporarily disable health error handler to fix admin panel
-  // 'global::health-error-handler',
+  // Re-enable health error handler now that permissions are working
+  'global::health-error-handler',
 ];
