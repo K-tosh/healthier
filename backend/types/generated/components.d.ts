@@ -128,6 +128,78 @@ export interface ElementsTestimonial extends Struct.ComponentSchema {
   };
 }
 
+export interface HealthFactItem extends Struct.ComponentSchema {
+  collectionName: 'components_health_fact_items';
+  info: {
+    description: 'Individual fact item for health facts component';
+    displayName: 'Fact Item';
+    icon: 'info-circle';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    isKenyaSpecific: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    source: Schema.Attribute.Text;
+    statistic: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HealthHealthFacts extends Struct.ComponentSchema {
+  collectionName: 'components_health_health_facts';
+  info: {
+    description: 'Display key health facts and statistics';
+    displayName: 'Health Facts';
+    icon: 'chart-bar';
+  };
+  attributes: {
+    facts: Schema.Attribute.Component<'health.fact-item', true>;
+    lastVerified: Schema.Attribute.Date;
+    sourceAttribution: Schema.Attribute.Text;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Key Health Facts'>;
+  };
+}
+
+export interface HealthSymptomList extends Struct.ComponentSchema {
+  collectionName: 'components_health_symptom_lists';
+  info: {
+    description: 'Display symptoms for conditions';
+    displayName: 'Symptom List';
+    icon: 'thermometer';
+  };
+  attributes: {
+    groupBySeverity: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    showSeverity: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    symptoms: Schema.Attribute.Relation<'manyToMany', 'api::symptom.symptom'>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Common Symptoms'>;
+  };
+}
+
+export interface HealthTreatmentOptions extends Struct.ComponentSchema {
+  collectionName: 'components_health_treatment_options';
+  info: {
+    description: 'Display treatment options for conditions';
+    displayName: 'Treatment Options';
+    icon: 'pills';
+  };
+  attributes: {
+    consultationAdvice: Schema.Attribute.RichText;
+    groupByType: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    showCosts: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Treatment Options'>;
+    treatments: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::treatment.treatment'
+    >;
+  };
+}
+
 export interface LayoutFooter extends Struct.ComponentSchema {
   collectionName: 'components_layout_footers';
   info: {
@@ -232,6 +304,49 @@ export interface LinksSocialLink extends Struct.ComponentSchema {
     >;
     text: Schema.Attribute.String & Schema.Attribute.Required;
     url: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface MedicalEmergencyAlert extends Struct.ComponentSchema {
+  collectionName: 'components_medical_emergency_alerts';
+  info: {
+    description: 'Alert component for emergency medical situations';
+    displayName: 'Emergency Alert';
+    icon: 'ambulance';
+  };
+  attributes: {
+    alertLevel: Schema.Attribute.Enumeration<
+      ['info', 'warning', 'danger', 'emergency']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'warning'>;
+    emergencyNumber: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'999'>;
+    icon: Schema.Attribute.Media<'images'>;
+    message: Schema.Attribute.RichText & Schema.Attribute.Required;
+    showCallButton: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface MedicalMedicalDisclaimer extends Struct.ComponentSchema {
+  collectionName: 'components_medical_medical_disclaimers';
+  info: {
+    description: 'Standardized medical disclaimer for health content';
+    displayName: 'Medical Disclaimer';
+    icon: 'exclamation-triangle';
+  };
+  attributes: {
+    content: Schema.Attribute.RichText &
+      Schema.Attribute.DefaultTo<'This information is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider before making any decisions about your health.'>;
+    emergencyNumber: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'999'>;
+    lastUpdated: Schema.Attribute.Date;
+    showEmergencyWarning: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Medical Disclaimer'>;
   };
 }
 
@@ -565,6 +680,10 @@ declare module '@strapi/strapi' {
       'elements.notification-banner': ElementsNotificationBanner;
       'elements.plan': ElementsPlan;
       'elements.testimonial': ElementsTestimonial;
+      'health.fact-item': HealthFactItem;
+      'health.health-facts': HealthHealthFacts;
+      'health.symptom-list': HealthSymptomList;
+      'health.treatment-options': HealthTreatmentOptions;
       'layout.footer': LayoutFooter;
       'layout.logo': LayoutLogo;
       'layout.navbar': LayoutNavbar;
@@ -572,6 +691,8 @@ declare module '@strapi/strapi' {
       'links.button-link': LinksButtonLink;
       'links.link': LinksLink;
       'links.social-link': LinksSocialLink;
+      'medical.emergency-alert': MedicalEmergencyAlert;
+      'medical.medical-disclaimer': MedicalMedicalDisclaimer;
       'meta.metadata': MetaMetadata;
       'sections.bottom-actions': SectionsBottomActions;
       'sections.browse-conditions': SectionsBrowseConditions;

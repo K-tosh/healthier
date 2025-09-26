@@ -376,7 +376,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
-    description: 'Create your blog content';
+    description: 'Create your health content and explainers';
     displayName: 'Article';
     pluralName: 'articles';
     singularName: 'article';
@@ -385,6 +385,18 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    articleType: Schema.Attribute.Enumeration<
+      [
+        'overview',
+        'symptoms',
+        'treatment',
+        'prevention',
+        'lifestyle',
+        'emergency',
+        'general',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'general'>;
     authorsBio: Schema.Attribute.Relation<'manyToOne', 'api::author.author'>;
     blocks: Schema.Attribute.DynamicZone<
       [
@@ -405,16 +417,40 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 256;
       }>;
+    healthDisclaimer: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    lastMedicalUpdate: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::article.article'
     > &
       Schema.Attribute.Private;
+    medicallyReviewed: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    medicalReviewer: Schema.Attribute.Text;
+    priority: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
+    readingTime: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<5>;
+    relatedConditions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::condition.condition'
+    >;
+    reviewDate: Schema.Attribute.Date;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    slug: Schema.Attribute.UID<'title'>;
-    title: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    targetAudience: Schema.Attribute.Enumeration<
+      ['general_public', 'healthcare_workers', 'patients', 'caregivers']
+    > &
+      Schema.Attribute.DefaultTo<'general_public'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -637,6 +673,58 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiHealthTopicHealthTopic extends Struct.CollectionTypeSchema {
+  collectionName: 'health_topics';
+  info: {
+    description: 'Major health areas like Diabetes, Cardiovascular, etc.';
+    displayName: 'Health Topic';
+    pluralName: 'health-topics';
+    singularName: 'health-topic';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    coverImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText & Schema.Attribute.Required;
+    featuredArticles: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::article.article'
+    >;
+    icon: Schema.Attribute.Media<'images'>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    keyStatistics: Schema.Attribute.RichText;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::health-topic.health-topic'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    overview: Schema.Attribute.RichText;
+    priority: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    relatedConditions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::condition.condition'
+    >;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    shortDescription: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    themeColor: Schema.Attribute.String & Schema.Attribute.DefaultTo<'#3B82F6'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLeadFormSubmissionLeadFormSubmission
   extends Struct.CollectionTypeSchema {
   collectionName: 'lead_form_submissions';
@@ -712,6 +800,11 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.heading',
         'elements.plan',
         'sections.contact',
+        'medical.medical-disclaimer',
+        'medical.emergency-alert',
+        'health.health-facts',
+        'health.symptom-list',
+        'health.treatment-options',
       ]
     > &
       Schema.Attribute.SetPluginOptions<{
@@ -785,6 +878,126 @@ export interface ApiProductFeatureProductFeature
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSymptomSymptom extends Struct.CollectionTypeSchema {
+  collectionName: 'symptoms';
+  info: {
+    description: 'Individual symptoms that can be linked to health conditions';
+    displayName: 'Symptom';
+    pluralName: 'symptoms';
+    singularName: 'symptom';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    bodySystem: Schema.Attribute.Enumeration<
+      [
+        'cardiovascular',
+        'respiratory',
+        'digestive',
+        'nervous',
+        'musculoskeletal',
+        'endocrine',
+        'immune',
+        'reproductive',
+        'urinary',
+        'integumentary',
+        'general',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'general'>;
+    commonInKenya: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    commonSeverity: Schema.Attribute.Enumeration<
+      ['mild', 'moderate', 'severe', 'emergency']
+    > &
+      Schema.Attribute.DefaultTo<'moderate'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::symptom.symptom'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    relatedConditions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::condition.condition'
+    >;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    whenToSeekCare: Schema.Attribute.Enumeration<
+      ['self_care', 'routine_checkup', 'urgent', 'emergency']
+    > &
+      Schema.Attribute.DefaultTo<'routine_checkup'>;
+  };
+}
+
+export interface ApiTreatmentTreatment extends Struct.CollectionTypeSchema {
+  collectionName: 'treatments';
+  info: {
+    description: 'Treatment options for health conditions';
+    displayName: 'Treatment';
+    pluralName: 'treatments';
+    singularName: 'treatment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    availableInKenya: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    contraindications: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.RichText & Schema.Attribute.Required;
+    dosageInformation: Schema.Attribute.RichText;
+    duration: Schema.Attribute.Text;
+    estimatedCost: Schema.Attribute.Enumeration<
+      ['low', 'moderate', 'high', 'varies']
+    > &
+      Schema.Attribute.DefaultTo<'varies'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::treatment.treatment'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    relatedConditions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::condition.condition'
+    >;
+    requiresPrescription: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    sideEffects: Schema.Attribute.RichText;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<
+      [
+        'medication',
+        'lifestyle',
+        'surgical',
+        'therapy',
+        'alternative',
+        'emergency',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'medication'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1306,9 +1519,12 @@ declare module '@strapi/strapi' {
       'api::condition-group.condition-group': ApiConditionGroupConditionGroup;
       'api::condition.condition': ApiConditionCondition;
       'api::global.global': ApiGlobalGlobal;
+      'api::health-topic.health-topic': ApiHealthTopicHealthTopic;
       'api::lead-form-submission.lead-form-submission': ApiLeadFormSubmissionLeadFormSubmission;
       'api::page.page': ApiPagePage;
       'api::product-feature.product-feature': ApiProductFeatureProductFeature;
+      'api::symptom.symptom': ApiSymptomSymptom;
+      'api::treatment.treatment': ApiTreatmentTreatment;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
