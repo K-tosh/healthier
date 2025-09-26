@@ -125,8 +125,8 @@ test_mobile_endpoint "Health Topics" "http://localhost:1337/api/health-topics"
 
 echo "2. 🩺 Testing Conditions"
 test_endpoint "Conditions List" "http://localhost:1337/api/conditions" "List all conditions"
-test_endpoint "Emergency Conditions" "http://localhost:1337/api/conditions?filters[isEmergency][\$eq]=true" "Filter emergency conditions"
-test_endpoint "Conditions by Severity" "http://localhost:1337/api/conditions?filters[severity][\$eq]=critical" "Filter by critical severity"
+test_endpoint "Emergency Conditions" "http://localhost:1337/api/conditions?filters%5BisEmergency%5D%5B%24eq%5D=true" "Filter emergency conditions"
+test_endpoint "Conditions by Severity" "http://localhost:1337/api/conditions?filters%5Bseverity%5D%5B%24eq%5D=critical" "Filter by critical severity"
 test_mobile_endpoint "Conditions" "http://localhost:1337/api/conditions"
 
 echo "3. 📄 Testing Articles"

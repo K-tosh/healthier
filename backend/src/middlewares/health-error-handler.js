@@ -7,6 +7,11 @@
 
 module.exports = (config, { strapi }) => {
   return async (ctx, next) => {
+    // Only handle API requests, skip admin panel and other requests
+    if (!ctx.url.startsWith('/api/')) {
+      return await next();
+    }
+
     try {
       await next();
 
@@ -61,7 +66,12 @@ module.exports = (config, { strapi }) => {
       }
 
     } catch (error) {
-      // Health content specific error handling
+      // Only handle API errors, skip admin errors
+      if (!ctx.url.startsWith('/api/')) {
+        throw error; // Re-throw admin errors
+      }
+
+      // Health content specific error handling for API requests only
       const healthError = await handleHealthContentError(error, ctx, strapi);
       
       ctx.status = healthError.status;
