@@ -1,0 +1,95 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "singularName": "page",
+    "pluralName": "pages",
+    "displayName": "Page",
+    "name": "page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "shortName": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "contentSections": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "sections.hero",
+        "sections.bottom-actions",
+        "sections.feature-columns-group",
+        "sections.feature-rows-group",
+        "sections.testimonials-group",
+        "sections.large-video",
+        "sections.rich-text",
+        "sections.pricing",
+        "sections.lead-form",
+        "sections.features",
+        "sections.trending-article",
+        "sections.explore-conditions",
+        "sections.featured-content",
+        "shared.video-embed",
+        "elements.logos",
+        "elements.feature-row",
+        "elements.feature-column",
+        "shared.rich-text",
+        "sections.heading",
+        "elements.plan",
+        "sections.contact"
+      ]
+    },
+    "slug": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "regex": "^$|^[a-zA-Z/-]+$"
+    },
+    "heading": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "seo": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo",
+      "repeatable": false
+    }
+  }
+}

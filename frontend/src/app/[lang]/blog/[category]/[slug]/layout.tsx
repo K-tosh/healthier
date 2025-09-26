@@ -1,8 +1,7 @@
 import ArticleSelect from "@/app/[lang]/components/ArticleSelect";
 import { fetchAPI } from "@/app/[lang]/utils/fetch-api";
-import LeadForm from "@/app/[lang]/components/LeadForm";
 
-async function fetchSideMenuData(filter: string) {
+async function fetchSideMenuData(filter: string, currentSlug?: string) {
   try {
     const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
@@ -12,22 +11,35 @@ async function fetchSideMenuData(filter: string) {
       token
     );
 
-    const articlesResponse = await fetchAPI(
+    // Fetch related articles from the same category
+    const relatedArticlesResponse = await fetchAPI(
       "/articles",
-      filter
-        ? {
-            filters: {
-              category: {
-                name: filter,
-              },
+      {
+        filters: filter ? {
+          category: {
+            name: filter,
+          },
+          ...(currentSlug && {
+            slug: {
+              $ne: currentSlug, // Exclude current article
             },
-          }
-        : {},
+          }),
+        } : currentSlug ? {
+          slug: {
+            $ne: currentSlug, // Exclude current article
+          },
+        } : {},
+        populate: ["cover", "category"],
+        pagination: {
+          limit: 6, // Get more articles for better selection
+        },
+        sort: ["publishedAt:desc"], // Sort by newest first
+      },
       token
     );
 
     return {
-      articles: articlesResponse.data || [],
+      articles: relatedArticlesResponse.data || [],
       categories: categoriesResponse.data || [],
     };
   } catch (error) {
@@ -56,6 +68,23 @@ interface Article {
   attributes: {
     title: string;
     slug: string;
+    description?: string;
+    publishedAt: string;
+    cover?: {
+      data?: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+    category?: {
+      data?: {
+        attributes: {
+          name: string;
+          slug: string;
+        };
+      };
+    };
   };
 }
 
@@ -74,8 +103,8 @@ export default async function LayoutRoute({
     category: string;
   };
 }) {
-  const { category } = params;
-  const { categories, articles } = (await fetchSideMenuData(category)) as Data;
+  const { category, slug } = params;
+  const { categories, articles } = (await fetchSideMenuData(category, slug)) as Data;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -148,13 +177,7 @@ export default async function LayoutRoute({
                 </div>
               </div>
 
-              {/* Newsletter Signup */}
-              <LeadForm data={{
-                title: "Stay Informed",
-                description: "Get the latest health tips and medical insights delivered to your inbox.",
-                submitButton: { text: "Subscribe" },
-                emailPlaceholder: "Enter your email"
-              }} />
+
             </div>
           </aside>
         </div>

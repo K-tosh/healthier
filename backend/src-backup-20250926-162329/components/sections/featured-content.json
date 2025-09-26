@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_sections_featured_contents",
+  "info": {
+    "displayName": "Featured Content",
+    "description": "A section to showcase selected articles and conditions for category pages"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Featured Content"
+    },
+    "description": {
+      "type": "text"
+    },
+    "featuredArticles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article.article"
+    },
+    "featuredConditions": {
+      "type": "relation", 
+      "relation": "oneToMany",
+      "target": "api::condition.condition"
+    },
+    "showAllArticlesButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "allArticlesButtonText": {
+      "type": "string",
+      "default": "View All Articles"
+    },
+    "allArticlesButtonUrl": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

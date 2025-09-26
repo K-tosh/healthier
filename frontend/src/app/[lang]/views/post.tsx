@@ -5,6 +5,7 @@ import Image from 'next/image';
 import componentResolver from '../utils/component-resolver';
 import { getReadingTime } from '@/app/[lang]/utils/article-utils';
 import RichText from '@/app/[lang]/components/RichText';
+import { RelatedArticles } from '@/app/[lang]/components/RelatedArticles';
 import { Twitter, Facebook, Linkedin, Clock, Calendar, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from "@/components/ui/separator";
@@ -54,7 +55,15 @@ interface Article {
     };
 }
 
-export default function Post({ data }: { data: Article }) {
+export default function Post({ 
+    data, 
+    relatedArticles = [], 
+    locale = 'en' 
+}: { 
+    data: Article; 
+    relatedArticles?: any[]; 
+    locale?: string; 
+}) {
     const { title, description, publishedAt, cover, authorsBio, blocks } = data.attributes;
     const author = authorsBio.data?.attributes;
     const imageUrl = getStrapiMedia(cover.data?.attributes.url);
@@ -288,6 +297,16 @@ export default function Post({ data }: { data: Article }) {
                     </section>
                 )}
             </div>
+
+            {/* Related Articles Section */}
+            {relatedArticles && relatedArticles.length > 0 && (
+                <RelatedArticles
+                    heading="Related Articles"
+                    sub_heading="Continue reading with these related health topics"
+                    articles={relatedArticles}
+                    locale={locale}
+                />
+            )}
         </div>
     );
 }

@@ -30,7 +30,7 @@ export default function Navbar({
   return (
     <nav className="border-b border-healthierke-dark-imperial-blue shadow-lg sticky top-0 z-50 backdrop-blur-sm" style={{ backgroundColor: 'var(--healthierke-oxford-blue)' }}>
       <div className="max-w-7xl mx-auto px-4">
-        {/* Top bar with trust indicators */}
+        {/* Top bar with trust indicators
         <div className="border-b border-healthierke-dark-imperial-blue py-2" style={{ backgroundColor: 'var(--healthierke-oxford-blue)' }}>
           <div className="flex items-center justify-between text-xs text-gray-100">
             <div className="flex items-center gap-4">
@@ -57,7 +57,7 @@ export default function Navbar({
               Last Updated: {new Date().toLocaleDateString()}
             </div>
           </div>
-        </div>
+        </div> */}
         
         {/* Main navigation */}
         <div className="h-16 flex items-center justify-between">
@@ -109,7 +109,7 @@ export default function Navbar({
               </div>
               
               {/* Trust indicators for mobile */}
-              <div className="mb-6 p-3 rounded-lg border" style={{ backgroundColor: 'var(--healthierke-oxford-blue)', borderColor: 'var(--healthierke-vista-blue)' }}>
+              {/* <div className="mb-6 p-3 rounded-lg border" style={{ backgroundColor: 'var(--healthierke-oxford-blue)', borderColor: 'var(--healthierke-vista-blue)' }}>
                 <div className="text-xs font-medium mb-2" style={{ color: 'var(--healthierke-vista-blue)' }}>Trusted Health Information</div>
                 <div className="flex flex-wrap gap-2 text-xs text-gray-100">
                   <span className="flex items-center gap-1">
@@ -125,7 +125,7 @@ export default function Navbar({
                     Evidence-Based
                   </span>
                 </div>
-              </div>
+              </div> */}
               
               <ul className="space-y-2">
                 {links.map(({ id, url, text }) => (

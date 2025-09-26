@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "condition_groups",
+  "info": {
+    "singularName": "condition-group",
+    "pluralName": "condition-groups",
+    "displayName": "Condition Group"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "conditions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::condition.condition",
+      "inversedBy": "condition_groups"
+    }
+  }
+}

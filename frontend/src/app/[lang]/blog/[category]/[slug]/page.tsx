@@ -47,6 +47,34 @@ async function getMetaData(slug: string) {
     return response.data;
 }
 
+async function getRelatedArticles(categorySlug: string, currentSlug: string, limit: number = 3) {
+    const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+    const path = `/articles`;
+    const urlParamsObject = {
+        filters: { 
+            category: { slug: categorySlug },
+            slug: { $ne: currentSlug } // Exclude current article
+        },
+        populate: {
+            cover: { fields: ["url"] },
+            category: { fields: ["name", "slug"] },
+            blocks: { 
+                on: {
+                    "shared.rich-text": {
+                        populate: "*",
+                    },
+                },
+            },
+        },
+        pagination: {
+            limit: limit
+        },
+        sort: ['publishedAt:desc']
+    };
+    const response = await fetchAPI(path, urlParamsObject, token);
+    return response.data || [];
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
     const meta = await getMetaData(params.slug);
     const metadata = meta[0].attributes.seo;

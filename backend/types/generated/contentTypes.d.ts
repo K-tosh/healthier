@@ -523,7 +523,8 @@ export interface ApiConditionGroupConditionGroup
 export interface ApiConditionCondition extends Struct.CollectionTypeSchema {
   collectionName: 'conditions';
   info: {
-    displayName: 'condition';
+    description: 'Health conditions and medical topics for HealthierKE';
+    displayName: 'Condition';
     pluralName: 'conditions';
     singularName: 'condition';
   };
@@ -531,6 +532,8 @@ export interface ApiConditionCondition extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    articles: Schema.Attribute.Relation<'manyToMany', 'api::article.article'>;
+    color: Schema.Attribute.String & Schema.Attribute.DefaultTo<'#3B82F6'>;
     condition_groups: Schema.Attribute.Relation<
       'manyToMany',
       'api::condition-group.condition-group'
@@ -538,15 +541,30 @@ export interface ApiConditionCondition extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
+    icon: Schema.Attribute.Media<'images'>;
+    isEmergency: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::condition.condition'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    overview: Schema.Attribute.RichText;
+    prevalenceInKenya: Schema.Attribute.Text;
+    priority: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'name'>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    severity: Schema.Attribute.Enumeration<
+      ['mild', 'moderate', 'severe', 'critical']
+    > &
+      Schema.Attribute.DefaultTo<'moderate'>;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

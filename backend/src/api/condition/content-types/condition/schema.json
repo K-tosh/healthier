@@ -4,7 +4,8 @@
   "info": {
     "singularName": "condition",
     "pluralName": "conditions",
-    "displayName": "condition"
+    "displayName": "Condition",
+    "description": "Health conditions and medical topics for HealthierKE"
   },
   "options": {
     "draftAndPublish": true
@@ -12,17 +13,72 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 500,
+      "required": true
+    },
+    "overview": {
+      "type": "richtext"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "color": {
+      "type": "string",
+      "default": "#3B82F6",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "isEmergency": {
+      "type": "boolean",
+      "default": false
+    },
+    "severity": {
+      "type": "enumeration",
+      "enum": [
+        "mild",
+        "moderate",
+        "severe",
+        "critical"
+      ],
+      "default": "moderate"
+    },
+    "prevalenceInKenya": {
+      "type": "text"
+    },
+    "priority": {
+      "type": "integer",
+      "default": 0
     },
     "condition_groups": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::condition-group.condition-group",
       "mappedBy": "conditions"
+    },
+    "articles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::article.article",
+      "mappedBy": "relatedConditions"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
     }
   }
 }
