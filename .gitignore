@@ -5,3 +5,49 @@ readme-images
 **/.yarn
 frontend/next.config.js
 .env
+
+# Documentation and summary files (keep out of repo)
+*_SUMMARY.md
+*_CHECKLIST.md
+*_IMPROVEMENTS.md
+*_GUIDE.md
+*_COLORS.md
+*_UPDATES.md
+*_ANALYSIS.md
+*_IMPLEMENTATION.md
+WEBMD_STYLE_SUMMARY.md
+HEALTHIERKE_IMPROVEMENT_CHECKLIST.md
+PROJECT_COMPLETION_SUMMARY.md
+PROJECT_REVIEW_ANALYSIS.md
+BADGE_AND_NAVBAR_IMPROVEMENTS.md
+CDN_SETUP_GUIDE.md
+CONTACT_SETUP_GUIDE.md
+HEALTHIERKE_COLORS.md
+HERO_UPDATES.md
+PERFORMANCE_IMPLEMENTATION.md
+PROFESSIONAL_MEDICAL_COLORS.md
+SECTION_SPACING_IMPROVEMENTS.md
+UI_ENHANCEMENT_GUIDE.md
+
+# Shell scripts and automation files
+*.sh
+add-new-content-types.sh
+fix-permissions.sh
+populate-sample-content.sh
+test-*.sh
+
+# Backup and data files
+*.tar.gz
+backup.tar.gz
+seed-data.tar.gz
+*.backup
+backup-*
+
+# API response files and temporary data
+*_api_response.json
+home_api_response.json
+*.log
+*.tmp
+
+# Package lock files (optional - you can keep package-lock.json if needed)
+# package-lock.json
