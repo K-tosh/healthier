@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_medical_emergency_alerts",
+  "info": {
+    "displayName": "Emergency Alert",
+    "description": "Alert component for emergency medical situations",
+    "icon": "ambulance"
+  },
+  "options": {},
+  "attributes": {
+    "alertLevel": {
+      "type": "enumeration",
+      "enum": [
+        "info",
+        "warning",
+        "danger",
+        "emergency"
+      ],
+      "default": "warning",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "richtext",
+      "required": true
+    },
+    "showCallButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "emergencyNumber": {
+      "type": "string",
+      "default": "999"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

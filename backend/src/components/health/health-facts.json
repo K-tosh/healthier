@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_health_health_facts",
+  "info": {
+    "displayName": "Health Facts",
+    "description": "Display key health facts and statistics",
+    "icon": "chart-bar"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Key Health Facts",
+      "required": true
+    },
+    "facts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "health.fact-item"
+    },
+    "sourceAttribution": {
+      "type": "text"
+    },
+    "lastVerified": {
+      "type": "date"
+    }
+  }
+}

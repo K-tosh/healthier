@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_health_treatment_options",
+  "info": {
+    "displayName": "Treatment Options",
+    "description": "Display treatment options for conditions",
+    "icon": "pills"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Treatment Options",
+      "required": true
+    },
+    "treatments": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::treatment.treatment"
+    },
+    "groupByType": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCosts": {
+      "type": "boolean",
+      "default": true
+    },
+    "consultationAdvice": {
+      "type": "richtext"
+    }
+  }
+}

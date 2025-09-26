@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_health_fact_items",
+  "info": {
+    "displayName": "Fact Item",
+    "description": "Individual fact item for health facts component",
+    "icon": "info-circle"
+  },
+  "options": {},
+  "attributes": {
+    "statistic": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "source": {
+      "type": "text"
+    },
+    "isKenyaSpecific": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

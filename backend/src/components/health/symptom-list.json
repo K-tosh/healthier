@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_health_symptom_lists",
+  "info": {
+    "displayName": "Symptom List",
+    "description": "Display symptoms for conditions",
+    "icon": "thermometer"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Common Symptoms",
+      "required": true
+    },
+    "symptoms": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::symptom.symptom"
+    },
+    "showSeverity": {
+      "type": "boolean",
+      "default": true
+    },
+    "groupBySeverity": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

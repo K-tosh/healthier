@@ -93,6 +93,37 @@ const populate = {
           featuredConditions: { populate: "*" },
         },
       },
+      "medical.medical-disclaimer": {
+        populate: "*"
+      },
+      "medical.emergency-alert": {
+        populate: {
+          icon: { populate: "*" }
+        }
+      },
+      "health.health-facts": {
+        populate: {
+          facts: { populate: "*" }
+        }
+      },
+      "health.symptom-list": {
+        populate: {
+          symptoms: {
+            populate: {
+              relatedConditions: { populate: "*" }
+            }
+          }
+        }
+      },
+      "health.treatment-options": {
+        populate: {
+          treatments: {
+            populate: {
+              relatedConditions: { populate: "*" }
+            }
+          }
+        }
+      },
       
     },
   },

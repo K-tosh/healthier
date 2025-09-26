@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_medical_medical_disclaimers",
+  "info": {
+    "displayName": "Medical Disclaimer",
+    "description": "Standardized medical disclaimer for health content",
+    "icon": "exclamation-triangle"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Medical Disclaimer",
+      "required": true
+    },
+    "content": {
+      "type": "richtext",
+      "default": "This information is for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with a qualified healthcare provider before making any decisions about your health."
+    },
+    "showEmergencyWarning": {
+      "type": "boolean",
+      "default": true
+    },
+    "emergencyNumber": {
+      "type": "string",
+      "default": "999"
+    },
+    "lastUpdated": {
+      "type": "date"
+    }
+  }
+}

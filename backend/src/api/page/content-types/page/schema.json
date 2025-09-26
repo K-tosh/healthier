@@ -53,7 +53,12 @@
         "shared.rich-text",
         "sections.heading",
         "elements.plan",
-        "sections.contact"
+        "sections.contact",
+        "medical.medical-disclaimer",
+        "medical.emergency-alert",
+        "health.health-facts",
+        "health.symptom-list",
+        "health.treatment-options"
       ]
     },
     "slug": {
