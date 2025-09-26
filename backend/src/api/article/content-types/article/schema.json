@@ -5,7 +5,7 @@
     "singularName": "article",
     "pluralName": "articles",
     "displayName": "Article",
-    "description": "Create your blog content"
+    "description": "Create your health content and explainers"
   },
   "options": {
     "draftAndPublish": true
@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
       "type": "text",
@@ -22,7 +23,8 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title"
+      "targetField": "title",
+      "required": true
     },
     "cover": {
       "type": "media",
@@ -55,6 +57,61 @@
       "relation": "manyToOne",
       "target": "api::author.author",
       "inversedBy": "articles"
+    },
+    "articleType": {
+      "type": "enumeration",
+      "enum": [
+        "overview",
+        "symptoms",
+        "treatment",
+        "prevention",
+        "lifestyle",
+        "emergency",
+        "general"
+      ],
+      "default": "general"
+    },
+    "relatedConditions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::condition.condition",
+      "inversedBy": "articles"
+    },
+    "medicallyReviewed": {
+      "type": "boolean",
+      "default": false
+    },
+    "reviewDate": {
+      "type": "date"
+    },
+    "medicalReviewer": {
+      "type": "text"
+    },
+    "readingTime": {
+      "type": "integer",
+      "min": 1,
+      "default": 5
+    },
+    "targetAudience": {
+      "type": "enumeration",
+      "enum": [
+        "general_public",
+        "healthcare_workers",
+        "patients",
+        "caregivers"
+      ],
+      "default": "general_public"
+    },
+    "priority": {
+      "type": "integer",
+      "default": 0
+    },
+    "healthDisclaimer": {
+      "type": "boolean",
+      "default": true
+    },
+    "lastMedicalUpdate": {
+      "type": "datetime"
     },
     "seo": {
       "type": "component",
