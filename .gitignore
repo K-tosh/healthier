@@ -51,3 +51,16 @@ home_api_response.json
 
 # Package lock files (optional - you can keep package-lock.json if needed)
 # package-lock.json
+*.md
+FIXES_APPLIED.md
+MEDICAL_TABS_CLEANUP.md
+
+# Summary and temporary files
+*SUMMARY*.md
+*FIXES*.md  
+*CLEANUP*.md
+*CHECKLIST*.md
+*COMPLETION*.md
+*ANALYSIS*.md
+*GUIDE*.md
+*IMPROVEMENTS*.md
