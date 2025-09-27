@@ -596,10 +596,6 @@ export interface ApiConditionCondition extends Struct.CollectionTypeSchema {
     priority: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    severity: Schema.Attribute.Enumeration<
-      ['mild', 'moderate', 'severe', 'critical']
-    > &
-      Schema.Attribute.DefaultTo<'moderate'>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

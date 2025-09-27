@@ -12,7 +12,7 @@ async function getConditions() {
   try {
     const path = `/conditions`;
     const urlParamsObject = {
-      populate: 'deep',
+      populate: '*',
       sort: 'name:asc',
     };
 

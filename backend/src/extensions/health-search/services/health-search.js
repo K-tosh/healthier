@@ -141,7 +141,7 @@ module.exports = ({ strapi }) => ({
           page: options.page || 1,
           pageSize: options.limit || 10
         },
-        sort: { priority: 'desc', severity: 'desc' }
+        sort: { priority: 'desc', createdAt: 'desc' }
       });
 
       return {
@@ -269,8 +269,6 @@ module.exports = ({ strapi }) => ({
     try {
       const categoryMap = {
         'emergency': { filters: { isEmergency: true }, contentTypes: ['condition'] },
-        'severe': { filters: { severity: 'severe' }, contentTypes: ['condition'] },
-        'critical': { filters: { severity: 'critical' }, contentTypes: ['condition'] },
         'medication': { filters: { type: 'medication' }, contentTypes: ['treatment'] },
         'lifestyle': { filters: { type: 'lifestyle' }, contentTypes: ['treatment'] },
         'symptoms': { contentTypes: ['symptom'] },

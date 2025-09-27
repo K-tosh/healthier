@@ -133,10 +133,6 @@ module.exports = ({ strapi }) => ({
 
     // Validate emergency conditions
     if (condition.isEmergency) {
-      if (condition.severity !== 'critical' && condition.severity !== 'severe') {
-        validationResults.warnings.push('Emergency conditions should typically be marked as severe or critical');
-      }
-      
       if (!condition.prevalenceInKenya) {
         validationResults.recommendations.push('Consider adding Kenya-specific prevalence data for emergency conditions');
       }

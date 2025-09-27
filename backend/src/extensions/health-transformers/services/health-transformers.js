@@ -80,7 +80,6 @@ module.exports = ({ strapi }) => ({
         id: condition.documentId,
         name: condition.name,
         slug: condition.slug,
-        severity: condition.severity,
         isEmergency: condition.isEmergency,
         color: condition.color
       }));
@@ -105,7 +104,6 @@ module.exports = ({ strapi }) => ({
       name: condition.name,
       slug: condition.slug,
       description: condition.description,
-      severity: condition.severity,
       isEmergency: condition.isEmergency,
       color: condition.color,
       priority: condition.priority,
@@ -141,7 +139,7 @@ module.exports = ({ strapi }) => ({
     }
 
     // Add computed fields
-    transformed.urgencyLevel = condition.isEmergency ? 'emergency' : condition.severity;
+    transformed.urgencyLevel = condition.isEmergency ? 'emergency' : 'standard';
     transformed.isCommonInKenya = !!condition.prevalenceInKenya;
 
     return transformed;
@@ -177,7 +175,6 @@ module.exports = ({ strapi }) => ({
       transformed.relatedConditions = symptom.relatedConditions.map(condition => ({
         id: condition.documentId,
         name: condition.name,
-        severity: condition.severity,
         isEmergency: condition.isEmergency
       }));
     }
@@ -225,8 +222,7 @@ module.exports = ({ strapi }) => ({
       if (!optimizeForMobile) {
         transformed.relatedConditions = treatment.relatedConditions.map(condition => ({
           id: condition.documentId,
-          name: condition.name,
-          severity: condition.severity
+          name: condition.name
         }));
       }
     }
@@ -327,7 +323,7 @@ module.exports = ({ strapi }) => ({
   calculateUrgencyLevel(whenToSeekCare, severity) {
     if (whenToSeekCare === 'emergency') return 'emergency';
     if (whenToSeekCare === 'urgent') return 'urgent';
-    if (severity === 'severe' || severity === 'critical') return 'urgent';
+    if (severity === 'emergency') return 'urgent';
     if (whenToSeekCare === 'routine_checkup') return 'routine';
     return 'monitor';
   },

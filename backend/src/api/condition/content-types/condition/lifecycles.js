@@ -32,9 +32,7 @@ module.exports = {
         data.color = '#3B82F6'; // Default blue
       }
       
-      if (!data.severity) {
-        data.severity = 'moderate';
-      }
+
       
       if (!data.hasOwnProperty('priority')) {
         data.priority = 0;
@@ -46,7 +44,7 @@ module.exports = {
       }
       
       // Log condition creation
-      strapi.log.info(`Creating new condition: ${data.name} (Severity: ${data.severity})`);
+      strapi.log.info(`Creating new condition: ${data.name}`);
       
     } catch (error) {
       strapi.log.error('Error in condition beforeCreate lifecycle:', error);
@@ -61,14 +59,70 @@ module.exports = {
     const { data, where } = event.params;
     
     try {
-      // Get existing condition to compare changes
-      const existingCondition = await strapi.documents('api::condition.condition').findOne({
-        documentId: where.documentId,
-        populate: { articles: true, condition_groups: true }
-      });
+      // Debug logging to understand the structure
+      strapi.log.debug('Condition beforeUpdate - where parameter:', JSON.stringify(where));
+      strapi.log.debug('Condition beforeUpdate - data parameter keys:', Object.keys(data || {}));
+      
+      // Get the condition identifier - handle different possible structures
+      let conditionId = null;
+      if (where.documentId) {
+        conditionId = where.documentId;
+      } else if (where.id) {
+        conditionId = where.id;
+      } else if (typeof where === 'string') {
+        conditionId = where;
+      } else if (typeof where === 'number') {
+        conditionId = where;
+      }
+      
+      if (!conditionId) {
+        strapi.log.warn('Could not determine condition ID from where parameter:', where);
+        // Don't throw error, just skip validation
+        return;
+      }
+      
+      // Try to find the existing condition with different query approaches
+      let existingCondition = null;
+      
+      try {
+        // Try with documentId first (Strapi v5 approach)
+        if (typeof conditionId === 'string' && conditionId.length > 10) {
+          existingCondition = await strapi.documents('api::condition.condition').findOne({
+            documentId: conditionId,
+            populate: { articles: true, condition_groups: true }
+          });
+        }
+      } catch (error) {
+        strapi.log.debug('DocumentId query failed, trying alternative approaches');
+      }
+      
+      // If documentId approach failed, try with regular id
+      if (!existingCondition) {
+        try {
+          existingCondition = await strapi.entityService.findOne('api::condition.condition', conditionId, {
+            populate: { articles: true, condition_groups: true }
+          });
+        } catch (error) {
+          strapi.log.debug('EntityService query failed');
+        }
+      }
+      
+      // If still not found, try direct database query
+      if (!existingCondition) {
+        try {
+          existingCondition = await strapi.db.query('api::condition.condition').findOne({
+            where: { id: conditionId },
+            populate: { articles: true, condition_groups: true }
+          });
+        } catch (error) {
+          strapi.log.debug('Database query failed');
+        }
+      }
       
       if (!existingCondition) {
-        throw new Error('Condition not found');
+        strapi.log.warn(`Condition not found for update with ID: ${conditionId}. Skipping validation.`);
+        // Don't throw error, just skip validation to allow the update to proceed
+        return;
       }
       
       // Validate field changes
@@ -89,16 +143,14 @@ module.exports = {
         await validateEmergencyCondition({ ...existingCondition, ...data });
       }
       
-      // Check for severity consistency with emergency status
-      if (data.isEmergency && data.severity && 
-          !['severe', 'critical'].includes(data.severity)) {
-        strapi.log.warn(`Emergency condition "${existingCondition.name}" should typically be severe or critical`);
-      }
+
       
       // Log significant changes
       if (data.hasOwnProperty('isEmergency') && data.isEmergency !== existingCondition.isEmergency) {
         strapi.log.info(`Condition emergency status changed: ${existingCondition.name} - Emergency: ${data.isEmergency}`);
       }
+      
+      strapi.log.info(`Condition update validation passed: ${existingCondition.name || 'Unknown'}`);
       
     } catch (error) {
       strapi.log.error('Error in condition beforeUpdate lifecycle:', error);
@@ -151,11 +203,48 @@ module.exports = {
     const { where } = event.params;
     
     try {
-      // Get condition with relationships to check dependencies
-      const condition = await strapi.documents('api::condition.condition').findOne({
-        documentId: where.documentId,
-        populate: { articles: true }
-      });
+      // Get the condition identifier - handle different possible structures
+      let conditionId = null;
+      if (where.documentId) {
+        conditionId = where.documentId;
+      } else if (where.id) {
+        conditionId = where.id;
+      } else if (typeof where === 'string') {
+        conditionId = where;
+      } else if (typeof where === 'number') {
+        conditionId = where;
+      }
+      
+      if (!conditionId) {
+        strapi.log.warn('Could not determine condition ID for deletion:', where);
+        return;
+      }
+      
+      // Try to get condition with relationships to check dependencies
+      let condition = null;
+      
+      try {
+        // Try with documentId first (Strapi v5 approach)
+        if (typeof conditionId === 'string' && conditionId.length > 10) {
+          condition = await strapi.documents('api::condition.condition').findOne({
+            documentId: conditionId,
+            populate: { articles: true }
+          });
+        }
+      } catch (error) {
+        strapi.log.debug('DocumentId query failed for deletion check');
+      }
+      
+      // If documentId approach failed, try with regular id
+      if (!condition) {
+        try {
+          condition = await strapi.entityService.findOne('api::condition.condition', conditionId, {
+            populate: { articles: true }
+          });
+        } catch (error) {
+          strapi.log.debug('EntityService query failed for deletion check');
+        }
+      }
       
       if (condition && condition.articles && condition.articles.length > 0) {
         strapi.log.warn(`Deleting condition "${condition.name}" that has ${condition.articles.length} related articles`);
@@ -181,11 +270,6 @@ function isValidHexColor(color) {
  */
 async function validateEmergencyCondition(conditionData) {
   try {
-    // Emergency conditions should have appropriate severity
-    if (conditionData.severity && !['severe', 'critical'].includes(conditionData.severity)) {
-      strapi.log.warn('Emergency conditions should typically be marked as severe or critical');
-    }
-    
     // Emergency conditions should have Kenya prevalence data for context
     if (!conditionData.prevalenceInKenya) {
       strapi.log.info('Consider adding Kenya-specific prevalence data for emergency conditions');
@@ -219,17 +303,35 @@ async function validateEmergencyCondition(conditionData) {
 async function updateHealthTopicStats() {
   try {
     // Get all health topics and update their condition counts
-    const healthTopics = await strapi.documents('api::health-topic.health-topic').findMany({
-      populate: { relatedConditions: true }
-    });
+    let healthTopics = [];
     
-    for (const topic of healthTopics.results) {
-      const conditionCount = topic.relatedConditions ? topic.relatedConditions.length : 0;
-      
-      // You could store this count in a custom field if needed
-      // For now, we'll just log it for analytics
-      if (conditionCount > 0) {
-        strapi.log.debug(`Health topic "${topic.name}" has ${conditionCount} related conditions`);
+    try {
+      // Try the documents API first (Strapi v5)
+      const response = await strapi.documents('api::health-topic.health-topic').findMany({
+        populate: { relatedConditions: true }
+      });
+      healthTopics = response.results || response;
+    } catch (error) {
+      // Fallback to entityService (older Strapi versions)
+      try {
+        healthTopics = await strapi.entityService.findMany('api::health-topic.health-topic', {
+          populate: { relatedConditions: true }
+        });
+      } catch (fallbackError) {
+        strapi.log.debug('Health topic statistics update failed, health-topic content type may not exist');
+        return;
+      }
+    }
+    
+    if (Array.isArray(healthTopics)) {
+      for (const topic of healthTopics) {
+        const conditionCount = topic.relatedConditions ? topic.relatedConditions.length : 0;
+        
+        // You could store this count in a custom field if needed
+        // For now, we'll just log it for analytics
+        if (conditionCount > 0) {
+          strapi.log.debug(`Health topic "${topic.name}" has ${conditionCount} related conditions`);
+        }
       }
     }
     

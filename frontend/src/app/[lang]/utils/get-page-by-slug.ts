@@ -8,7 +8,7 @@ export async function getPageBySlug(slug: string, lang: string) {
     const urlParamsObject = {
         filters: { slug: { $eq: slug } },
         locale: lang,
-        populate: "deep", // Use deep population to get all nested relationships
+        populate: "*", // Use star population to get all nested relationships
     };
 
     console.log("🔍 Fetching page data for slug:", slug, "language:", lang);

@@ -11,7 +11,7 @@ async function getDrugs() {
   try {
     const path = `/drugs-and-medications`;
     const urlParamsObject = {
-      populate: 'deep',
+      populate: '*',
       sort: 'name:asc',
     };
 

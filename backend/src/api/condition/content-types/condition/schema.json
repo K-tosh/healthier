@@ -46,16 +46,7 @@
       "type": "boolean",
       "default": false
     },
-    "severity": {
-      "type": "enumeration",
-      "enum": [
-        "mild",
-        "moderate",
-        "severe",
-        "critical"
-      ],
-      "default": "moderate"
-    },
+
     "prevalenceInKenya": {
       "type": "text"
     },

@@ -18,7 +18,17 @@ async function getCondition(slug: string) {
           $eq: slug,
         },
       },
-      populate: 'deep',
+      populate: {
+        icon: true,
+        articles: {
+          populate: {
+            cover: true,
+            category: true,
+            authorsBio: true,
+          }
+        },
+        seo: true,
+      },
     };
 
     const response = await fetchAPI(path, urlParamsObject);

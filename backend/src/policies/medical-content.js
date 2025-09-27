@@ -119,10 +119,6 @@ async function validateMedicalCondition(ctx, data) {
     if (!data.description || data.description.length < 50) {
       throw new Error('Emergency conditions must have detailed descriptions (at least 50 characters)');
     }
-    
-    if (data.severity && !['severe', 'critical'].includes(data.severity)) {
-      strapi.log.warn('Emergency conditions should typically be marked as severe or critical');
-    }
   }
   
   // Validate color format
