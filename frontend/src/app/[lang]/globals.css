@@ -110,6 +110,18 @@ body {
   border: 1px solid var(--healthierke-vista-blue);
 }
 
+.medical-badge-orange {
+  background-color: #ea580c;
+  color: white;
+  border: 1px solid #c2410c;
+}
+
+.medical-badge-gray {
+  background-color: #6b7280;
+  color: white;
+  border: 1px solid #4b5563;
+}
+
 /* Trust indicators */
 .trust-indicator {
   @apply inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-sm font-medium;
