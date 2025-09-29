@@ -44,21 +44,42 @@ export default function RichText({ data, dropCap = false }: RichTextProps) {
               remarkPlugins={[remarkGfm]}
               components={{
                 // Custom components for better styling
-                h1: ({ children }) => (
-                  <h1 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                    {children}
-                  </h1>
-                ),
-                h2: ({ children }) => (
-                  <h2 className="text-3xl font-bold text-gray-900 mb-5 mt-8 leading-tight">
-                    {children}
-                  </h2>
-                ),
-                h3: ({ children }) => (
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4 mt-6 leading-tight">
-                    {children}
-                  </h3>
-                ),
+                h1: ({ children }) => {
+                  const text = children?.toString() || '';
+                  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                  return (
+                    <h1 id={id} className="text-4xl font-bold text-gray-900 mb-6 leading-tight scroll-mt-6">
+                      {children}
+                    </h1>
+                  );
+                },
+                h2: ({ children }) => {
+                  const text = children?.toString() || '';
+                  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                  return (
+                    <h2 id={id} className="text-3xl font-bold text-gray-900 mb-5 mt-8 leading-tight scroll-mt-6">
+                      {children}
+                    </h2>
+                  );
+                },
+                h3: ({ children }) => {
+                  const text = children?.toString() || '';
+                  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                  return (
+                    <h3 id={id} className="text-2xl font-semibold text-gray-900 mb-4 mt-6 leading-tight scroll-mt-6">
+                      {children}
+                    </h3>
+                  );
+                },
+                h4: ({ children }) => {
+                  const text = children?.toString() || '';
+                  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                  return (
+                    <h4 id={id} className="text-xl font-semibold text-gray-900 mb-3 mt-5 leading-tight scroll-mt-6">
+                      {children}
+                    </h4>
+                  );
+                },
                 p: ({ children }) => (
                   <p className="text-gray-700 leading-relaxed mb-4 text-lg">
                     {children}

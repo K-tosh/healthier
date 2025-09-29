@@ -77,6 +77,17 @@ export default function Post({
     // Extract category from data if available
     const category = data.attributes.category?.data?.attributes?.name || 'Health Article';
 
+    // Function to handle smooth scrolling to headings
+    const scrollToHeading = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    };
+
     // Extract headings from blocks for table of contents
     const extractHeadings = () => {
         const headings: { title: string; id: string }[] = [];
@@ -184,12 +195,15 @@ export default function Post({
                                     <nav className="flex flex-wrap items-center gap-1 text-sm md:text-base leading-relaxed">
                                         {headings.map((heading, index) => (
                                             <span key={heading.id} className="contents">
-                                                <Link 
-                                                    href={`#${heading.id}`} 
-                                                    className="text-blue-700 hover:text-blue-900 transition-colors font-bold tracking-tight hover:underline"
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        scrollToHeading(heading.id);
+                                                    }}
+                                                    className="text-blue-700 hover:text-blue-900 transition-colors font-bold tracking-tight hover:underline cursor-pointer bg-transparent border-none p-0"
                                                 >
                                                     {heading.title}
-                                                </Link>
+                                                </button>
                                                 {index < headings.length - 1 && (
                                                     <span className="text-gray-400 mx-2 font-bold text-lg">|</span>
                                                 )}
