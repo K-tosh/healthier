@@ -138,7 +138,7 @@ export default function Post({
                 {/* Article Header Section */}
                 <section className="healthier-section-compact healthier-section-white">
                     <div className="healthier-container">
-                        <article className="max-w-4xl mx-auto">
+                        <article className="max-w-6xl mx-auto">
                             <div className="space-y-6">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     <Badge className="medical-badge medical-badge-primary">
@@ -187,7 +187,7 @@ export default function Post({
                 {headings.length > 0 && (
                     <section className="healthier-section-compact healthier-section-light">
                         <div className="healthier-container">
-                            <div className="max-w-4xl mx-auto">
+                            <div className="max-w-6xl mx-auto">
                                 <div className="medical-card p-4 md:p-6 border-l-4 border-blue-600">
                                     <h2 className="text-lg md:text-xl font-bold text-gray-900 tracking-tight mb-3 md:mb-4">
                                         Table of Contents
@@ -219,7 +219,7 @@ export default function Post({
                 {/* Main Article Content */}
                 <section className="healthier-section-compact healthier-section-white">
                     <div className="healthier-container">
-                        <div className="max-w-4xl mx-auto">
+                        <div className="max-w-6xl mx-auto">
                             <div className="prose prose-lg max-w-none">
                                 {richTextBlock && <RichText data={{ body: markdown }} />}
                                 
@@ -235,7 +235,7 @@ export default function Post({
                 {/* Share Article Section */}
                 <section className="healthier-section-compact healthier-section-light">
                     <div className="healthier-container">
-                        <div className="max-w-4xl mx-auto">
+                        <div className="max-w-6xl mx-auto">
                             <div className="medical-card p-4 md:p-6">
                                 <h2 className="healthier-section-heading text-lg md:text-xl mb-3 md:mb-4">Share This Article</h2>
                                 <div className="flex items-center flex-wrap gap-2 md:gap-3">
@@ -300,7 +300,7 @@ export default function Post({
                 {author && (
                     <section className="healthier-section-compact healthier-section-white" style={{ paddingTop: '1rem', paddingBottom: '2rem' }}>
                         <div className="healthier-container">
-                            <div className="max-w-4xl mx-auto">
+                            <div className="max-w-6xl mx-auto">
                                 <div className="prose prose-lg max-w-none [&_img]:w-16 [&_img]:h-16 [&_img]:rounded-full [&_img]:object-cover [&_img]:inline [&_img]:mr-3 [&_img]:align-middle">
                                     <RichText data={{ 
                                         body: `${authorImgUrl ? `![${author.name}](${authorImgUrl}) ` : ''}**${author.name}** - Author\n\n${author.bio || ''}` 

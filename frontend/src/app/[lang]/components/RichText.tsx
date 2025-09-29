@@ -36,13 +36,12 @@ export default function RichText({ data, dropCap = false }: RichTextProps) {
   }
 
   return (
-    <section className="healthier-section">
-      <div className="content-container">
-        <div className="medical-card p-8 lg:p-12">
-          <div className={`rich-text prose prose-lg prose-blue max-w-none ${dropCap ? 'prose-drop-cap' : ''}`}>
-            <Markdown 
-              remarkPlugins={[remarkGfm]}
-              components={{
+    <section className="richtext-section">
+      <div className="richtext-container">
+        <div className={`rich-text prose prose-lg prose-blue max-w-none ${dropCap ? 'prose-drop-cap' : ''}`}>
+          <Markdown 
+            remarkPlugins={[remarkGfm]}
+            components={{
                 // Custom components for better styling
                 h1: ({ children }) => {
                   const text = children?.toString() || '';

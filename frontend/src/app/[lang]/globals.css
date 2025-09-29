@@ -8,6 +8,38 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Optimized article content spacing */
+.richtext-section {
+  @apply py-4 lg:py-6;
+}
+
+.richtext-container {
+  @apply px-4 sm:px-6 lg:px-8;
+}
+
+/* Reduce excessive prose spacing for better readability */
+.rich-text.prose {
+  @apply text-base sm:text-lg;
+  line-height: 1.7;
+}
+
+.rich-text.prose h1,
+.rich-text.prose h2,
+.rich-text.prose h3,
+.rich-text.prose h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.rich-text.prose p {
+  margin-bottom: 1.25rem;
+}
+
+.rich-text.prose ul,
+.rich-text.prose ol {
+  margin-bottom: 1.5rem;
+}
+
 body {
   @apply bg-slate-50 text-slate-900;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
